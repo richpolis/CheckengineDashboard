@@ -1,0 +1,9 @@
+{
+    "commands": {
+     "Configure Projet": "bash symfonyconfig.sh"
+    },
+    "preview": {
+        "Symfony Config": "http://{{domain}}:3000/config.php",
+        "Symfony Config SSL": "https://{{domain}}:9500/config.php"
+    }
+}

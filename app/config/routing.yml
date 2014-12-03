@@ -1,0 +1,4 @@
+des0ps_app:
+    resource: "@Des0psAppBundle/Resources/config/routing.yml"
+    prefix:   /
+

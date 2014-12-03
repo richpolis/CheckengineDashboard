@@ -1,0 +1,3 @@
+des0ps_app_homepage:
+    path:     /
+    defaults: { _controller: Des0psAppBundle:Default:index }
