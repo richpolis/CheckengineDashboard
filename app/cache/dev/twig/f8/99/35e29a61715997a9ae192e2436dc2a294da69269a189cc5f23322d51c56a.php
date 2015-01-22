@@ -65,15 +65,15 @@ class __TwigTemplate_f89935e29a61715997a9ae192e2436dc2a294da69269a189cc5f23322d5
                 // line 20
                 echo "                                <a href=\"";
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["profile"]) ? $context["profile"] : $this->getContext($context, "profile")), "url", array()), "html", null, true);
-                echo "\">";
+                echo "\" id=\"resume-url\">";
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["profile"]) ? $context["profile"] : $this->getContext($context, "profile")), "url", array()), "html", null, true);
                 echo "</a>
                             ";
             } else {
                 // line 22
-                echo "                                ";
+                echo "                                <span id=\"resume-url\">";
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["profile"]) ? $context["profile"] : $this->getContext($context, "profile")), "url", array()), "html", null, true);
-                echo "
+                echo "</span>
                             ";
             }
             // line 24

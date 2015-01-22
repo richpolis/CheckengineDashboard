@@ -25,7 +25,7 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
     protected function doDisplay(array $context, array $blocks = array())
     {
         // line 3
-        $context["__internal_cfbb1d632e4edf0309b8bc3defd51f945224c5c4342b37519b46843530a897c6"] = $this;
+        $context["__internal_6ac18ea4a9c1bb1b204db0cb3319714c3b79ebbaccf9b2ba84b7f51cd7ba29ce"] = $this;
         // line 5
         if ((!array_key_exists("colors", $context))) {
             // line 6
@@ -155,7 +155,7 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
 
     ";
         // line 80
-        echo $context["__internal_cfbb1d632e4edf0309b8bc3defd51f945224c5c4342b37519b46843530a897c6"]->getdisplay_timeline(("timeline_" . (isset($context["token"]) ? $context["token"] : $this->getContext($context, "token"))), $this->getAttribute((isset($context["collector"]) ? $context["collector"] : $this->getContext($context, "collector")), "events", array()), (isset($context["colors"]) ? $context["colors"] : $this->getContext($context, "colors")));
+        echo $context["__internal_6ac18ea4a9c1bb1b204db0cb3319714c3b79ebbaccf9b2ba84b7f51cd7ba29ce"]->getdisplay_timeline(("timeline_" . (isset($context["token"]) ? $context["token"] : $this->getContext($context, "token"))), $this->getAttribute((isset($context["collector"]) ? $context["collector"] : $this->getContext($context, "collector")), "events", array()), (isset($context["colors"]) ? $context["colors"] : $this->getContext($context, "colors")));
         echo "
 
     ";
@@ -185,7 +185,7 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
 
             ";
                 // line 90
-                echo $context["__internal_cfbb1d632e4edf0309b8bc3defd51f945224c5c4342b37519b46843530a897c6"]->getdisplay_timeline(("timeline_" . $this->getAttribute($context["child"], "token", array())), (isset($context["events"]) ? $context["events"] : $this->getContext($context, "events")), (isset($context["colors"]) ? $context["colors"] : $this->getContext($context, "colors")));
+                echo $context["__internal_6ac18ea4a9c1bb1b204db0cb3319714c3b79ebbaccf9b2ba84b7f51cd7ba29ce"]->getdisplay_timeline(("timeline_" . $this->getAttribute($context["child"], "token", array())), (isset($context["events"]) ? $context["events"] : $this->getContext($context, "events")), (isset($context["colors"]) ? $context["colors"] : $this->getContext($context, "colors")));
                 echo "
         ";
             }
@@ -223,7 +223,7 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
         /**
          * Query an element with a CSS selector.
          *
-         * @param  string selector a CSS-selector-compatible query string.
+         * @param string selector a CSS-selector-compatible query string.
          *
          * @return DOMElement|null
          */
@@ -241,13 +241,13 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
         function CanvasManager(requests, maxRequestTime) {
             \"use strict\";
 
-            var _drawingColors  = ";
+            var _drawingColors = ";
         // line 136
         echo twig_jsonencode_filter((isset($context["colors"]) ? $context["colors"] : $this->getContext($context, "colors")));
         echo ",
-                _storagePrefix  = 'timeline/',
-                _threshold      = 1,
-                _requests       = requests,
+                _storagePrefix = 'timeline/',
+                _threshold = 1,
+                _requests = requests,
                 _maxRequestTime = maxRequestTime;
 
             /**
@@ -294,16 +294,16 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
                     xc,
                     drawableEvents,
                     mainEvents,
-                    elementId    = 'timeline_' + request.id,
+                    elementId = 'timeline_' + request.id,
                     canvasHeight = 0,
-                    gapPerEvent  = 38,
+                    gapPerEvent = 38,
                     colors = _drawingColors,
-                    space  = 10.5,
-                    ratio  = (width - space * 2) / max,
+                    space = 10.5,
+                    ratio = (width - space * 2) / max,
                     h = space,
                     x = request.left * ratio + space, // position
                     canvas = cache.get(elementId) || cache.set(elementId, document.getElementById(elementId)),
-                    ctx    = canvas.getContext(\"2d\"),
+                    ctx = canvas.getContext(\"2d\"),
                     scaleRatio,
                     devicePixelRatio;
 
@@ -315,10 +315,10 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
                 canvasHeight += gapPerEvent * drawableEvents.length;
 
                 // For retina displays so text and boxes will be crisp
-                devicePixelRatio  = window.devicePixelRatio          == \"undefined\" ? 1 : window.devicePixelRatio;
-                scaleRatio        = devicePixelRatio / 1;
+                devicePixelRatio = window.devicePixelRatio == \"undefined\" ? 1 : window.devicePixelRatio;
+                scaleRatio = devicePixelRatio / 1;
 
-                canvas.width  = width * scaleRatio;
+                canvas.width = width * scaleRatio;
                 canvas.height = canvasHeight * scaleRatio;
 
                 canvas.style.width = width + 'px';
@@ -367,14 +367,14 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
                     // For each sub event, ...
                     event.periods.forEach(function(period) {
                         // Set the drawing style.
-                        ctx.fillStyle   = colors['default'];
+                        ctx.fillStyle = colors['default'];
                         ctx.strokeStyle = colors['default'];
 
                         if (colors[event.name]) {
-                            ctx.fillStyle   = colors[event.name];
+                            ctx.fillStyle = colors[event.name];
                             ctx.strokeStyle = colors[event.name];
                         } else if (colors[event.category]) {
-                            ctx.fillStyle   = colors[event.category];
+                            ctx.fillStyle = colors[event.category];
                             ctx.strokeStyle = colors[event.category];
                         }
 
@@ -464,7 +464,7 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
             {
                 \"use strict\";
 
-                width     = width || getContainerWidth();
+                width = width || getContainerWidth();
                 threshold = threshold || this.getThreshold();
 
                 var self = this;
@@ -515,7 +515,7 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
             \"requests\": [
 ";
         // line 402
-        echo $context["__internal_cfbb1d632e4edf0309b8bc3defd51f945224c5c4342b37519b46843530a897c6"]->getdump_request_data((isset($context["token"]) ? $context["token"] : $this->getContext($context, "token")), (isset($context["profile"]) ? $context["profile"] : $this->getContext($context, "profile")), $this->getAttribute((isset($context["collector"]) ? $context["collector"] : $this->getContext($context, "collector")), "events", array()), $this->getAttribute($this->getAttribute($this->getAttribute((isset($context["collector"]) ? $context["collector"] : $this->getContext($context, "collector")), "events", array()), "__section__", array()), "origin", array()));
+        echo $context["__internal_6ac18ea4a9c1bb1b204db0cb3319714c3b79ebbaccf9b2ba84b7f51cd7ba29ce"]->getdump_request_data((isset($context["token"]) ? $context["token"] : $this->getContext($context, "token")), (isset($context["profile"]) ? $context["profile"] : $this->getContext($context, "profile")), $this->getAttribute((isset($context["collector"]) ? $context["collector"] : $this->getContext($context, "collector")), "events", array()), $this->getAttribute($this->getAttribute($this->getAttribute((isset($context["collector"]) ? $context["collector"] : $this->getContext($context, "collector")), "events", array()), "__section__", array()), "origin", array()));
         echo "
 
 ";
@@ -542,7 +542,7 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
             }
             foreach ($context['_seq'] as $context["_key"] => $context["child"]) {
                 // line 407
-                echo $context["__internal_cfbb1d632e4edf0309b8bc3defd51f945224c5c4342b37519b46843530a897c6"]->getdump_request_data($this->getAttribute($context["child"], "token", array()), $context["child"], $this->getAttribute($this->getAttribute($context["child"], "getcollector", array(0 => "time"), "method"), "events", array()), $this->getAttribute($this->getAttribute($this->getAttribute((isset($context["collector"]) ? $context["collector"] : $this->getContext($context, "collector")), "events", array()), "__section__", array()), "origin", array()));
+                echo $context["__internal_6ac18ea4a9c1bb1b204db0cb3319714c3b79ebbaccf9b2ba84b7f51cd7ba29ce"]->getdump_request_data($this->getAttribute($context["child"], "token", array()), $context["child"], $this->getAttribute($this->getAttribute($context["child"], "getcollector", array(0 => "time"), "method"), "events", array()), $this->getAttribute($this->getAttribute($this->getAttribute((isset($context["collector"]) ? $context["collector"] : $this->getContext($context, "collector")), "events", array()), "__section__", array()), "origin", array()));
                 echo (($this->getAttribute($context["loop"], "last", array())) ? ("") : (","));
                 echo "
 ";
@@ -578,15 +578,15 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
         }
 
         // Bind event handlers
-        var elementTimelineControl  = query('#timeline-control'),
+        var elementTimelineControl = query('#timeline-control'),
             elementThresholdControl = query('input[name=\"threshold\"]');
 
-        window.onresize                 = canvasAutoUpdateOnResizeAndSubmit;
+        window.onresize = canvasAutoUpdateOnResizeAndSubmit;
         elementTimelineControl.onsubmit = canvasAutoUpdateOnResizeAndSubmit;
 
-        elementThresholdControl.onclick  = canvasAutoUpdateOnThresholdChange;
+        elementThresholdControl.onclick = canvasAutoUpdateOnThresholdChange;
         elementThresholdControl.onchange = canvasAutoUpdateOnThresholdChange;
-        elementThresholdControl.onkeyup  = canvasAutoUpdateOnThresholdChange;
+        elementThresholdControl.onkeyup = canvasAutoUpdateOnThresholdChange;
 
         window.setTimeout(function() {
             canvasAutoUpdateOnThresholdChange(null);
@@ -613,7 +613,7 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
         ob_start();
         try {
             // line 447
-            $context["__internal_bedf1c2923decb0292bb7451c5117ee7481429622ff3d481faae5a38db0deee5"] = $this;
+            $context["__internal_c39e0f30293d8c3241d6abbc5ffab2f1d303a0143fe976d1ce724ce65e5c0775"] = $this;
             // line 448
             echo "                {
                     \"id\": \"";
@@ -627,7 +627,7 @@ class __TwigTemplate_ce7e1565a64a8ecf41b0e4d135e4af67e2bceade22d845d45ce09d52fd3
                     \"events\": [
 ";
             // line 452
-            echo $context["__internal_bedf1c2923decb0292bb7451c5117ee7481429622ff3d481faae5a38db0deee5"]->getdump_events((isset($context["events"]) ? $context["events"] : $this->getContext($context, "events")));
+            echo $context["__internal_c39e0f30293d8c3241d6abbc5ffab2f1d303a0143fe976d1ce724ce65e5c0775"]->getdump_events((isset($context["events"]) ? $context["events"] : $this->getContext($context, "events")));
             echo "
                     ]
                 }

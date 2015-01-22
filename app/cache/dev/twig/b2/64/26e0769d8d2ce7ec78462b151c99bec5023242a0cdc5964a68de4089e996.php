@@ -299,13 +299,68 @@ class __TwigTemplate_b26426e0769d8d2ce7ec78462b151c99bec5023242a0cdc5964a68de408
     box-sizing: border-box;
     padding: 9px;
     line-height: 19px;
+
+    max-width: 480px;
+    max-height: 480px;
+    word-wrap: break-word;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+table.sf-toolbar-ajax-requests {
+    border-collapse: collapse;
+}
+.sf-toolbar-ajax-requests th, .sf-toolbar-ajax-requests td {
+    border-bottom: 1px solid #ddd;
+    padding: 0 4px;
+}
+.sf-toolbar-ajax-requests th {
+    background-color: #eee;
+}
+.sf-ajax-request-url {
+    max-width: 300px;
+    line-height: 9px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sf-ajax-request-duration {
+    text-align: right;
+}
+.sf-ajax-request-error {
+    color: #a33;
+}
+.sf-ajax-request-loading {
+    -webkit-animation: sf-blink .5s ease-in-out infinite;
+    -o-animation: sf-blink .5s ease-in-out infinite;
+    -moz-animation: sf-blink .5s ease-in-out infinite;
+    animation: sf-blink .5s ease-in-out infinite;
+}
+@-webkit-keyframes sf-blink {
+    0% { color: black; }
+    50% { color: #bbb; }
+    100% { color: black; }
+}
+@-moz-keyframes sf-blink {
+    0% { color: black; }
+    50% { color: #bbb; }
+    100% { color: black; }
+}
+@-o-keyframes sf-blink {
+    0% { color: black; }
+    50% { color: #bbb; }
+    100% { color: black; }
+}
+@keyframes sf-blink {
+    0% { color: black; }
+    50% { color: #bbb; }
+    100% { color: black; }
 }
 
 /***** Override the setting when the toolbar is on the top *****/
 ";
-        // line 287
+        // line 342
         if (((isset($context["position"]) ? $context["position"] : $this->getContext($context, "position")) == "top")) {
-            // line 288
+            // line 343
             echo "    .sf-minitoolbar {
         top: 0;
         bottom: auto;
@@ -347,12 +402,12 @@ class __TwigTemplate_b26426e0769d8d2ce7ec78462b151c99bec5023242a0cdc5964a68de408
     }
 ";
         }
-        // line 328
+        // line 383
         echo "
 ";
-        // line 329
+        // line 384
         if ((!(isset($context["floatable"]) ? $context["floatable"] : $this->getContext($context, "floatable")))) {
-            // line 330
+            // line 385
             echo "    .sf-toolbarreset {
         position: static;
         background: #cbcbcb;
@@ -364,7 +419,7 @@ class __TwigTemplate_b26426e0769d8d2ce7ec78462b151c99bec5023242a0cdc5964a68de408
     }
 ";
         }
-        // line 340
+        // line 395
         echo "
 /***** Media query *****/
 @media screen and (max-width: 779px) {
@@ -424,6 +479,6 @@ class __TwigTemplate_b26426e0769d8d2ce7ec78462b151c99bec5023242a0cdc5964a68de408
 
     public function getDebugInfo()
     {
-        return array (  368 => 340,  356 => 330,  354 => 329,  351 => 328,  309 => 288,  307 => 287,  19 => 1,);
+        return array (  423 => 395,  411 => 385,  409 => 384,  406 => 383,  364 => 343,  362 => 342,  19 => 1,);
     }
 }

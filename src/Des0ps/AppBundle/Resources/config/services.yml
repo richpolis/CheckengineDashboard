@@ -1,4 +1,0 @@
-services:
-    # keep your service names short
-    des0ps_app.slugger:
-        class: Des0ps\AppBundle\Utils\Slugger

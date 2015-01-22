@@ -16,7 +16,7 @@ class __TwigTemplate_00c7f490f3b00edb852aa784ac9dde93d57abefd1eefa5ecd3632a95bfd
     protected function doDisplay(array $context, array $blocks = array())
     {
         // line 1
-        echo "<!-- START of Symfony2 Web Debug Toolbar -->
+        echo "<!-- START of Symfony Web Debug Toolbar -->
 ";
         // line 2
         if (("normal" != (isset($context["position"]) ? $context["position"] : $this->getContext($context, "position")))) {
@@ -106,7 +106,7 @@ class __TwigTemplate_00c7f490f3b00edb852aa784ac9dde93d57abefd1eefa5ecd3632a95bfd
         }
         // line 47
         echo "</div>
-<!-- END of Symfony2 Web Debug Toolbar -->
+<!-- END of Symfony Web Debug Toolbar -->
 ";
     }
 

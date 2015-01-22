@@ -90,7 +90,7 @@ protected $metadataBag;
 public function __construct(array $options = array(), $handler = null, MetadataBag $metaBag = null)
 {
 session_cache_limiter(''); ini_set('session.use_cookies', 1);
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 session_register_shutdown();
 } else {
 register_shutdown_function('session_write_close');
@@ -108,10 +108,10 @@ public function start()
 if ($this->started && !$this->closed) {
 return true;
 }
-if (version_compare(phpversion(),'5.4.0','>=') && \PHP_SESSION_ACTIVE === session_status()) {
+if (PHP_VERSION_ID >= 50400 && \PHP_SESSION_ACTIVE === session_status()) {
 throw new \RuntimeException('Failed to start the session: already started by PHP.');
 }
-if (version_compare(phpversion(),'5.4.0','<') && isset($_SESSION) && session_id()) {
+if (PHP_VERSION_ID < 50400 && isset($_SESSION) && session_id()) {
 throw new \RuntimeException('Failed to start the session: already started by PHP ($_SESSION is set).');
 }
 if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
@@ -152,19 +152,7 @@ ini_set('session.cookie_lifetime', $lifetime);
 if ($destroy) {
 $this->metadataBag->stampNew();
 }
-$ret = session_regenerate_id($destroy);
-if ('files'=== $this->getSaveHandler()->getSaveHandlerName()) {
-session_write_close();
-if (isset($_SESSION)) {
-$backup = $_SESSION;
-session_start();
-$_SESSION = $backup;
-} else {
-session_start();
-}
-$this->loadSession();
-}
-return $ret;
+return session_regenerate_id($destroy);
 }
 public function save()
 {
@@ -235,12 +223,12 @@ throw new \InvalidArgumentException('Must be instance of AbstractProxy or Native
 if (!$saveHandler instanceof AbstractProxy && $saveHandler instanceof \SessionHandlerInterface) {
 $saveHandler = new SessionHandlerProxy($saveHandler);
 } elseif (!$saveHandler instanceof AbstractProxy) {
-$saveHandler = version_compare(phpversion(),'5.4.0','>=') ?
+$saveHandler = PHP_VERSION_ID >= 50400 ?
 new SessionHandlerProxy(new \SessionHandler()) : new NativeProxy();
 }
 $this->saveHandler = $saveHandler;
 if ($this->saveHandler instanceof \SessionHandlerInterface) {
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 session_set_save_handler($this->saveHandler, false);
 } else {
 session_set_save_handler(
@@ -303,7 +291,7 @@ $this->loadSession();
 }
 namespace Symfony\Component\HttpFoundation\Session\Storage\Handler
 {
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 class NativeSessionHandler extends \SessionHandler
 {
 }
@@ -358,14 +346,14 @@ return $this->wrapper;
 }
 public function isActive()
 {
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 return $this->active = \PHP_SESSION_ACTIVE === session_status();
 }
 return $this->active;
 }
 public function setActive($flag)
 {
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 throw new \LogicException('This method is disabled in PHP 5.4.0+');
 }
 $this->active = (bool) $flag;
@@ -579,10 +567,10 @@ return $this->getBag($this->flashName);
 namespace Symfony\Bundle\FrameworkBundle\Templating
 {
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 class GlobalVariables
 {
 protected $container;
@@ -598,10 +586,11 @@ return $this->container->get('security.context');
 }
 public function getUser()
 {
-if (!$security = $this->getSecurity()) {
+if (!$this->container->has('security.token_storage')) {
 return;
 }
-if (!$token = $security->getToken()) {
+$tokenStorage = $this->container->get('security.token_storage');
+if (!$token = $tokenStorage->getToken()) {
 return;
 }
 $user = $token->getUser();
@@ -979,7 +968,7 @@ $url = $schemeAuthority.$this->context->getBaseUrl().$url;
 }
 $extra = array_diff_key($parameters, $variables, $defaults);
 if ($extra && $query = http_build_query($extra,'','&')) {
-$url .='?'.$query;
+$url .='?'.strtr($query, array('%2F'=>'/'));
 }
 return $url;
 }
@@ -1042,6 +1031,7 @@ $this->setScheme($request->getScheme());
 $this->setHttpPort($request->isSecure() ? $this->httpPort : $request->getPort());
 $this->setHttpsPort($request->isSecure() ? $request->getPort() : $this->httpsPort);
 $this->setQueryString($request->server->get('QUERY_STRING',''));
+return $this;
 }
 public function getBaseUrl()
 {
@@ -1050,6 +1040,7 @@ return $this->baseUrl;
 public function setBaseUrl($baseUrl)
 {
 $this->baseUrl = $baseUrl;
+return $this;
 }
 public function getPathInfo()
 {
@@ -1058,6 +1049,7 @@ return $this->pathInfo;
 public function setPathInfo($pathInfo)
 {
 $this->pathInfo = $pathInfo;
+return $this;
 }
 public function getMethod()
 {
@@ -1066,6 +1058,7 @@ return $this->method;
 public function setMethod($method)
 {
 $this->method = strtoupper($method);
+return $this;
 }
 public function getHost()
 {
@@ -1074,6 +1067,7 @@ return $this->host;
 public function setHost($host)
 {
 $this->host = strtolower($host);
+return $this;
 }
 public function getScheme()
 {
@@ -1082,6 +1076,7 @@ return $this->scheme;
 public function setScheme($scheme)
 {
 $this->scheme = strtolower($scheme);
+return $this;
 }
 public function getHttpPort()
 {
@@ -1090,6 +1085,7 @@ return $this->httpPort;
 public function setHttpPort($httpPort)
 {
 $this->httpPort = (int) $httpPort;
+return $this;
 }
 public function getHttpsPort()
 {
@@ -1098,6 +1094,7 @@ return $this->httpsPort;
 public function setHttpsPort($httpsPort)
 {
 $this->httpsPort = (int) $httpsPort;
+return $this;
 }
 public function getQueryString()
 {
@@ -1106,6 +1103,7 @@ return $this->queryString;
 public function setQueryString($queryString)
 {
 $this->queryString = (string) $queryString;
+return $this;
 }
 public function getParameters()
 {
@@ -1127,6 +1125,7 @@ return array_key_exists($name, $this->parameters);
 public function setParameter($name, $parameter)
 {
 $this->parameters[$name] = $parameter;
+return $this;
 }
 }
 }
@@ -1171,6 +1170,8 @@ use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\Matcher\Dumper\MatcherDumperInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 class Router implements RouterInterface, RequestMatcherInterface
 {
 protected $matcher;
@@ -1181,6 +1182,7 @@ protected $collection;
 protected $resource;
 protected $options = array();
 protected $logger;
+private $expressionLanguageProviders = array();
 public function __construct(LoaderInterface $loader, $resource, array $options = array(), RequestContext $context = null, LoggerInterface $logger = null)
 {
 $this->loader = $loader;
@@ -1262,12 +1264,23 @@ if (null !== $this->matcher) {
 return $this->matcher;
 }
 if (null === $this->options['cache_dir'] || null === $this->options['matcher_cache_class']) {
-return $this->matcher = new $this->options['matcher_class']($this->getRouteCollection(), $this->context);
+$this->matcher = new $this->options['matcher_class']($this->getRouteCollection(), $this->context);
+if (method_exists($this->matcher,'addExpressionLanguageProvider')) {
+foreach ($this->expressionLanguageProviders as $provider) {
+$this->matcher->addExpressionLanguageProvider($provider);
+}
+}
+return $this->matcher;
 }
 $class = $this->options['matcher_cache_class'];
 $cache = new ConfigCache($this->options['cache_dir'].'/'.$class.'.php', $this->options['debug']);
 if (!$cache->isFresh()) {
 $dumper = $this->getMatcherDumperInstance();
+if (method_exists($dumper,'addExpressionLanguageProvider')) {
+foreach ($this->expressionLanguageProviders as $provider) {
+$dumper->addExpressionLanguageProvider($provider);
+}
+}
 $options = array('class'=> $class,'base_class'=> $this->options['matcher_base_class'],
 );
 $cache->write($dumper->dump($options), $this->getRouteCollection()->getResources());
@@ -1299,6 +1312,10 @@ $this->generator->setStrictRequirements($this->options['strict_requirements']);
 }
 return $this->generator;
 }
+public function addExpressionLanguageProvider(ExpressionFunctionProviderInterface $provider)
+{
+$this->expressionLanguageProviders[] = $provider;
+}
 protected function getGeneratorDumperInstance()
 {
 return new $this->options['generator_dumper_class']($this->getRouteCollection());
@@ -1325,6 +1342,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 {
 const REQUIREMENT_MATCH = 0;
@@ -1335,6 +1353,7 @@ protected $allow = array();
 protected $routes;
 protected $request;
 protected $expressionLanguage;
+protected $expressionLanguageProviders = array();
 public function __construct(RouteCollection $routes, RequestContext $context)
 {
 $this->routes = $routes;
@@ -1356,7 +1375,7 @@ return $ret;
 }
 throw 0 < count($this->allow)
 ? new MethodNotAllowedException(array_unique(array_map('strtoupper', $this->allow)))
-: new ResourceNotFoundException();
+: new ResourceNotFoundException(sprintf('No routes found for "%s".', $pathinfo));
 }
 public function matchRequest(Request $request)
 {
@@ -1364,6 +1383,10 @@ $this->request = $request;
 $ret = $this->match($request->getPathInfo());
 $this->request = null;
 return $ret;
+}
+public function addExpressionLanguageProvider(ExpressionFunctionProviderInterface $provider)
+{
+$this->expressionLanguageProviders[] = $provider;
 }
 protected function matchCollection($pathinfo, RouteCollection $routes)
 {
@@ -1427,7 +1450,7 @@ if (null === $this->expressionLanguage) {
 if (!class_exists('Symfony\Component\ExpressionLanguage\ExpressionLanguage')) {
 throw new \RuntimeException('Unable to use expressions as the Symfony ExpressionLanguage component is not installed.');
 }
-$this->expressionLanguage = new ExpressionLanguage();
+$this->expressionLanguage = new ExpressionLanguage(null, $this->expressionLanguageProviders);
 }
 return $this->expressionLanguage;
 }
@@ -1579,6 +1602,9 @@ $this->paths = (array) $paths;
 }
 public function locate($name, $currentPath = null, $first = true)
 {
+if (''== $name) {
+throw new \InvalidArgumentException('An empty file name is not valid to be located.');
+}
 if ($this->isAbsolutePath($name)) {
 if (!file_exists($name)) {
 throw new \InvalidArgumentException(sprintf('The file "%s" does not exist.', $name));
@@ -1607,8 +1633,8 @@ return array_values(array_unique($filepaths));
 }
 private function isAbsolutePath($file)
 {
-if ($file[0] =='/'|| $file[0] =='\\'|| (strlen($file) > 3 && ctype_alpha($file[0])
-&& $file[1] ==':'&& ($file[2] =='\\'|| $file[2] =='/')
+if ($file[0] ==='/'|| $file[0] ==='\\'|| (strlen($file) > 3 && ctype_alpha($file[0])
+&& $file[1] ===':'&& ($file[2] ==='\\'|| $file[2] ==='/')
 )
 || null !== parse_url($file, PHP_URL_SCHEME)
 ) {
@@ -1785,12 +1811,11 @@ $this->listenerIds[$eventName][] = array($callback[0], $callback[1], $priority);
 public function removeListener($eventName, $listener)
 {
 $this->lazyLoad($eventName);
-if (isset($this->listeners[$eventName])) {
-foreach ($this->listeners[$eventName] as $key => $l) {
+if (isset($this->listenerIds[$eventName])) {
 foreach ($this->listenerIds[$eventName] as $i => $args) {
 list($serviceId, $method, $priority) = $args;
-if ($key === $serviceId.'.'.$method) {
-if ($listener === array($l, $method)) {
+$key = $serviceId.'.'.$method;
+if (isset($this->listeners[$eventName][$key]) && $listener === array($this->listeners[$eventName][$key], $method)) {
 unset($this->listeners[$eventName][$key]);
 if (empty($this->listeners[$eventName])) {
 unset($this->listeners[$eventName]);
@@ -1798,8 +1823,6 @@ unset($this->listeners[$eventName]);
 unset($this->listenerIds[$eventName][$i]);
 if (empty($this->listenerIds[$eventName])) {
 unset($this->listenerIds[$eventName]);
-}
-}
 }
 }
 }
@@ -2039,7 +2062,7 @@ throw new \InvalidArgumentException(sprintf('Controller "%s" for URI "%s" is not
 }
 if (false === strpos($controller,':')) {
 if (method_exists($controller,'__invoke')) {
-return new $controller();
+return $this->instantiateController($controller);
 } elseif (function_exists($controller)) {
 return $controller;
 }
@@ -2095,7 +2118,11 @@ list($class, $method) = explode('::', $controller, 2);
 if (!class_exists($class)) {
 throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
 }
-return array(new $class(), $method);
+return array($this->instantiateController($class), $method);
+}
+protected function instantiateController($class)
+{
+return new $class();
 }
 }
 }
@@ -2304,7 +2331,7 @@ parent::__construct($paths);
 }
 public function locate($file, $currentPath = null, $first = true)
 {
-if ('@'=== $file[0]) {
+if (isset($file[0]) &&'@'=== $file[0]) {
 return $this->kernel->locateResource($file, $this->path, $first);
 }
 return parent::locate($file, $currentPath, $first);
@@ -2323,19 +2350,32 @@ $this->kernel = $kernel;
 }
 public function parse($controller)
 {
+$originalController = $controller;
 if (3 !== count($parts = explode(':', $controller))) {
 throw new \InvalidArgumentException(sprintf('The "%s" controller is not a valid "a:b:c" controller string.', $controller));
 }
 list($bundle, $controller, $action) = $parts;
 $controller = str_replace('/','\\', $controller);
 $bundles = array();
-foreach ($this->kernel->getBundle($bundle, false) as $b) {
+try {
+$allBundles = $this->kernel->getBundle($bundle, false);
+} catch (\InvalidArgumentException $e) {
+$message = sprintf('The "%s" (from the _controller value "%s") does not exist or is not enabled in your kernel!',
+$bundle,
+$originalController
+);
+if ($alternative = $this->findAlternative($bundle)) {
+$message .= sprintf(' Did you mean "%s:%s:%s"?', $alternative, $controller, $action);
+}
+throw new \InvalidArgumentException($message, 0, $e);
+}
+foreach ($allBundles as $b) {
 $try = $b->getNamespace().'\\Controller\\'.$controller.'Controller';
 if (class_exists($try)) {
 return $try.'::'.$action.'Action';
 }
 $bundles[] = $b->getName();
-$msg = sprintf('Unable to find controller "%s:%s" - class "%s" does not exist.', $bundle, $controller, $try);
+$msg = sprintf('The _controller value "%s:%s:%s" maps to a "%s" class, but this class was not found. Create this class or check the spelling of the class and its namespace.', $bundle, $controller, $action, $try);
 }
 if (count($bundles) > 1) {
 $msg = sprintf('Unable to find controller "%s:%s" in bundles %s.', $bundle, $controller, implode(', ', $bundles));
@@ -2357,6 +2397,24 @@ continue;
 return sprintf('%s:%s:%s', $name, $controllerName, $actionName);
 }
 throw new \InvalidArgumentException(sprintf('Unable to find a bundle that defines controller "%s".', $controller));
+}
+private function findAlternative($nonExistentBundleName)
+{
+$bundleNames = array_map(function ($b) {
+return $b->getName();
+}, $this->kernel->getBundles());
+$alternative = null;
+$shortest = null;
+foreach ($bundleNames as $bundleName) {
+if (false !== strpos($bundleName, $nonExistentBundleName)) {
+return $bundleName;
+}
+$lev = levenshtein($nonExistentBundleName, $bundleName);
+if ($lev <= strlen($nonExistentBundleName) / 3 && ($alternative === null || $lev < $shortest)) {
+$alternative = $bundleName;
+}
+}
+return $alternative;
 }
 }
 }
@@ -2385,6 +2443,8 @@ $controller = $this->parser->parse($controller);
 } elseif (1 == $count) {
 list($service, $method) = explode(':', $controller, 2);
 return array($this->container->get($service), $method);
+} elseif ($this->container->has($controller) && method_exists($service = $this->container->get($controller),'__invoke')) {
+return $service;
 } else {
 throw new \LogicException(sprintf('Unable to parse the controller name "%s".', $controller));
 }
@@ -2453,57 +2513,73 @@ KernelEvents::FINISH_REQUEST =>'onKernelFinishRequest',
 }
 }
 }
-namespace Symfony\Component\Security\Core
+namespace Symfony\Component\Security\Core\Authentication\Token\Storage
 {
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-interface SecurityContextInterface
+interface TokenStorageInterface
 {
-const ACCESS_DENIED_ERROR ='_security.403_error';
-const AUTHENTICATION_ERROR ='_security.last_error';
-const LAST_USERNAME ='_security.last_username';
 public function getToken();
 public function setToken(TokenInterface $token = null);
+}
+}
+namespace Symfony\Component\Security\Core\Authorization
+{
+interface AuthorizationCheckerInterface
+{
 public function isGranted($attributes, $object = null);
 }
 }
 namespace Symfony\Component\Security\Core
 {
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+interface SecurityContextInterface extends TokenStorageInterface, AuthorizationCheckerInterface
+{
+const ACCESS_DENIED_ERROR = Security::ACCESS_DENIED_ERROR;
+const AUTHENTICATION_ERROR = Security::AUTHENTICATION_ERROR;
+const LAST_USERNAME = Security::LAST_USERNAME;
+}
+}
+namespace Symfony\Component\Security\Core
+{
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class SecurityContext implements SecurityContextInterface
 {
-private $token;
-private $accessDecisionManager;
-private $authenticationManager;
-private $alwaysAuthenticate;
-public function __construct(AuthenticationManagerInterface $authenticationManager, AccessDecisionManagerInterface $accessDecisionManager, $alwaysAuthenticate = false)
+private $tokenStorage;
+private $authorizationChecker;
+public function __construct($tokenStorage, $authorizationChecker, $alwaysAuthenticate = false)
 {
-$this->authenticationManager = $authenticationManager;
-$this->accessDecisionManager = $accessDecisionManager;
-$this->alwaysAuthenticate = $alwaysAuthenticate;
+$oldSignature = $tokenStorage instanceof AuthenticationManagerInterface && $authorizationChecker instanceof AccessDecisionManagerInterface;
+$newSignature = $tokenStorage instanceof TokenStorageInterface && $authorizationChecker instanceof AuthorizationCheckerInterface;
+if (!$oldSignature && !$newSignature) {
+throw new \BadMethodCallException('Unable to construct SecurityContext, please provide the correct arguments');
 }
-final public function isGranted($attributes, $object = null)
-{
-if (null === $this->token) {
-throw new AuthenticationCredentialsNotFoundException('The security context contains no authentication token. One possible reason may be that there is no firewall configured for this URL.');
+if ($oldSignature) {
+$authenticationManager = $tokenStorage;
+$accessDecisionManager = $authorizationChecker;
+$tokenStorage = new TokenStorage();
+$authorizationChecker = new AuthorizationChecker($tokenStorage, $authenticationManager, $accessDecisionManager, $alwaysAuthenticate);
 }
-if ($this->alwaysAuthenticate || !$this->token->isAuthenticated()) {
-$this->token = $this->authenticationManager->authenticate($this->token);
-}
-if (!is_array($attributes)) {
-$attributes = array($attributes);
-}
-return $this->accessDecisionManager->decide($this->token, $attributes, $object);
+$this->tokenStorage = $tokenStorage;
+$this->authorizationChecker = $authorizationChecker;
 }
 public function getToken()
 {
-return $this->token;
+return $this->tokenStorage->getToken();
 }
 public function setToken(TokenInterface $token = null)
 {
-$this->token = $token;
+return $this->tokenStorage->setToken($token);
+}
+public function isGranted($attributes, $object = null)
+{
+return $this->authorizationChecker->isGranted($attributes, $object);
 }
 }
 }
@@ -2592,6 +2668,22 @@ $this->eventDispatcher->dispatch(AuthenticationEvents::AUTHENTICATION_FAILURE, n
 }
 $lastException->setToken($token);
 throw $lastException;
+}
+}
+}
+namespace Symfony\Component\Security\Core\Authentication\Token\Storage
+{
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+class TokenStorage implements TokenStorageInterface
+{
+private $token;
+public function getToken()
+{
+return $this->token;
+}
+public function setToken(TokenInterface $token = null)
+{
+$this->token = $token;
 }
 }
 }
@@ -2728,6 +2820,39 @@ return $this->allowIfAllAbstainDecisions;
 }
 }
 }
+namespace Symfony\Component\Security\Core\Authorization
+{
+use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+class AuthorizationChecker implements AuthorizationCheckerInterface
+{
+private $tokenStorage;
+private $accessDecisionManager;
+private $authenticationManager;
+private $alwaysAuthenticate;
+public function __construct(TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager, AccessDecisionManagerInterface $accessDecisionManager, $alwaysAuthenticate = false)
+{
+$this->tokenStorage = $tokenStorage;
+$this->authenticationManager = $authenticationManager;
+$this->accessDecisionManager = $accessDecisionManager;
+$this->alwaysAuthenticate = $alwaysAuthenticate;
+}
+final public function isGranted($attributes, $object = null)
+{
+if (null === ($token = $this->tokenStorage->getToken())) {
+throw new AuthenticationCredentialsNotFoundException('The token storage contains no authentication token. One possible reason may be that there is no firewall configured for this URL.');
+}
+if ($this->alwaysAuthenticate || !$token->isAuthenticated()) {
+$this->tokenStorage->setToken($token = $this->authenticationManager->authenticate($token));
+}
+if (!is_array($attributes)) {
+$attributes = array($attributes);
+}
+return $this->accessDecisionManager->decide($token, $attributes, $object);
+}
+}
+}
 namespace Symfony\Component\Security\Core\Authorization\Voter
 {
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -2808,15 +2933,21 @@ private $host;
 private $methods = array();
 private $ips = array();
 private $attributes = array();
-public function __construct($path = null, $host = null, $methods = null, $ips = null, array $attributes = array())
+private $schemes = array();
+public function __construct($path = null, $host = null, $methods = null, $ips = null, array $attributes = array(), $schemes = null)
 {
 $this->matchPath($path);
 $this->matchHost($host);
 $this->matchMethod($methods);
 $this->matchIps($ips);
+$this->matchScheme($schemes);
 foreach ($attributes as $k => $v) {
 $this->matchAttribute($k, $v);
 }
+}
+public function matchScheme($scheme)
+{
+$this->schemes = array_map('strtolower', (array) $scheme);
 }
 public function matchHost($regexp)
 {
@@ -2844,6 +2975,9 @@ $this->attributes[$key] = $regexp;
 }
 public function matches(Request $request)
 {
+if ($this->schemes && !in_array($request->getScheme(), $this->schemes)) {
+return false;
+}
 if ($this->methods && !in_array($request->getMethod(), $this->methods)) {
 return false;
 }
@@ -5985,6 +6119,643 @@ return parent::getFilter($name);
 }
 }
 }
+namespace Doctrine\Common\Lexer
+{
+abstract class AbstractLexer
+{
+private $tokens = array();
+private $position = 0;
+private $peek = 0;
+public $lookahead;
+public $token;
+public function setInput($input)
+{
+$this->tokens = array();
+$this->reset();
+$this->scan($input);
+}
+public function reset()
+{
+$this->lookahead = null;
+$this->token = null;
+$this->peek = 0;
+$this->position = 0;
+}
+public function resetPeek()
+{
+$this->peek = 0;
+}
+public function resetPosition($position = 0)
+{
+$this->position = $position;
+}
+public function isNextToken($token)
+{
+return null !== $this->lookahead && $this->lookahead['type'] === $token;
+}
+public function isNextTokenAny(array $tokens)
+{
+return null !== $this->lookahead && in_array($this->lookahead['type'], $tokens, true);
+}
+public function moveNext()
+{
+$this->peek = 0;
+$this->token = $this->lookahead;
+$this->lookahead = (isset($this->tokens[$this->position]))
+? $this->tokens[$this->position++] : null;
+return $this->lookahead !== null;
+}
+public function skipUntil($type)
+{
+while ($this->lookahead !== null && $this->lookahead['type'] !== $type) {
+$this->moveNext();
+}
+}
+public function isA($value, $token)
+{
+return $this->getType($value) === $token;
+}
+public function peek()
+{
+if (isset($this->tokens[$this->position + $this->peek])) {
+return $this->tokens[$this->position + $this->peek++];
+} else {
+return null;
+}
+}
+public function glimpse()
+{
+$peek = $this->peek();
+$this->peek = 0;
+return $peek;
+}
+protected function scan($input)
+{
+static $regex;
+if ( ! isset($regex)) {
+$regex ='/('. implode(')|(', $this->getCatchablePatterns()) .')|'. implode('|', $this->getNonCatchablePatterns()) .'/i';
+}
+$flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
+$matches = preg_split($regex, $input, -1, $flags);
+foreach ($matches as $match) {
+$type = $this->getType($match[0]);
+$this->tokens[] = array('value'=> $match[0],'type'=> $type,'position'=> $match[1],
+);
+}
+}
+public function getLiteral($token)
+{
+$className = get_class($this);
+$reflClass = new \ReflectionClass($className);
+$constants = $reflClass->getConstants();
+foreach ($constants as $name => $value) {
+if ($value === $token) {
+return $className .'::'. $name;
+}
+}
+return $token;
+}
+abstract protected function getCatchablePatterns();
+abstract protected function getNonCatchablePatterns();
+abstract protected function getType(&$value);
+}
+}
+namespace Doctrine\Common\Annotations
+{
+use Doctrine\Common\Lexer\AbstractLexer;
+final class DocLexer extends AbstractLexer
+{
+const T_NONE = 1;
+const T_INTEGER = 2;
+const T_STRING = 3;
+const T_FLOAT = 4;
+const T_IDENTIFIER = 100;
+const T_AT = 101;
+const T_CLOSE_CURLY_BRACES = 102;
+const T_CLOSE_PARENTHESIS = 103;
+const T_COMMA = 104;
+const T_EQUALS = 105;
+const T_FALSE = 106;
+const T_NAMESPACE_SEPARATOR = 107;
+const T_OPEN_CURLY_BRACES = 108;
+const T_OPEN_PARENTHESIS = 109;
+const T_TRUE = 110;
+const T_NULL = 111;
+const T_COLON = 112;
+protected $noCase = array('@'=> self::T_AT,','=> self::T_COMMA,'('=> self::T_OPEN_PARENTHESIS,')'=> self::T_CLOSE_PARENTHESIS,'{'=> self::T_OPEN_CURLY_BRACES,'}'=> self::T_CLOSE_CURLY_BRACES,'='=> self::T_EQUALS,':'=> self::T_COLON,'\\'=> self::T_NAMESPACE_SEPARATOR
+);
+protected $withCase = array('true'=> self::T_TRUE,'false'=> self::T_FALSE,'null'=> self::T_NULL
+);
+protected function getCatchablePatterns()
+{
+return array('[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*','(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?','"(?:[^"]|"")*"',
+);
+}
+protected function getNonCatchablePatterns()
+{
+return array('\s+','\*+','(.)');
+}
+protected function getType(&$value)
+{
+$type = self::T_NONE;
+if ($value[0] ==='"') {
+$value = str_replace('""','"', substr($value, 1, strlen($value) - 2));
+return self::T_STRING;
+}
+if (isset($this->noCase[$value])) {
+return $this->noCase[$value];
+}
+if ($value[0] ==='_'|| $value[0] ==='\\'|| ctype_alpha($value[0])) {
+return self::T_IDENTIFIER;
+}
+$lowerValue = strtolower($value);
+if (isset($this->withCase[$lowerValue])) {
+return $this->withCase[$lowerValue];
+}
+if (is_numeric($value)) {
+return (strpos($value,'.') !== false || stripos($value,'e') !== false)
+? self::T_FLOAT : self::T_INTEGER;
+}
+return $type;
+}
+}
+}
+namespace Doctrine\Common\Annotations
+{
+interface Reader
+{
+function getClassAnnotations(\ReflectionClass $class);
+function getClassAnnotation(\ReflectionClass $class, $annotationName);
+function getMethodAnnotations(\ReflectionMethod $method);
+function getMethodAnnotation(\ReflectionMethod $method, $annotationName);
+function getPropertyAnnotations(\ReflectionProperty $property);
+function getPropertyAnnotation(\ReflectionProperty $property, $annotationName);
+}
+}
+namespace Doctrine\Common\Annotations
+{
+class FileCacheReader implements Reader
+{
+private $reader;
+private $dir;
+private $debug;
+private $loadedAnnotations = array();
+private $classNameHashes = array();
+public function __construct(Reader $reader, $cacheDir, $debug = false)
+{
+$this->reader = $reader;
+if (!is_dir($cacheDir) && !@mkdir($cacheDir, 0777, true)) {
+throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist and could not be created.', $cacheDir));
+}
+$this->dir = rtrim($cacheDir,'\\/');
+$this->debug = $debug;
+}
+public function getClassAnnotations(\ReflectionClass $class)
+{
+if ( ! isset($this->classNameHashes[$class->name])) {
+$this->classNameHashes[$class->name] = sha1($class->name);
+}
+$key = $this->classNameHashes[$class->name];
+if (isset($this->loadedAnnotations[$key])) {
+return $this->loadedAnnotations[$key];
+}
+$path = $this->dir.'/'.strtr($key,'\\','-').'.cache.php';
+if (!is_file($path)) {
+$annot = $this->reader->getClassAnnotations($class);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+if ($this->debug
+&& (false !== $filename = $class->getFilename())
+&& filemtime($path) < filemtime($filename)) {
+@unlink($path);
+$annot = $this->reader->getClassAnnotations($class);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+return $this->loadedAnnotations[$key] = include $path;
+}
+public function getPropertyAnnotations(\ReflectionProperty $property)
+{
+$class = $property->getDeclaringClass();
+if ( ! isset($this->classNameHashes[$class->name])) {
+$this->classNameHashes[$class->name] = sha1($class->name);
+}
+$key = $this->classNameHashes[$class->name].'$'.$property->getName();
+if (isset($this->loadedAnnotations[$key])) {
+return $this->loadedAnnotations[$key];
+}
+$path = $this->dir.'/'.strtr($key,'\\','-').'.cache.php';
+if (!is_file($path)) {
+$annot = $this->reader->getPropertyAnnotations($property);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+if ($this->debug
+&& (false !== $filename = $class->getFilename())
+&& filemtime($path) < filemtime($filename)) {
+@unlink($path);
+$annot = $this->reader->getPropertyAnnotations($property);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+return $this->loadedAnnotations[$key] = include $path;
+}
+public function getMethodAnnotations(\ReflectionMethod $method)
+{
+$class = $method->getDeclaringClass();
+if ( ! isset($this->classNameHashes[$class->name])) {
+$this->classNameHashes[$class->name] = sha1($class->name);
+}
+$key = $this->classNameHashes[$class->name].'#'.$method->getName();
+if (isset($this->loadedAnnotations[$key])) {
+return $this->loadedAnnotations[$key];
+}
+$path = $this->dir.'/'.strtr($key,'\\','-').'.cache.php';
+if (!is_file($path)) {
+$annot = $this->reader->getMethodAnnotations($method);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+if ($this->debug
+&& (false !== $filename = $class->getFilename())
+&& filemtime($path) < filemtime($filename)) {
+@unlink($path);
+$annot = $this->reader->getMethodAnnotations($method);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+return $this->loadedAnnotations[$key] = include $path;
+}
+private function saveCacheFile($path, $data)
+{
+if (!is_writable($this->dir)) {
+throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable. Both, the webserver and the console user need access. You can manage access rights for multiple users with "chmod +a". If your system does not support this, check out the acl package.', $this->dir));
+}
+file_put_contents($path,'<?php return unserialize('.var_export(serialize($data), true).');');
+}
+public function getClassAnnotation(\ReflectionClass $class, $annotationName)
+{
+$annotations = $this->getClassAnnotations($class);
+foreach ($annotations as $annotation) {
+if ($annotation instanceof $annotationName) {
+return $annotation;
+}
+}
+return null;
+}
+public function getMethodAnnotation(\ReflectionMethod $method, $annotationName)
+{
+$annotations = $this->getMethodAnnotations($method);
+foreach ($annotations as $annotation) {
+if ($annotation instanceof $annotationName) {
+return $annotation;
+}
+}
+return null;
+}
+public function getPropertyAnnotation(\ReflectionProperty $property, $annotationName)
+{
+$annotations = $this->getPropertyAnnotations($property);
+foreach ($annotations as $annotation) {
+if ($annotation instanceof $annotationName) {
+return $annotation;
+}
+}
+return null;
+}
+public function clearLoadedAnnotations()
+{
+$this->loadedAnnotations = array();
+}
+}
+}
+namespace Doctrine\Common\Annotations
+{
+use SplFileObject;
+final class PhpParser
+{
+public function parseClass(\ReflectionClass $class)
+{
+if (method_exists($class,'getUseStatements')) {
+return $class->getUseStatements();
+}
+if (false === $filename = $class->getFilename()) {
+return array();
+}
+$content = $this->getFileContent($filename, $class->getStartLine());
+if (null === $content) {
+return array();
+}
+$namespace = preg_quote($class->getNamespaceName());
+$content = preg_replace('/^.*?(\bnamespace\s+'. $namespace .'\s*[;{].*)$/s','\\1', $content);
+$tokenizer = new TokenParser('<?php '. $content);
+$statements = $tokenizer->parseUseStatements($class->getNamespaceName());
+return $statements;
+}
+private function getFileContent($filename, $lineNumber)
+{
+if ( ! is_file($filename)) {
+return null;
+}
+$content ='';
+$lineCnt = 0;
+$file = new SplFileObject($filename);
+while (!$file->eof()) {
+if ($lineCnt++ == $lineNumber) {
+break;
+}
+$content .= $file->fgets();
+}
+return $content;
+}
+}
+}
+namespace Doctrine\Common
+{
+use Doctrine\Common\Lexer\AbstractLexer;
+abstract class Lexer extends AbstractLexer
+{
+}
+}
+namespace Doctrine\Common\Persistence
+{
+interface ConnectionRegistry
+{
+public function getDefaultConnectionName();
+public function getConnection($name = null);
+public function getConnections();
+public function getConnectionNames();
+}
+}
+namespace Doctrine\Common\Persistence
+{
+interface Proxy
+{
+const MARKER ='__CG__';
+const MARKER_LENGTH = 6;
+public function __load();
+public function __isInitialized();
+}
+}
+namespace Doctrine\Common\Util
+{
+use Doctrine\Common\Persistence\Proxy;
+class ClassUtils
+{
+public static function getRealClass($class)
+{
+if (false === $pos = strrpos($class,'\\'.Proxy::MARKER.'\\')) {
+return $class;
+}
+return substr($class, $pos + Proxy::MARKER_LENGTH + 2);
+}
+public static function getClass($object)
+{
+return self::getRealClass(get_class($object));
+}
+public static function getParentClass($className)
+{
+return get_parent_class( self::getRealClass( $className ) );
+}
+public static function newReflectionClass($class)
+{
+return new \ReflectionClass( self::getRealClass( $class ) );
+}
+public static function newReflectionObject($object)
+{
+return self::newReflectionClass( self::getClass( $object ) );
+}
+public static function generateProxyClassName($className, $proxyNamespace)
+{
+return rtrim($proxyNamespace,'\\') .'\\'.Proxy::MARKER.'\\'. ltrim($className,'\\');
+}
+}
+}
+namespace Doctrine\Common\Persistence
+{
+interface ManagerRegistry extends ConnectionRegistry
+{
+public function getDefaultManagerName();
+public function getManager($name = null);
+public function getManagers();
+public function resetManager($name = null);
+public function getAliasNamespace($alias);
+public function getManagerNames();
+public function getRepository($persistentObject, $persistentManagerName = null);
+public function getManagerForClass($class);
+}
+}
+namespace Symfony\Bridge\Doctrine
+{
+use Doctrine\Common\Persistence\ManagerRegistry as ManagerRegistryInterface;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
+interface RegistryInterface extends ManagerRegistryInterface
+{
+public function getDefaultEntityManagerName();
+public function getEntityManager($name = null);
+public function getEntityManagers();
+public function resetEntityManager($name = null);
+public function getEntityNamespace($alias);
+public function getEntityManagerNames();
+public function getEntityManagerForClass($class);
+}
+}
+namespace Doctrine\Common\Persistence
+{
+use Doctrine\Common\Persistence\ManagerRegistry;
+abstract class AbstractManagerRegistry implements ManagerRegistry
+{
+private $name;
+private $connections;
+private $managers;
+private $defaultConnection;
+private $defaultManager;
+private $proxyInterfaceName;
+public function __construct($name, array $connections, array $managers, $defaultConnection, $defaultManager, $proxyInterfaceName)
+{
+$this->name = $name;
+$this->connections = $connections;
+$this->managers = $managers;
+$this->defaultConnection = $defaultConnection;
+$this->defaultManager = $defaultManager;
+$this->proxyInterfaceName = $proxyInterfaceName;
+}
+abstract protected function getService($name);
+abstract protected function resetService($name);
+public function getName()
+{
+return $this->name;
+}
+public function getConnection($name = null)
+{
+if (null === $name) {
+$name = $this->defaultConnection;
+}
+if (!isset($this->connections[$name])) {
+throw new \InvalidArgumentException(sprintf('Doctrine %s Connection named "%s" does not exist.', $this->name, $name));
+}
+return $this->getService($this->connections[$name]);
+}
+public function getConnectionNames()
+{
+return $this->connections;
+}
+public function getConnections()
+{
+$connections = array();
+foreach ($this->connections as $name => $id) {
+$connections[$name] = $this->getService($id);
+}
+return $connections;
+}
+public function getDefaultConnectionName()
+{
+return $this->defaultConnection;
+}
+public function getDefaultManagerName()
+{
+return $this->defaultManager;
+}
+public function getManager($name = null)
+{
+if (null === $name) {
+$name = $this->defaultManager;
+}
+if (!isset($this->managers[$name])) {
+throw new \InvalidArgumentException(sprintf('Doctrine %s Manager named "%s" does not exist.', $this->name, $name));
+}
+return $this->getService($this->managers[$name]);
+}
+public function getManagerForClass($class)
+{
+if (strpos($class,':') !== false) {
+list($namespaceAlias, $simpleClassName) = explode(':', $class);
+$class = $this->getAliasNamespace($namespaceAlias) .'\\'. $simpleClassName;
+}
+$proxyClass = new \ReflectionClass($class);
+if ($proxyClass->implementsInterface($this->proxyInterfaceName)) {
+$class = $proxyClass->getParentClass()->getName();
+}
+foreach ($this->managers as $id) {
+$manager = $this->getService($id);
+if (!$manager->getMetadataFactory()->isTransient($class)) {
+return $manager;
+}
+}
+}
+public function getManagerNames()
+{
+return $this->managers;
+}
+public function getManagers()
+{
+$dms = array();
+foreach ($this->managers as $name => $id) {
+$dms[$name] = $this->getService($id);
+}
+return $dms;
+}
+public function getRepository($persistentObjectName, $persistentManagerName = null)
+{
+return $this->getManager($persistentManagerName)->getRepository($persistentObjectName);
+}
+public function resetManager($name = null)
+{
+if (null === $name) {
+$name = $this->defaultManager;
+}
+if (!isset($this->managers[$name])) {
+throw new \InvalidArgumentException(sprintf('Doctrine %s Manager named "%s" does not exist.', $this->name, $name));
+}
+$this->resetService($this->managers[$name]);
+}
+}
+}
+namespace Symfony\Bridge\Doctrine
+{
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Common\Persistence\AbstractManagerRegistry;
+abstract class ManagerRegistry extends AbstractManagerRegistry implements ContainerAwareInterface
+{
+protected $container;
+protected function getService($name)
+{
+return $this->container->get($name);
+}
+protected function resetService($name)
+{
+$this->container->set($name, null);
+}
+public function setContainer(ContainerInterface $container = null)
+{
+$this->container = $container;
+}
+}
+}
+namespace Doctrine\Bundle\DoctrineBundle
+{
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\EntityManager;
+class Registry extends ManagerRegistry implements RegistryInterface
+{
+public function __construct(ContainerInterface $container, array $connections, array $entityManagers, $defaultConnection, $defaultEntityManager)
+{
+$this->setContainer($container);
+parent::__construct('ORM', $connections, $entityManagers, $defaultConnection, $defaultEntityManager,'Doctrine\ORM\Proxy\Proxy');
+}
+public function getDefaultEntityManagerName()
+{
+trigger_error('getDefaultEntityManagerName is deprecated since Symfony 2.1. Use getDefaultManagerName instead', E_USER_DEPRECATED);
+return $this->getDefaultManagerName();
+}
+public function getEntityManager($name = null)
+{
+trigger_error('getEntityManager is deprecated since Symfony 2.1. Use getManager instead', E_USER_DEPRECATED);
+return $this->getManager($name);
+}
+public function getEntityManagers()
+{
+trigger_error('getEntityManagers is deprecated since Symfony 2.1. Use getManagers instead', E_USER_DEPRECATED);
+return $this->getManagers();
+}
+public function resetEntityManager($name = null)
+{
+trigger_error('resetEntityManager is deprecated since Symfony 2.1. Use resetManager instead', E_USER_DEPRECATED);
+$this->resetManager($name);
+}
+public function getEntityNamespace($alias)
+{
+trigger_error('getEntityNamespace is deprecated since Symfony 2.1. Use getAliasNamespace instead', E_USER_DEPRECATED);
+return $this->getAliasNamespace($alias);
+}
+public function getAliasNamespace($alias)
+{
+foreach (array_keys($this->getManagers()) as $name) {
+try {
+return $this->getManager($name)->getConfiguration()->getEntityNamespace($alias);
+} catch (ORMException $e) {
+}
+}
+throw ORMException::unknownEntityNamespace($alias);
+}
+public function getEntityManagerNames()
+{
+trigger_error('getEntityManagerNames is deprecated since Symfony 2.1. Use getManagerNames instead', E_USER_DEPRECATED);
+return $this->getManagerNames();
+}
+public function getEntityManagerForClass($class)
+{
+trigger_error('getEntityManagerForClass is deprecated since Symfony 2.1. Use getManagerForClass instead', E_USER_DEPRECATED);
+return $this->getManagerForClass($class);
+}
+}
+}
 namespace Sensio\Bundle\FrameworkExtraBundle\EventListener
 {
 use Doctrine\Common\Annotations\Reader;
@@ -6083,6 +6854,8 @@ $configurations[$configuration->getName()] = $configuration;
 }
 if (is_array($controller)) {
 $r = new \ReflectionMethod($controller[0], $controller[1]);
+} elseif (is_object($controller) && is_callable($controller,'__invoke')) {
+$r = new \ReflectionMethod($controller,'__invoke');
 } else {
 $r = new \ReflectionFunction($controller);
 }
@@ -6147,11 +6920,16 @@ $value = $request->attributes->get($param);
 if (!$value && $configuration->isOptional()) {
 return false;
 }
-$date = isset($options['format'])
-? DateTime::createFromFormat($options['format'], $value)
-: new DateTime($value);
+if (isset($options['format'])) {
+$date = DateTime::createFromFormat($options['format'], $value);
 if (!$date) {
 throw new NotFoundHttpException('Invalid date given.');
+}
+} else {
+if (false === strtotime($value)) {
+throw new NotFoundHttpException('Invalid date given.');
+}
+$date = new DateTime($value);
 }
 $request->attributes->set($param, $date);
 return true;
@@ -6519,7 +7297,7 @@ if (!$configuration = $request->attributes->get('_cache')) {
 return;
 }
 $response = $event->getResponse();
-if (!in_array($response->getStatusCode(), array(200, 203, 300, 301, 302, 404, 410))) {
+if (!in_array($response->getStatusCode(), array(200, 203, 300, 301, 302, 304, 404, 410))) {
 return;
 }
 if (null !== $age = $configuration->getSMaxAge()) {

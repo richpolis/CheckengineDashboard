@@ -1,6 +1,6 @@
 <?php
 
-/* @WebProfiler/Profiler/base_js.html.twig */
+/* WebProfilerBundle:Profiler:base_js.html.twig */
 class __TwigTemplate_dc87815b26d5a6efa0dea93385d78b5286572bd5ecf50fdb647fa4d04ba0380b extends Twig_Template
 {
     public function __construct(Twig_Environment $env)
@@ -83,8 +83,157 @@ class __TwigTemplate_dc87815b26d5a6efa0dea93385d78b5286572bd5ecf50fdb647fa4d04ba
                 }
 
                 localStorage.setItem(profilerStorageKey + name, value);
+            },
+
+            requestStack = [],
+
+            renderAjaxRequests = function() {
+                var requestCounter = document.getElementsByClassName('sf-toolbar-ajax-requests');
+                if (!requestCounter.length) {
+                    return;
+                }
+
+                var tbodies = document.getElementsByClassName('sf-toolbar-ajax-request-list');
+                var state = 'ok';
+                if (tbodies.length) {
+                    var tbody = tbodies[0];
+
+                    var rows = document.createDocumentFragment();
+
+                    if (requestStack.length) {
+                        for (var i = 0; i < requestStack.length; i++) {
+                            var request = requestStack[i];
+
+                            var row = document.createElement('tr');
+                            rows.appendChild(row);
+
+                            var methodCell = document.createElement('td');
+                            methodCell.textContent = request.method;
+                            row.appendChild(methodCell);
+
+                            var pathCell = document.createElement('td');
+                            pathCell.className = 'sf-ajax-request-url';
+                            pathCell.textContent = request.url;
+                            pathCell.setAttribute('title', request.url);
+                            row.appendChild(pathCell);
+
+                            var durationCell = document.createElement('td');
+                            durationCell.className = 'sf-ajax-request-duration';
+
+                            if (request.duration) {
+                                durationCell.textContent = request.duration + \"ms\";
+                            } else {
+                                durationCell.textContent = '-';
+                            }
+                            row.appendChild(durationCell);
+
+                            row.appendChild(document.createTextNode(' '));
+                            var profilerCell = document.createElement('td');
+
+                            if (request.profilerUrl) {
+                                var profilerLink = document.createElement('a');
+                                profilerLink.setAttribute('href', request.profilerUrl);
+                                profilerLink.textContent = request.profile;
+                                profilerCell.appendChild(profilerLink);
+                            } else {
+                                profilerCell.textContent = 'n/a';
+                            }
+
+                            row.appendChild(profilerCell);
+
+                            var requestState = 'ok';
+                            if (request.error) {
+                                requestState = 'error';
+                                if (state != \"loading\" && i > requestStack.length - 4) {
+                                    state = 'error';
+                                }
+                            } else if (request.loading) {
+                                requestState = 'loading';
+                                state = 'loading'
+                            }
+                            row.className = 'sf-ajax-request sf-ajax-request-' + requestState;
+                        }
+
+                        var infoSpan = document.getElementsByClassName(\"sf-toolbar-ajax-info\")[0];
+                        var children = Array.prototype.slice.call(tbody.children);
+                        for (var i = 0; i < children.length; i++) {
+                            tbody.removeChild(children[i]);
+                        }
+                        tbody.appendChild(rows);
+
+                        if (infoSpan) {
+                            var text = requestStack.length + ' calls';
+                            infoSpan.textContent = text;
+                        }
+                    } else {
+                        var cell = document.createElement('td');
+                        cell.setAttribute('colspan', '4');
+                        cell.textContent = \"No AJAX requests yet.\";
+                        var row = document.createElement('tr');
+                        row.appendChild(cell);
+                        tbody.appendChild(row);
+                    }
+                }
+
+                requestCounter[0].textContent = requestStack.length;
+
+                var className = 'sf-toolbar-ajax-requests sf-toolbar-status';
+                if (state == 'ok') {
+                    className += ' sf-toolbar-status-green';
+                } else if (state == 'error') {
+                    className += ' sf-toolbar-status-red';
+                } else {
+                    className += ' sf-ajax-request-loading';
+                }
+
+                requestCounter[0].className = className;
             };
 
+        ";
+        // line 174
+        if (array_key_exists("excluded_ajax_paths", $context)) {
+            // line 175
+            echo "            var proxied = XMLHttpRequest.prototype.open;
+
+            XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
+                var self = this;
+
+                /* prevent logging AJAX calls to static and inline files, like templates */
+                if (url.substr(0, 1) === '/' && !url.match(new RegExp(\"";
+            // line 181
+            echo twig_escape_filter($this->env, (isset($context["excluded_ajax_paths"]) ? $context["excluded_ajax_paths"] : $this->getContext($context, "excluded_ajax_paths")), "html", null, true);
+            echo "\"))) {
+                    var stackElement = {
+                        loading: true,
+                        error: false,
+                        url: url,
+                        method: method,
+                        start: new Date()
+                    };
+
+                    requestStack.push(stackElement);
+
+                    this.addEventListener(\"readystatechange\", function() {
+                        if (self.readyState == 4) {
+                            stackElement.duration = new Date() - stackElement.start;
+                            stackElement.loading = false;
+                            stackElement.error = self.status < 200 || self.status >= 400;
+                            stackElement.profile = self.getResponseHeader(\"X-Debug-Token\");
+                            stackElement.profilerUrl = self.getResponseHeader(\"X-Debug-Token-Link\");
+
+                            Sfjs.renderAjaxRequests();
+                        }
+                    }, false);
+
+                    Sfjs.renderAjaxRequests();
+                }
+
+                proxied.apply(this, Array.prototype.slice.call(arguments));
+            };
+        ";
+        }
+        // line 210
+        echo "
         return {
             hasClass: hasClass,
 
@@ -97,6 +246,8 @@ class __TwigTemplate_dc87815b26d5a6efa0dea93385d78b5286572bd5ecf50fdb647fa4d04ba
             setPreference: setPreference,
 
             request: request,
+
+            renderAjaxRequests: renderAjaxRequests,
 
             load: function(selector, url, onSuccess, onError, options) {
                 var el = document.getElementById(selector);
@@ -142,11 +293,16 @@ class __TwigTemplate_dc87815b26d5a6efa0dea93385d78b5286572bd5ecf50fdb647fa4d04ba
 
     public function getTemplateName()
     {
-        return "@WebProfiler/Profiler/base_js.html.twig";
+        return "WebProfilerBundle:Profiler:base_js.html.twig";
+    }
+
+    public function isTraitable()
+    {
+        return false;
     }
 
     public function getDebugInfo()
     {
-        return array (  19 => 1,);
+        return array (  236 => 210,  204 => 181,  196 => 175,  194 => 174,  19 => 1,);
     }
 }

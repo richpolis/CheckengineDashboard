@@ -29,7 +29,7 @@ class __TwigTemplate_30fcef949aa35a752881539c53ce30fd8869b5877db0dc5dc3cdc14610f
         <input type=\"text\" name=\"ip\" id=\"ip\" value=\"";
         // line 8
         echo twig_escape_filter($this->env, (isset($context["ip"]) ? $context["ip"] : $this->getContext($context, "ip")), "html", null, true);
-        echo "\">
+        echo "\" placeholder=\"e.g. 127.0.0.1\">
         <div class=\"clear-fix\"></div>
         <label for=\"method\">Method</label>
         <select name=\"method\" id=\"method\">
@@ -53,27 +53,33 @@ class __TwigTemplate_30fcef949aa35a752881539c53ce30fd8869b5877db0dc5dc3cdc14610f
         echo "        </select>
         <div class=\"clear-fix\"></div>
         <label for=\"url\">URL</label>
-        <input type=\"text\" name=\"url\" id=\"url\" value=\"";
+        <input type=\"url\" name=\"url\" id=\"url\" value=\"";
         // line 18
         echo twig_escape_filter($this->env, (isset($context["url"]) ? $context["url"] : $this->getContext($context, "url")), "html", null, true);
+        echo "\" placeholder=\"e.g. ";
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["request"]) ? $context["request"] : $this->getContext($context, "request")), "baseUrl", array()), "html", null, true);
         echo "\">
         <div class=\"clear-fix\"></div>
         <label for=\"token\">Token</label>
         <input type=\"text\" name=\"token\" id=\"token\" value=\"";
         // line 21
         echo twig_escape_filter($this->env, (isset($context["token"]) ? $context["token"] : $this->getContext($context, "token")), "html", null, true);
-        echo "\">
+        echo "\" placeholder=\"e.g. 1f321b\">
         <div class=\"clear-fix\"></div>
         <label for=\"start\">From</label>
-        <input type=\"text\" name=\"start\" id=\"start\" value=\"";
+        <input type=\"date\" name=\"start\" id=\"start\" value=\"";
         // line 24
         echo twig_escape_filter($this->env, (isset($context["start"]) ? $context["start"] : $this->getContext($context, "start")), "html", null, true);
+        echo "\" placeholder=\"e.g. ";
+        echo twig_escape_filter($this->env, twig_date_format_filter($this->env, "-2days", "dd.mm.YYYY"), "html", null, true);
         echo "\">
         <div class=\"clear-fix\"></div>
         <label for=\"end\">Until</label>
-        <input type=\"text\" name=\"end\" id=\"end\" value=\"";
+        <input type=\"date\" name=\"end\" id=\"end\" value=\"";
         // line 27
         echo twig_escape_filter($this->env, (isset($context["end"]) ? $context["end"] : $this->getContext($context, "end")), "html", null, true);
+        echo "\" placeholder=\"e.g. ";
+        echo twig_escape_filter($this->env, twig_date_format_filter($this->env, "now", "dd.mm.YYYY"), "html", null, true);
         echo "\">
         <div class=\"clear-fix\"></div>
         <label for=\"limit\">Limit</label>
@@ -122,6 +128,6 @@ class __TwigTemplate_30fcef949aa35a752881539c53ce30fd8869b5877db0dc5dc3cdc14610f
 
     public function getDebugInfo()
     {
-        return array (  98 => 34,  87 => 32,  83 => 31,  76 => 27,  70 => 24,  64 => 21,  58 => 18,  53 => 15,  42 => 13,  38 => 12,  31 => 8,  26 => 6,  19 => 1,);
+        return array (  104 => 34,  93 => 32,  89 => 31,  80 => 27,  72 => 24,  66 => 21,  58 => 18,  53 => 15,  42 => 13,  38 => 12,  31 => 8,  26 => 6,  19 => 1,);
     }
 }

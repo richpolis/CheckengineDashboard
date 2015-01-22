@@ -2,7 +2,7 @@
 
 // ::layout.html.twig
 return array (
-  9645991 => 
+  6150523 => 
   array (
     0 => 
     array (
@@ -12,11 +12,12 @@ return array (
     1 => 
     array (
       0 => 'cssrewrite',
+      1 => '?uglifycss',
     ),
     2 => 
     array (
       'output' => '_controller/css/compiled/all.css',
-      'name' => '9645991',
+      'name' => '6150523',
       'debug' => NULL,
       'combine' => NULL,
       'vars' => 
@@ -24,7 +25,7 @@ return array (
       ),
     ),
   ),
-  '23042c6' => 
+  'add9f7f' => 
   array (
     0 => 
     array (
@@ -35,11 +36,12 @@ return array (
     ),
     1 => 
     array (
+      0 => '?uglifyjs',
     ),
     2 => 
     array (
       'output' => '_controller/js/compiled/all.js',
-      'name' => '23042c6',
+      'name' => 'add9f7f',
       'debug' => NULL,
       'combine' => NULL,
       'vars' => 

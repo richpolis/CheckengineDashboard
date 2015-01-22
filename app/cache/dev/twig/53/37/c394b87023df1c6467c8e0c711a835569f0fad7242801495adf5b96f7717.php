@@ -1,6 +1,6 @@
 <?php
 
-/* @WebProfiler/Profiler/toolbar_js.html.twig */
+/* WebProfilerBundle:Profiler:toolbar_js.html.twig */
 class __TwigTemplate_5337c394b87023df1c6467c8e0c711a835569f0fad7242801495adf5b96f7717 extends Twig_Template
 {
     public function __construct(Twig_Environment $env)
@@ -83,11 +83,13 @@ class __TwigTemplate_5337c394b87023df1c6467c8e0c711a835569f0fad7242801495adf5b96
         echo twig_escape_filter($this->env, (isset($context["token"]) ? $context["token"] : $this->getContext($context, "token")), "html", null, true);
         echo "').style.display = 'none';
                 }
+
+                Sfjs.renderAjaxRequests();
             },
             function(xhr) {
                 if (xhr.status !== 0) {
                     confirm('An error occurred while loading the web debug toolbar (' + xhr.status + ': ' + xhr.statusText + ').\\n\\nDo you want to open the profiler?') && (window.location = '";
-        // line 35
+        // line 37
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("_profiler", array("token" => (isset($context["token"]) ? $context["token"] : $this->getContext($context, "token")))), "html", null, true);
         echo "');
                 }
@@ -101,7 +103,7 @@ class __TwigTemplate_5337c394b87023df1c6467c8e0c711a835569f0fad7242801495adf5b96
 
     public function getTemplateName()
     {
-        return "@WebProfiler/Profiler/toolbar_js.html.twig";
+        return "WebProfilerBundle:Profiler:toolbar_js.html.twig";
     }
 
     public function isTraitable()
@@ -111,6 +113,6 @@ class __TwigTemplate_5337c394b87023df1c6467c8e0c711a835569f0fad7242801495adf5b96
 
     public function getDebugInfo()
     {
-        return array (  91 => 35,  83 => 30,  79 => 29,  75 => 28,  70 => 26,  66 => 25,  62 => 24,  50 => 15,  46 => 14,  42 => 12,  32 => 6,  30 => 5,  26 => 3,  24 => 2,  19 => 1,);
+        return array (  93 => 37,  83 => 30,  79 => 29,  75 => 28,  70 => 26,  66 => 25,  62 => 24,  50 => 15,  46 => 14,  42 => 12,  32 => 6,  30 => 5,  26 => 3,  24 => 2,  19 => 1,);
     }
 }

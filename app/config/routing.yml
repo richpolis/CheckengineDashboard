@@ -1,4 +1,14 @@
-des0ps_app:
-    resource: "@Des0psAppBundle/Resources/config/routing.yml"
+dashboard:
+    resource: "@DashboardBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+backend:
+    resource: "@BackendBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Resources/config/routing.yml"
     prefix:   /
 

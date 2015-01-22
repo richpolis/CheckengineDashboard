@@ -46,7 +46,7 @@ class __TwigTemplate_18689eeb3d232d64f82993d07a0127f1f5d42b67a7266ac3fe4367df09a
         // line 10
         echo "
         <h1>Global Secret</h1>
-        <p>Configure the global secret for your website:</p>
+        <p>Configure the global secret for your website (the secret is used for the CSRF protection among other things):</p>
 
         <div class=\"symfony-form-errors\">
             ";

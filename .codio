@@ -3,7 +3,8 @@
      "Configure Projet": "bash symfonyconfig.sh"
     },
     "preview": {
-        "Symfony Config": "http://{{domain}}:3000/config.php",
-        "Symfony Config SSL": "https://{{domain}}:9500/config.php"
+        "Symfony Preview Dev": "http://{{domain}}:3000/app_dev.php",
+        "Symfony Preview Prod": "https://{{domain}}:3000/",
+        "Symfony Preview SSL": "https://{{domain}}:9500/"
     }
 }
