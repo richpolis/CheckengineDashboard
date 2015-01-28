@@ -3,12 +3,14 @@
 namespace Checkengine\DashboardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Favorito
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Entity\FavoritoRepository")
+ * @ORM\Table(name="favoritos")
+ * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\FavoritoRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Favorito
 {
@@ -22,19 +24,66 @@ class Favorito
     private $id;
 
     /**
-     * @var integer
+     * @var \Checkengine\DashboardBundle\Entity\Usuario
      *
-     * @ORM\Column(name="usuario", type="integer")
+     * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * })
      */
     private $usuario;
 
     /**
-     * @var integer
+     * @var \Checkengine\DashboardBundle\Entity\Empresa
      *
-     * @ORM\Column(name="cliente", type="integer")
+     * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\Empresa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="empresa_id", referencedColumnName="id")
+     * })
      */
-    private $cliente;
+    private $empresa;
 
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     */
+    private $updatedAt;
+	
+	/*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
 
     /**
      * Get id
@@ -46,49 +95,5 @@ class Favorito
         return $this->id;
     }
 
-    /**
-     * Set usuario
-     *
-     * @param integer $usuario
-     * @return Favorito
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return integer 
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * Set cliente
-     *
-     * @param integer $cliente
-     * @return Favorito
-     */
-    public function setCliente($cliente)
-    {
-        $this->cliente = $cliente;
-
-        return $this;
-    }
-
-    /**
-     * Get cliente
-     *
-     * @return integer 
-     */
-    public function getCliente()
-    {
-        return $this->cliente;
-    }
+    
 }

@@ -3,12 +3,14 @@
 namespace Checkengine\DashboardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Empresa
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Entity\EmpresaRepository")
+ * @ORM\Table(name="empresas")
+ * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\EmpresaRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Empresa
 {
@@ -25,13 +27,32 @@ class Empresa
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank(message="Ingresa el nombre de la empresa o razon social")
      */
     private $nombre;
+	
+	
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sucursal", type="string", length=255)
+     */
+    private $sucursal;
+	
+	/**
+     * @var \Checkengine\DashboardBundle\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * })
+     */
+    private $usuario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="string", length=255)
+     * @ORM\Column(name="direccion", type="text")
      */
     private $direccion;
 
@@ -57,18 +78,18 @@ class Empresa
     private $comuna;
 
     /**
-     * @var integer
+     * @var Tipos en que la empresa puede estar ligada
      *
-     * @ORM\Column(name="tipo", type="integer")
+     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Tipo")
      */
-    private $tipo;
+    private $tipos;
 
     /**
-     * @var integer
+     * @var Especialidades de empresa
      *
-     * @ORM\Column(name="especialidad", type="integer")
+     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Especialidad")
      */
-    private $especialidad;
+    private $especialidades;
 
     /**
      * @var string
@@ -99,27 +120,246 @@ class Empresa
     private $ubicacionLatitutd;
 
     /**
-     * @var integer
+     * @var Comentarios de la empresa
      *
-     * @ORM\Column(name="comentarios", type="integer")
+     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Comentario")
      */
     private $comentarios;
 
     /**
-     * @var integer
+     * @var Servicios de la empresa
      *
-     * @ORM\Column(name="servicios", type="integer")
+     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Servicio")
      */
     private $servicios;
 
-    /**
-     * @var string
+	/**
+     * @var boolean
      *
-     * @ORM\Column(name="sucursal", type="string", length=255)
+     * @ORM\Column(name="is_active", type="boolean")
      */
-    private $sucursal;
+    private $isActive;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     */
+    private $updatedAt;
+	
+    /*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
 
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+    
+    /*** uploads ***/
+    
+    /**
+     * @Assert\File(maxSize="2M",maxSizeMessage="El archivo es demasiado grande. El tamaño máximo permitido es {{ limit }}")
+     */
+    public $file;
+    
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+        // check if we have an old image path
+        if (isset($this->imagen)) {
+            // store the old name to delete after the update
+            $this->temp = $this->imagen;
+            $this->imagen = null;
+        } else {
+            $this->imagen = 'initial';
+        }
+    }
+    
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+    
+    /**
+    * @ORM\PrePersist
+    * @ORM\PreUpdate
+    */
+    public function preUpload()
+    {
+      if (null !== $this->getFile()) {
+            // do whatever you want to generate a unique name
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->imagen = $filename.'.'.$this->getFile()->guessExtension();
+        }
+    }
 
+    /**
+    * @ORM\PostPersist
+    * @ORM\PostUpdate
+    */
+    public function upload()
+    {
+      if (null === $this->getFile()) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->getFile()->move($this->getUploadRootDir(), $this->imagen);
+
+        // check if we have an old image
+        if (isset($this->temp)) {
+            // delete the old image
+            if(file_exists($this->getUploadRootDir().'/'.$this->temp)){
+                unlink($this->getUploadRootDir().'/'.$this->temp);
+            }
+            // clear the temp image path
+            $this->temp = null;
+        }
+        
+        $this->crearThumbnail();
+        
+        $this->file = null;
+    }
+    
+    /*
+     * Crea el thumbnail y lo guarda en un carpeta dentro del webPath thumbnails
+     * 
+     * @return void
+     */
+    public function crearThumbnail($width=100,$height=100,$path=""){
+        $imagine    = new \Imagine\Gd\Imagine();
+        $collage    = $imagine->create(new \Imagine\Image\Box(100, 100));
+        $mode       = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
+        $image      = $imagine->open($this->getAbsolutePath());
+        $sizeImage  = $image->getSize();
+        if(strlen($path)==0){
+            $path = $this->getAbosluteThumbnailPath();
+        }
+        if($height == null){
+            $height = $sizeImage->getHeight();
+            if($height>100){
+                $height = 100;
+            }
+        }
+        if($width == null){
+            $width = $sizeImage->getWidth();
+            if($width>100){
+                $width = 100;
+            }
+        }
+        $size   =new \Imagine\Image\Box($width,$height);
+        $image->thumbnail($size,$mode)->save($path);
+        $image  = $imagine->open($path);
+        $size = $image->getSize();
+        if((100 - $size->getWidth())>1){
+            $width = ceil((100 - $size->getWidth())/2);
+        }else{
+            $width = 0;
+        }
+        if((100 - $size->getHeight())>1){
+            $height = ceil((100 - $size->getHeight())/2);
+        }else{
+            $height =0;
+        }    
+        $centrado = new \Imagine\Image\Point($width, $height);
+        $collage->paste($image,$centrado);
+        $collage->save($path);        
+    }
+
+    /**
+    * @ORM\PostRemove
+    */
+    public function removeUpload()
+    {
+      if ($file = $this->getAbsolutePath()) {
+        if(file_exists($file)){
+            unlink($file);
+        }
+      }
+      if($thumbnail=$this->getAbosluteThumbnailPath()){
+         if(file_exists($thumbnail)){
+            unlink($thumbnail);
+        }
+      }
+    }
+    
+    protected function getUploadDir()
+    {
+        return '/uploads/empresas';
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web'.$this->getUploadDir();
+    }
+    
+    public function getWebPath()
+    {
+        return null === $this->imagen ? null : $this->getUploadDir().'/'.$this->imagen;
+    }
+    
+    public function getThumbnailWebPath()
+    {
+        if(!file_exists($this->getAbosluteThumbnailPath())){
+            if(file_exists($this->getAbsolutePath())){
+                $this->crearThumbnail();
+            }
+        }
+        return null === $this->imagen ? null : $this->getUploadDir().'/thumbnails/'.$this->imagen;
+        
+    }
+    
+    public function getAbsolutePath()
+    {
+        return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
+    }
+    
+    public function getAbosluteThumbnailPath(){
+        return null === $this->imagen ? null : $this->getUploadRootDir().'/thumbnails/'.$this->imagen;
+    }
+	
+ 	public function getNombreCompleto(){
+		return sprintf("%s %s",$this->nombre,$this->apellidos);
+ 	}
+	
     /**
      * Get id
      *
@@ -128,327 +368,5 @@ class Empresa
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set nombre
-     *
-     * @param string $nombre
-     * @return Empresa
-     */
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    /**
-     * Get nombre
-     *
-     * @return string 
-     */
-    public function getNombre()
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * Set direccion
-     *
-     * @param string $direccion
-     * @return Empresa
-     */
-    public function setDireccion($direccion)
-    {
-        $this->direccion = $direccion;
-
-        return $this;
-    }
-
-    /**
-     * Get direccion
-     *
-     * @return string 
-     */
-    public function getDireccion()
-    {
-        return $this->direccion;
-    }
-
-    /**
-     * Set rut
-     *
-     * @param string $rut
-     * @return Empresa
-     */
-    public function setRut($rut)
-    {
-        $this->rut = $rut;
-
-        return $this;
-    }
-
-    /**
-     * Get rut
-     *
-     * @return string 
-     */
-    public function getRut()
-    {
-        return $this->rut;
-    }
-
-    /**
-     * Set region
-     *
-     * @param integer $region
-     * @return Empresa
-     */
-    public function setRegion($region)
-    {
-        $this->region = $region;
-
-        return $this;
-    }
-
-    /**
-     * Get region
-     *
-     * @return integer 
-     */
-    public function getRegion()
-    {
-        return $this->region;
-    }
-
-    /**
-     * Set comuna
-     *
-     * @param integer $comuna
-     * @return Empresa
-     */
-    public function setComuna($comuna)
-    {
-        $this->comuna = $comuna;
-
-        return $this;
-    }
-
-    /**
-     * Get comuna
-     *
-     * @return integer 
-     */
-    public function getComuna()
-    {
-        return $this->comuna;
-    }
-
-    /**
-     * Set tipo
-     *
-     * @param integer $tipo
-     * @return Empresa
-     */
-    public function setTipo($tipo)
-    {
-        $this->tipo = $tipo;
-
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return integer 
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-
-    /**
-     * Set especialidad
-     *
-     * @param integer $especialidad
-     * @return Empresa
-     */
-    public function setEspecialidad($especialidad)
-    {
-        $this->especialidad = $especialidad;
-
-        return $this;
-    }
-
-    /**
-     * Get especialidad
-     *
-     * @return integer 
-     */
-    public function getEspecialidad()
-    {
-        return $this->especialidad;
-    }
-
-    /**
-     * Set horarios
-     *
-     * @param string $horarios
-     * @return Empresa
-     */
-    public function setHorarios($horarios)
-    {
-        $this->horarios = $horarios;
-
-        return $this;
-    }
-
-    /**
-     * Get horarios
-     *
-     * @return string 
-     */
-    public function getHorarios()
-    {
-        return $this->horarios;
-    }
-
-    /**
-     * Set imagen
-     *
-     * @param string $imagen
-     * @return Empresa
-     */
-    public function setImagen($imagen)
-    {
-        $this->imagen = $imagen;
-
-        return $this;
-    }
-
-    /**
-     * Get imagen
-     *
-     * @return string 
-     */
-    public function getImagen()
-    {
-        return $this->imagen;
-    }
-
-    /**
-     * Set ubicacionLongitud
-     *
-     * @param string $ubicacionLongitud
-     * @return Empresa
-     */
-    public function setUbicacionLongitud($ubicacionLongitud)
-    {
-        $this->ubicacionLongitud = $ubicacionLongitud;
-
-        return $this;
-    }
-
-    /**
-     * Get ubicacionLongitud
-     *
-     * @return string 
-     */
-    public function getUbicacionLongitud()
-    {
-        return $this->ubicacionLongitud;
-    }
-
-    /**
-     * Set ubicacionLatitutd
-     *
-     * @param string $ubicacionLatitutd
-     * @return Empresa
-     */
-    public function setUbicacionLatitutd($ubicacionLatitutd)
-    {
-        $this->ubicacionLatitutd = $ubicacionLatitutd;
-
-        return $this;
-    }
-
-    /**
-     * Get ubicacionLatitutd
-     *
-     * @return string 
-     */
-    public function getUbicacionLatitutd()
-    {
-        return $this->ubicacionLatitutd;
-    }
-
-    /**
-     * Set comentarios
-     *
-     * @param integer $comentarios
-     * @return Empresa
-     */
-    public function setComentarios($comentarios)
-    {
-        $this->comentarios = $comentarios;
-
-        return $this;
-    }
-
-    /**
-     * Get comentarios
-     *
-     * @return integer 
-     */
-    public function getComentarios()
-    {
-        return $this->comentarios;
-    }
-
-    /**
-     * Set servicios
-     *
-     * @param integer $servicios
-     * @return Empresa
-     */
-    public function setServicios($servicios)
-    {
-        $this->servicios = $servicios;
-
-        return $this;
-    }
-
-    /**
-     * Get servicios
-     *
-     * @return integer 
-     */
-    public function getServicios()
-    {
-        return $this->servicios;
-    }
-
-    /**
-     * Set sucursal
-     *
-     * @param string $sucursal
-     * @return Empresa
-     */
-    public function setSucursal($sucursal)
-    {
-        $this->sucursal = $sucursal;
-
-        return $this;
-    }
-
-    /**
-     * Get sucursal
-     *
-     * @return string 
-     */
-    public function getSucursal()
-    {
-        return $this->sucursal;
     }
 }

@@ -3,12 +3,14 @@
 namespace Checkengine\DashboardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Comentario
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Entity\ComentarioRepository")
+ * @ORM\Table(name="comentarios")
+ * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\ComentarioRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comentario
 {
@@ -22,16 +24,20 @@ class Comentario
     private $id;
 
     /**
-     * @var integer
+     * @var \Checkengine\DashboardBundle\Entity\Usuario
      *
-     * @ORM\Column(name="usuario", type="integer")
+     * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * })
      */
     private $usuario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="comentario", type="string", length=255)
+     * @ORM\Column(name="comentario", type="text")
+     * @Assert\NotBlank(message="Ingresa tu comentario")
      */
     private $comentario;
 
@@ -41,7 +47,48 @@ class Comentario
      * @ORM\Column(name="calificacion", type="integer")
      */
     private $calificacion;
+	
+	
+	/**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     */
+    private $updatedAt;
+	
+	/*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
 
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
 
     /**
      * Get id
@@ -53,72 +100,5 @@ class Comentario
         return $this->id;
     }
 
-    /**
-     * Set usuario
-     *
-     * @param integer $usuario
-     * @return Comentario
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return integer 
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * Set comentario
-     *
-     * @param string $comentario
-     * @return Comentario
-     */
-    public function setComentario($comentario)
-    {
-        $this->comentario = $comentario;
-
-        return $this;
-    }
-
-    /**
-     * Get comentario
-     *
-     * @return string 
-     */
-    public function getComentario()
-    {
-        return $this->comentario;
-    }
-
-    /**
-     * Set calificacion
-     *
-     * @param integer $calificacion
-     * @return Comentario
-     */
-    public function setCalificacion($calificacion)
-    {
-        $this->calificacion = $calificacion;
-
-        return $this;
-    }
-
-    /**
-     * Get calificacion
-     *
-     * @return integer 
-     */
-    public function getCalificacion()
-    {
-        return $this->calificacion;
-    }
+    
 }

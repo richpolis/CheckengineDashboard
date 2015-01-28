@@ -3,12 +3,14 @@
 namespace Checkengine\DashboardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Pregunta
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Entity\PreguntaRepository")
+ * @ORM\Table(name="preguntas")
+ * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\PreguntaRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Pregunta
 {
@@ -25,6 +27,7 @@ class Pregunta
      * @var string
      *
      * @ORM\Column(name="pregunta", type="string", length=255)
+     * @Assert\NotBlank(message="Ingresa una pregunta")
      */
     private $pregunta;
 
@@ -41,6 +44,47 @@ class Pregunta
      * @ORM\Column(name="orden", type="integer")
      */
     private $orden;
+	
+	/**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     */
+    private $updatedAt;
+	
+	/*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
 
 
     /**

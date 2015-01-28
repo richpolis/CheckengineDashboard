@@ -1,10 +1,20 @@
 {
     "commands": {
-     "Configure Projet": "bash symfonyconfig.sh"
+     	"Start servers": "parts start apache2 mysql",
+        "Restart servers": "parts restart apache2 mysql",
+        "Stop servers": "parts stop apache2 mysql",
+        "Dev Cache clear": "php -c /home/codio/.parts/etc/php5 app/console cache:clear",
+        "Dev Assets": "php -c /home/codio/.parts/etc/php5 app/console assets:install web --env=dev --symlink && php -c /home/codio/.parts/etc/php5 app/console assetic:dump --env=dev && php -c /home/codio/.parts/etc/php5 app/console bazinga:js-translation:dump web/js/",
+        "Load Fixtures": "php -c /home/codio/.parts/etc/php5 app/console doctrine:fixtures:load",
+        "Drop & Create DB": "php -c /home/codio/.parts/etc/php5 app/console doctrine:database:drop --force && php -c /home/codio/.parts/etc/php5 app/console doctrine:database:create",
+        "Update DB": "php -c /home/codio/.parts/etc/php5 app/console doctrine:schema:update --force",
+        "Prod Cache clear": "php -c /home/codio/.parts/etc/php5 app/console cache:clear --env=prod --no-debug",
+        "Node version": "node --version"
     },
     "preview": {
         "Symfony Preview Dev": "http://{{domain}}:3000/app_dev.php",
-        "Symfony Preview Prod": "https://{{domain}}:3000/",
-        "Symfony Preview SSL": "https://{{domain}}:9500/"
+        "Symfony Preview Prod": "http://{{domain}}:3000/",
+		"Symfony Config": "http://{{domain}}:3000/config.php",
+        "PhpMyAdmin": "http://{{domain}}:3000/phpmyadmin"
     }
 }

@@ -7,8 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Oferta
  *
- * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Table(name="ofertas")
+ * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\OfertaRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Oferta
 {
@@ -22,18 +23,18 @@ class Oferta
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="sucursales", type="integer")
-     */
-    private $sucursales;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="titulo", type="string", length=255)
      */
     private $titulo;
+	
+	/**
+     * @var text
+     *
+     * @ORM\Column(name="descripcion", type="text")
+     */
+    private $descripcion;
 
     /**
      * @var integer
@@ -41,6 +42,20 @@ class Oferta
      * @ORM\Column(name="tipo", type="integer")
      */
     private $tipo;
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="tipo_oferta", type="integer")
+     */
+    private $tipoOferta;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="oferta", type="string", length=255)
+     */
+    private $oferta;
 
     /**
      * @var string
@@ -48,15 +63,64 @@ class Oferta
      * @ORM\Column(name="banner", type="string", length=255)
      */
     private $banner;
+	
+	/**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="inicia", type="date")
+     */
+    private $inicia;
+	
+	/**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="termina", type="date")
+     */
+    private $termina;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="forma_pago", type="integer")
+     * @ORM\Column(name="tipo_pago", type="integer")
      */
-    private $formaPago;
+    private $tipoPago;
 
+	/** relaciones **/	
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sucursales", type="integer")
+     */
+    private $sucursales;
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="marcas", type="integer")
+     */
+    private $marcas;
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="modelos", type="integer")
+     */
+    private $modelos;
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="comentarios", type="integer")
+     */
+    private $comentarios;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="clicks", type="integer")
+     */
+    private $clicks;
+	
     /**
      * Get id
      *
