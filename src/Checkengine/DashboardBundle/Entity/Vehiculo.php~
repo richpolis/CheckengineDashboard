@@ -1,0 +1,103 @@
+<?php
+
+namespace Checkengine\DashboardBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Vehiculo
+ *
+ * @ORM\Table(name="vehiculos")
+ * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\VehiculoRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * 
+ */
+class Vehiculo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tipo", type="integer")
+     */
+    private $tipo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="marca", type="string", length=255)
+     */
+    private $marca;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="modelo", type="string", length=255)
+     */
+    private $modelo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="año", type="integer")
+     */
+    private $año;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="puertas", type="integer")
+     */
+    private $puertas;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="cilindros", type="integer")
+     */
+    private $cilindros;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kms", type="bigint")
+     */
+    private $kms;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="combustible", type="integer")
+     */
+    private $combustible;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="transmision", type="integer")
+     */
+    private $transmision;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="seguro", type="integer")
+     */
+    private $seguro;
+
+    /**
+     * @var integer
+     * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\Usuario", inversedBy="vehiculos")
+     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     */
+    private $usuario;
+    
+}

@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: services.yml }
 
 framework:
     #esi:             ~
@@ -33,7 +34,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ AppBundle ]
+    bundles:        [ DashboardBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -72,3 +73,57 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+liip_imagine:
+    resolvers:
+        default:
+            web_path: 
+                web_root:  %kernel.root_dir%/../web
+                cache_prefix:  media/cache
+    loaders:
+        default:
+            filesystem:
+                data_root:  %kernel.root_dir%/../web/
+    driver:               gd
+    cache:                default
+    data_loader:          default
+    controller:
+        filter_action:         liip_imagine.controller:filterAction
+        filter_runtime_action: liip_imagine.controller:filterRuntimeAction
+    filter_sets:
+        imagen_usuario:
+            filters:
+                thumbnail: { size: [100, 100], mode: outbound }
+        imagen_dream:
+            filters:
+                thumbnail: { size: [400, 300], mode: outbound }
+
+ps_pdf:
+    nodes_file: ~
+    fonts_file: ~
+    complex_attributes_file: ~
+    colors_file: ~
+    use_cache_in_stylesheet: ~
+    cache:
+      type: ~
+      options: ~
+    markdown_stylesheet_filepath: ~
+    markdown_document_template_filepath: ~
+    document_parser_type: ~
+    
+parameters:
+    # dirección de correo electrónico
+    richpolis.emails.to_email: richpolis@gmail.com
+    richpolis.uploads: %kernel.root_dir%/../web/uploads

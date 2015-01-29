@@ -1,0 +1,48 @@
+{% extends 'DashboardBundle::layout.html.twig' %}
+
+{% block body -%}
+    <h1>TipoEmpresa</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Orden</th>
+                <td>{{ entity.orden }}</td>
+            </tr>
+            <tr>
+                <th>Imagen</th>
+                <td>{{ entity.imagen }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{{ entity.updatedAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('tiposempresa') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('tiposempresa_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'DashboardBundle::layout.html.twig' %}
+
+{% block body -%}
+    <h1>Usuario</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td>{{ entity.apellidos }}</td>
+            </tr>
+            <tr>
+                <th>Imagen</th>
+                <td>{{ entity.imagen }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ entity.email }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ entity.password }}</td>
+            </tr>
+            <tr>
+                <th>Salt</th>
+                <td>{{ entity.salt }}</td>
+            </tr>
+            <tr>
+                <th>Celular</th>
+                <td>{{ entity.celular }}</td>
+            </tr>
+            <tr>
+                <th>Fechanacimiento</th>
+                <td>{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Genero</th>
+                <td>{{ entity.genero }}</td>
+            </tr>
+            <tr>
+                <th>Ubicacionlongitud</th>
+                <td>{{ entity.ubicacionLongitud }}</td>
+            </tr>
+            <tr>
+                <th>Ubicacionlatitud</th>
+                <td>{{ entity.ubicacionLatitud }}</td>
+            </tr>
+            <tr>
+                <th>Noofertas</th>
+                <td>{{ entity.noOfertas }}</td>
+            </tr>
+            <tr>
+                <th>Isactive</th>
+                <td>{{ entity.isActive }}</td>
+            </tr>
+            <tr>
+                <th>Grupo</th>
+                <td>{{ entity.grupo }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{{ entity.updatedAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Facebook_id</th>
+                <td>{{ entity.facebookid }}</td>
+            </tr>
+            <tr>
+                <th>Facebook_access_token</th>
+                <td>{{ entity.facebookaccesstoken }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('usuarios') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('usuarios_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

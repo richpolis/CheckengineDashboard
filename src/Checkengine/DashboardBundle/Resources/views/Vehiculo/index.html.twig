@@ -1,0 +1,59 @@
+{% extends 'DashboardBundle::layout.html.twig' %}
+
+{% block body -%}
+    <h1>Vehiculo list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Puertas</th>
+                <th>Cilindros</th>
+                <th>Kms</th>
+                <th>Combustible</th>
+                <th>Transmision</th>
+                <th>Seguro</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.tipo }}</td>
+                <td>{{ entity.marca }}</td>
+                <td>{{ entity.modelo }}</td>
+                <td>{{ entity.año }}</td>
+                <td>{{ entity.puertas }}</td>
+                <td>{{ entity.cilindros }}</td>
+                <td>{{ entity.kms }}</td>
+                <td>{{ entity.combustible }}</td>
+                <td>{{ entity.transmision }}</td>
+                <td>{{ entity.seguro }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('vehiculos_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('vehiculos_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

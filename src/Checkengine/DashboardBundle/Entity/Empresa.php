@@ -4,6 +4,7 @@ namespace Checkengine\DashboardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Empresa
@@ -39,7 +40,7 @@ class Empresa
      */
     private $sucursal;
 	
-	/**
+    /**
      * @var \Checkengine\DashboardBundle\Entity\Usuario
      *
      * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
@@ -78,16 +79,22 @@ class Empresa
     private $comuna;
 
     /**
-     * @var Tipos en que la empresa puede estar ligada
+     * @var integer
+     * @todo Tipos de empresa asociadas a esta empresa. 
      *
-     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Tipo")
+     * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\TipoEmpresa")
+     * @ORM\JoinTable(name="empresa_tipos")
+     * @ORM\OrderBy({"nombre" = "ASC"})
      */
     private $tipos;
 
     /**
-     * @var Especialidades de empresa
+     * @var integer
+     * @todo Tipos de empresa asociadas a esta empresa. 
      *
-     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Especialidad")
+     * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Especialidad")
+     * @ORM\JoinTable(name="empresa_especialidades")
+     * @ORM\OrderBy({"nombre" = "ASC"})
      */
     private $especialidades;
 
@@ -120,16 +127,22 @@ class Empresa
     private $ubicacionLatitutd;
 
     /**
-     * @var Comentarios de la empresa
+     * @var integer
+     * @todo Comentarios de la empresa. 
      *
-     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Comentario")
+     * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Comentario")
+     * @ORM\JoinTable(name="empresa_comentarios")
+     * @ORM\OrderBy({"createdAt" = "ASC"})
      */
     private $comentarios;
 
     /**
-     * @var Servicios de la empresa
+     * @var integer
+     * @todo Servicios de la empresa. 
      *
-     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Servicio")
+     * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Servicio")
+     * @ORM\JoinTable(name="empresa_servicios")
+     * @ORM\OrderBy({"nombre" = "ASC"})
      */
     private $servicios;
 
@@ -355,10 +368,7 @@ class Empresa
     public function getAbosluteThumbnailPath(){
         return null === $this->imagen ? null : $this->getUploadRootDir().'/thumbnails/'.$this->imagen;
     }
-	
- 	public function getNombreCompleto(){
-		return sprintf("%s %s",$this->nombre,$this->apellidos);
- 	}
+
 	
     /**
      * Get id
@@ -368,5 +378,469 @@ class Empresa
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tipos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->especialidades = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comentarios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->servicios = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     * @return Empresa
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string 
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set sucursal
+     *
+     * @param string $sucursal
+     * @return Empresa
+     */
+    public function setSucursal($sucursal)
+    {
+        $this->sucursal = $sucursal;
+
+        return $this;
+    }
+
+    /**
+     * Get sucursal
+     *
+     * @return string 
+     */
+    public function getSucursal()
+    {
+        return $this->sucursal;
+    }
+
+    /**
+     * Set direccion
+     *
+     * @param string $direccion
+     * @return Empresa
+     */
+    public function setDireccion($direccion)
+    {
+        $this->direccion = $direccion;
+
+        return $this;
+    }
+
+    /**
+     * Get direccion
+     *
+     * @return string 
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    /**
+     * Set rut
+     *
+     * @param string $rut
+     * @return Empresa
+     */
+    public function setRut($rut)
+    {
+        $this->rut = $rut;
+
+        return $this;
+    }
+
+    /**
+     * Get rut
+     *
+     * @return string 
+     */
+    public function getRut()
+    {
+        return $this->rut;
+    }
+
+    /**
+     * Set region
+     *
+     * @param integer $region
+     * @return Empresa
+     */
+    public function setRegion($region)
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    /**
+     * Get region
+     *
+     * @return integer 
+     */
+    public function getRegion()
+    {
+        return $this->region;
+    }
+
+    /**
+     * Set comuna
+     *
+     * @param integer $comuna
+     * @return Empresa
+     */
+    public function setComuna($comuna)
+    {
+        $this->comuna = $comuna;
+
+        return $this;
+    }
+
+    /**
+     * Get comuna
+     *
+     * @return integer 
+     */
+    public function getComuna()
+    {
+        return $this->comuna;
+    }
+
+    /**
+     * Set horarios
+     *
+     * @param string $horarios
+     * @return Empresa
+     */
+    public function setHorarios($horarios)
+    {
+        $this->horarios = $horarios;
+
+        return $this;
+    }
+
+    /**
+     * Get horarios
+     *
+     * @return string 
+     */
+    public function getHorarios()
+    {
+        return $this->horarios;
+    }
+
+    /**
+     * Set imagen
+     *
+     * @param string $imagen
+     * @return Empresa
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+
+        return $this;
+    }
+
+    /**
+     * Get imagen
+     *
+     * @return string 
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * Set ubicacionLongitud
+     *
+     * @param string $ubicacionLongitud
+     * @return Empresa
+     */
+    public function setUbicacionLongitud($ubicacionLongitud)
+    {
+        $this->ubicacionLongitud = $ubicacionLongitud;
+
+        return $this;
+    }
+
+    /**
+     * Get ubicacionLongitud
+     *
+     * @return string 
+     */
+    public function getUbicacionLongitud()
+    {
+        return $this->ubicacionLongitud;
+    }
+
+    /**
+     * Set ubicacionLatitutd
+     *
+     * @param string $ubicacionLatitutd
+     * @return Empresa
+     */
+    public function setUbicacionLatitutd($ubicacionLatitutd)
+    {
+        $this->ubicacionLatitutd = $ubicacionLatitutd;
+
+        return $this;
+    }
+
+    /**
+     * Get ubicacionLatitutd
+     *
+     * @return string 
+     */
+    public function getUbicacionLatitutd()
+    {
+        return $this->ubicacionLatitutd;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Empresa
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Empresa
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Empresa
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $usuario
+     * @return Empresa
+     */
+    public function setUsuario(\Checkengine\DashboardBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Checkengine\DashboardBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Add tipos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\TipoEmpresa $tipos
+     * @return Empresa
+     */
+    public function addTipo(\Checkengine\DashboardBundle\Entity\TipoEmpresa $tipos)
+    {
+        $this->tipos[] = $tipos;
+
+        return $this;
+    }
+
+    /**
+     * Remove tipos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\TipoEmpresa $tipos
+     */
+    public function removeTipo(\Checkengine\DashboardBundle\Entity\TipoEmpresa $tipos)
+    {
+        $this->tipos->removeElement($tipos);
+    }
+
+    /**
+     * Get tipos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTipos()
+    {
+        return $this->tipos;
+    }
+
+    /**
+     * Add especialidades
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Especialidad $especialidades
+     * @return Empresa
+     */
+    public function addEspecialidade(\Checkengine\DashboardBundle\Entity\Especialidad $especialidades)
+    {
+        $this->especialidades[] = $especialidades;
+
+        return $this;
+    }
+
+    /**
+     * Remove especialidades
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Especialidad $especialidades
+     */
+    public function removeEspecialidade(\Checkengine\DashboardBundle\Entity\Especialidad $especialidades)
+    {
+        $this->especialidades->removeElement($especialidades);
+    }
+
+    /**
+     * Get especialidades
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEspecialidades()
+    {
+        return $this->especialidades;
+    }
+
+    /**
+     * Add comentarios
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Comentario $comentarios
+     * @return Empresa
+     */
+    public function addComentario(\Checkengine\DashboardBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Checkengine\DashboardBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
+
+    /**
+     * Add servicios
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Servicio $servicios
+     * @return Empresa
+     */
+    public function addServicio(\Checkengine\DashboardBundle\Entity\Servicio $servicios)
+    {
+        $this->servicios[] = $servicios;
+
+        return $this;
+    }
+
+    /**
+     * Remove servicios
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Servicio $servicios
+     */
+    public function removeServicio(\Checkengine\DashboardBundle\Entity\Servicio $servicios)
+    {
+        $this->servicios->removeElement($servicios);
+    }
+
+    /**
+     * Get servicios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getServicios()
+    {
+        return $this->servicios;
     }
 }

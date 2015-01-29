@@ -18,7 +18,16 @@
         "sensio/distribution-bundle": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
-        "doctrine/doctrine-fixtures-bundle": "~2.2"
+        "doctrine/doctrine-fixtures-bundle": "~2.2",
+        "knplabs/knp-paginator-bundle": "~2.4",
+        "stfalcon/tinymce-bundle": "dev-master",
+        "kriswallsmith/buzz": "~0.7",
+        "liip/imagine-bundle": "dev-master",
+        "jms/serializer-bundle": "dev-master",
+        "friendsofsymfony/rest-bundle": "~1.0",
+        "beberlei/DoctrineExtensions": "*",
+        "psliwa/php-pdf": "*",
+        "psliwa/pdf-bundle": "~1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

@@ -1,0 +1,84 @@
+{% extends 'DashboardBundle::layout.html.twig' %}
+
+{% block body -%}
+    <h1>Oferta</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <td>{{ entity.titulo }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <td>{{ entity.tipo }}</td>
+            </tr>
+            <tr>
+                <th>Tipooferta</th>
+                <td>{{ entity.tipoOferta }}</td>
+            </tr>
+            <tr>
+                <th>Oferta</th>
+                <td>{{ entity.oferta }}</td>
+            </tr>
+            <tr>
+                <th>Banner</th>
+                <td>{{ entity.banner }}</td>
+            </tr>
+            <tr>
+                <th>Inicia</th>
+                <td>{{ entity.inicia|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Termina</th>
+                <td>{{ entity.termina|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Tipopago</th>
+                <td>{{ entity.tipoPago }}</td>
+            </tr>
+            <tr>
+                <th>Marcas</th>
+                <td>{{ entity.marcas }}</td>
+            </tr>
+            <tr>
+                <th>Modelos</th>
+                <td>{{ entity.modelos }}</td>
+            </tr>
+            <tr>
+                <th>Clicks</th>
+                <td>{{ entity.clicks }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{{ entity.updatedAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('ofertas') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('ofertas_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

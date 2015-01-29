@@ -1,1 +1,7 @@
-Hello {{ name }}!
+{% extends 'DashboardBundle::layout.html.twig' %}
+
+{% block body %} 
+    <figure class="imagen-responsive text-center" style="margin-top: 10%; margin-bottom: 10%;">
+        <img src="{{asset('images/logo.png')}}"/>
+    </figure>
+{% endblock %}

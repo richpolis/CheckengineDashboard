@@ -18,8 +18,13 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             // Additionnal Vendors Bnudles
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
+            new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Ps\PdfBundle\PsPdfBundle(),
             // My Application Bundles
-            new AppBundle\AppBundle(),
             new Checkengine\DashboardBundle\DashboardBundle(),
         );
 

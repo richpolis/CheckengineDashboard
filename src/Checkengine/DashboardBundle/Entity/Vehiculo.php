@@ -95,11 +95,11 @@ class Vehiculo
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="usuario", type="integer")
+     * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\Usuario", inversedBy="vehiculos")
+     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      */
     private $usuario;
-
+    
 
     /**
      * Get id
@@ -344,10 +344,10 @@ class Vehiculo
     /**
      * Set usuario
      *
-     * @param integer $usuario
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $usuario
      * @return Vehiculo
      */
-    public function setUsuario($usuario)
+    public function setUsuario(\Checkengine\DashboardBundle\Entity\Usuario $usuario = null)
     {
         $this->usuario = $usuario;
 
@@ -357,7 +357,7 @@ class Vehiculo
     /**
      * Get usuario
      *
-     * @return integer 
+     * @return \Checkengine\DashboardBundle\Entity\Usuario 
      */
     public function getUsuario()
     {

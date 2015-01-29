@@ -122,9 +122,12 @@ class Usuario implements UserInterface, \Serializable
     private $favoritos;
 
     /**
-     * @var Usuarios que son amigos del usuario
+     * @var integer
+     * @todo Amigos del usuario. 
      *
-     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
+     * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
+     * @ORM\JoinTable(name="amigos")
+     * @ORM\OrderBy({"nombre" = "ASC"})
      */
     private $amigos;
 
@@ -464,10 +467,11 @@ class Usuario implements UserInterface, \Serializable
         return null === $this->imagen ? null : $this->getUploadRootDir().'/thumbnails/'.$this->imagen;
     }
 	
- 	public function getNombreCompleto(){
-		return sprintf("%s %s",$this->nombre,$this->apellidos);
- 	}
-	
+    public function getNombreCompleto() 
+    {
+        return sprintf("%s %s", $this->nombre, $this->apellidos);
+    }
+
     /**
      * Get id
      *
@@ -478,5 +482,505 @@ class Usuario implements UserInterface, \Serializable
         return $this->id;
     }
 
-    
+    public function getPassword() {
+        return $this->password;
+    }
+
+    public function getSalt() {
+        return $this->salt;
+    }
+
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     * @return Usuario
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string 
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set apellidos
+     *
+     * @param string $apellidos
+     * @return Usuario
+     */
+    public function setApellidos($apellidos)
+    {
+        $this->apellidos = $apellidos;
+
+        return $this;
+    }
+
+    /**
+     * Get apellidos
+     *
+     * @return string 
+     */
+    public function getApellidos()
+    {
+        return $this->apellidos;
+    }
+
+    /**
+     * Set imagen
+     *
+     * @param string $imagen
+     * @return Usuario
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+
+        return $this;
+    }
+
+    /**
+     * Get imagen
+     *
+     * @return string 
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Usuario
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return Usuario
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     * @return Usuario
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Set celular
+     *
+     * @param string $celular
+     * @return Usuario
+     */
+    public function setCelular($celular)
+    {
+        $this->celular = $celular;
+
+        return $this;
+    }
+
+    /**
+     * Get celular
+     *
+     * @return string 
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * Set fechaNacimiento
+     *
+     * @param \DateTime $fechaNacimiento
+     * @return Usuario
+     */
+    public function setFechaNacimiento($fechaNacimiento)
+    {
+        $this->fechaNacimiento = $fechaNacimiento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaNacimiento
+     *
+     * @return \DateTime 
+     */
+    public function getFechaNacimiento()
+    {
+        return $this->fechaNacimiento;
+    }
+
+    /**
+     * Set genero
+     *
+     * @param integer $genero
+     * @return Usuario
+     */
+    public function setGenero($genero)
+    {
+        $this->genero = $genero;
+
+        return $this;
+    }
+
+    /**
+     * Get genero
+     *
+     * @return integer 
+     */
+    public function getGenero()
+    {
+        return $this->genero;
+    }
+
+    /**
+     * Set ubicacionLongitud
+     *
+     * @param string $ubicacionLongitud
+     * @return Usuario
+     */
+    public function setUbicacionLongitud($ubicacionLongitud)
+    {
+        $this->ubicacionLongitud = $ubicacionLongitud;
+
+        return $this;
+    }
+
+    /**
+     * Get ubicacionLongitud
+     *
+     * @return string 
+     */
+    public function getUbicacionLongitud()
+    {
+        return $this->ubicacionLongitud;
+    }
+
+    /**
+     * Set ubicacionLatitud
+     *
+     * @param string $ubicacionLatitud
+     * @return Usuario
+     */
+    public function setUbicacionLatitud($ubicacionLatitud)
+    {
+        $this->ubicacionLatitud = $ubicacionLatitud;
+
+        return $this;
+    }
+
+    /**
+     * Get ubicacionLatitud
+     *
+     * @return string 
+     */
+    public function getUbicacionLatitud()
+    {
+        return $this->ubicacionLatitud;
+    }
+
+    /**
+     * Set noOfertas
+     *
+     * @param integer $noOfertas
+     * @return Usuario
+     */
+    public function setNoOfertas($noOfertas)
+    {
+        $this->noOfertas = $noOfertas;
+
+        return $this;
+    }
+
+    /**
+     * Get noOfertas
+     *
+     * @return integer 
+     */
+    public function getNoOfertas()
+    {
+        return $this->noOfertas;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Usuario
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set grupo
+     *
+     * @param integer $grupo
+     * @return Usuario
+     */
+    public function setGrupo($grupo)
+    {
+        $this->grupo = $grupo;
+
+        return $this;
+    }
+
+    /**
+     * Get grupo
+     *
+     * @return integer 
+     */
+    public function getGrupo()
+    {
+        return $this->grupo;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Usuario
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Usuario
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set facebook_id
+     *
+     * @param string $facebookId
+     * @return Usuario
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebook_id = $facebookId;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook_id
+     *
+     * @return string 
+     */
+    public function getFacebookId()
+    {
+        return $this->facebook_id;
+    }
+
+    /**
+     * Set facebook_access_token
+     *
+     * @param string $facebookAccessToken
+     * @return Usuario
+     */
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
+        $this->facebook_access_token = $facebookAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook_access_token
+     *
+     * @return string 
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebook_access_token;
+    }
+
+    /**
+     * Add vehiculos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Vehiculo $vehiculos
+     * @return Usuario
+     */
+    public function addVehiculo(\Checkengine\DashboardBundle\Entity\Vehiculo $vehiculos)
+    {
+        $this->vehiculos[] = $vehiculos;
+
+        return $this;
+    }
+
+    /**
+     * Remove vehiculos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Vehiculo $vehiculos
+     */
+    public function removeVehiculo(\Checkengine\DashboardBundle\Entity\Vehiculo $vehiculos)
+    {
+        $this->vehiculos->removeElement($vehiculos);
+    }
+
+    /**
+     * Get vehiculos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVehiculos()
+    {
+        return $this->vehiculos;
+    }
+
+    /**
+     * Add favoritos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Favorito $favoritos
+     * @return Usuario
+     */
+    public function addFavorito(\Checkengine\DashboardBundle\Entity\Favorito $favoritos)
+    {
+        $this->favoritos[] = $favoritos;
+
+        return $this;
+    }
+
+    /**
+     * Remove favoritos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Favorito $favoritos
+     */
+    public function removeFavorito(\Checkengine\DashboardBundle\Entity\Favorito $favoritos)
+    {
+        $this->favoritos->removeElement($favoritos);
+    }
+
+    /**
+     * Get favoritos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFavoritos()
+    {
+        return $this->favoritos;
+    }
+
+    /**
+     * Add amigos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $amigos
+     * @return Usuario
+     */
+    public function addAmigo(\Checkengine\DashboardBundle\Entity\Usuario $amigos)
+    {
+        $this->amigos[] = $amigos;
+
+        return $this;
+    }
+
+    /**
+     * Remove amigos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $amigos
+     */
+    public function removeAmigo(\Checkengine\DashboardBundle\Entity\Usuario $amigos)
+    {
+        $this->amigos->removeElement($amigos);
+    }
+
+    /**
+     * Get amigos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAmigos()
+    {
+        return $this->amigos;
+    }
 }

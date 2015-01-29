@@ -1,0 +1,68 @@
+{% extends 'DashboardBundle::layout.html.twig' %}
+
+{% block body -%}
+    <h1>Vehiculo</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <td>{{ entity.tipo }}</td>
+            </tr>
+            <tr>
+                <th>Marca</th>
+                <td>{{ entity.marca }}</td>
+            </tr>
+            <tr>
+                <th>Modelo</th>
+                <td>{{ entity.modelo }}</td>
+            </tr>
+            <tr>
+                <th>Año</th>
+                <td>{{ entity.año }}</td>
+            </tr>
+            <tr>
+                <th>Puertas</th>
+                <td>{{ entity.puertas }}</td>
+            </tr>
+            <tr>
+                <th>Cilindros</th>
+                <td>{{ entity.cilindros }}</td>
+            </tr>
+            <tr>
+                <th>Kms</th>
+                <td>{{ entity.kms }}</td>
+            </tr>
+            <tr>
+                <th>Combustible</th>
+                <td>{{ entity.combustible }}</td>
+            </tr>
+            <tr>
+                <th>Transmision</th>
+                <td>{{ entity.transmision }}</td>
+            </tr>
+            <tr>
+                <th>Seguro</th>
+                <td>{{ entity.seguro }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('vehiculos') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('vehiculos_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

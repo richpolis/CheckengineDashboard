@@ -1,0 +1,75 @@
+{% extends 'DashboardBundle::layout.html.twig' %}
+
+{% block body -%}
+    <h1>Usuario list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Imagen</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Salt</th>
+                <th>Celular</th>
+                <th>Fechanacimiento</th>
+                <th>Genero</th>
+                <th>Ubicacionlongitud</th>
+                <th>Ubicacionlatitud</th>
+                <th>Noofertas</th>
+                <th>Isactive</th>
+                <th>Grupo</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Facebook_id</th>
+                <th>Facebook_access_token</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('usuarios_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.apellidos }}</td>
+                <td>{{ entity.imagen }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.password }}</td>
+                <td>{{ entity.salt }}</td>
+                <td>{{ entity.celular }}</td>
+                <td>{% if entity.fechaNacimiento %}{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.genero }}</td>
+                <td>{{ entity.ubicacionLongitud }}</td>
+                <td>{{ entity.ubicacionLatitud }}</td>
+                <td>{{ entity.noOfertas }}</td>
+                <td>{{ entity.isActive }}</td>
+                <td>{{ entity.grupo }}</td>
+                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.facebookid }}</td>
+                <td>{{ entity.facebookaccesstoken }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('usuarios_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('usuarios_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('usuarios_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}
