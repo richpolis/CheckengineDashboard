@@ -21,11 +21,14 @@ class AppKernel extends Kernel
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Ps\PdfBundle\PsPdfBundle(),
+            // FOS Rest Bundle
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
-            new Ps\PdfBundle\PsPdfBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             // My Application Bundles
             new Checkengine\DashboardBundle\DashboardBundle(),
+            new Checkengine\ApiBundle\ApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

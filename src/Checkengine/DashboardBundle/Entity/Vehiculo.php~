@@ -100,4 +100,267 @@ class Vehiculo
      */
     private $usuario;
     
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param integer $tipo
+     * @return Vehiculo
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return integer 
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * Set marca
+     *
+     * @param string $marca
+     * @return Vehiculo
+     */
+    public function setMarca($marca)
+    {
+        $this->marca = $marca;
+
+        return $this;
+    }
+
+    /**
+     * Get marca
+     *
+     * @return string 
+     */
+    public function getMarca()
+    {
+        return $this->marca;
+    }
+
+    /**
+     * Set modelo
+     *
+     * @param string $modelo
+     * @return Vehiculo
+     */
+    public function setModelo($modelo)
+    {
+        $this->modelo = $modelo;
+
+        return $this;
+    }
+
+    /**
+     * Get modelo
+     *
+     * @return string 
+     */
+    public function getModelo()
+    {
+        return $this->modelo;
+    }
+
+    /**
+     * Set año
+     *
+     * @param integer $año
+     * @return Vehiculo
+     */
+    public function setAño($año)
+    {
+        $this->año = $año;
+
+        return $this;
+    }
+
+    /**
+     * Get año
+     *
+     * @return integer 
+     */
+    public function getAño()
+    {
+        return $this->año;
+    }
+
+    /**
+     * Set puertas
+     *
+     * @param integer $puertas
+     * @return Vehiculo
+     */
+    public function setPuertas($puertas)
+    {
+        $this->puertas = $puertas;
+
+        return $this;
+    }
+
+    /**
+     * Get puertas
+     *
+     * @return integer 
+     */
+    public function getPuertas()
+    {
+        return $this->puertas;
+    }
+
+    /**
+     * Set cilindros
+     *
+     * @param integer $cilindros
+     * @return Vehiculo
+     */
+    public function setCilindros($cilindros)
+    {
+        $this->cilindros = $cilindros;
+
+        return $this;
+    }
+
+    /**
+     * Get cilindros
+     *
+     * @return integer 
+     */
+    public function getCilindros()
+    {
+        return $this->cilindros;
+    }
+
+    /**
+     * Set kms
+     *
+     * @param integer $kms
+     * @return Vehiculo
+     */
+    public function setKms($kms)
+    {
+        $this->kms = $kms;
+
+        return $this;
+    }
+
+    /**
+     * Get kms
+     *
+     * @return integer 
+     */
+    public function getKms()
+    {
+        return $this->kms;
+    }
+
+    /**
+     * Set combustible
+     *
+     * @param integer $combustible
+     * @return Vehiculo
+     */
+    public function setCombustible($combustible)
+    {
+        $this->combustible = $combustible;
+
+        return $this;
+    }
+
+    /**
+     * Get combustible
+     *
+     * @return integer 
+     */
+    public function getCombustible()
+    {
+        return $this->combustible;
+    }
+
+    /**
+     * Set transmision
+     *
+     * @param integer $transmision
+     * @return Vehiculo
+     */
+    public function setTransmision($transmision)
+    {
+        $this->transmision = $transmision;
+
+        return $this;
+    }
+
+    /**
+     * Get transmision
+     *
+     * @return integer 
+     */
+    public function getTransmision()
+    {
+        return $this->transmision;
+    }
+
+    /**
+     * Set seguro
+     *
+     * @param integer $seguro
+     * @return Vehiculo
+     */
+    public function setSeguro($seguro)
+    {
+        $this->seguro = $seguro;
+
+        return $this;
+    }
+
+    /**
+     * Get seguro
+     *
+     * @return integer 
+     */
+    public function getSeguro()
+    {
+        return $this->seguro;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $usuario
+     * @return Vehiculo
+     */
+    public function setUsuario(\Checkengine\DashboardBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Checkengine\DashboardBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
 }

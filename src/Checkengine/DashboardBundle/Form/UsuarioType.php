@@ -5,6 +5,7 @@ namespace Checkengine\DashboardBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Checkengine\DashboardBundle\Entity\Usuario;
 
 class UsuarioType extends AbstractType
 {
@@ -16,24 +17,39 @@ class UsuarioType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('apellidos')
-            ->add('imagen')
+            ->add('apellidos','text',array('required'=>false))
+            ->add('imagen','hidden')
             ->add('email')
-            ->add('password')
-            ->add('salt')
-            ->add('celular')
+            ->add('password','password',array('required'=>false))
+            ->add('salt','hidden')
+            ->add('celular','text',array('required'=>false))
             ->add('fechaNacimiento')
-            ->add('genero')
-            ->add('ubicacionLongitud')
-            ->add('ubicacionLatitud')
-            ->add('noOfertas')
+            ->add('genero','choice',array(
+                'label'=>'Genero',
+                'empty_value'=>false,
+                'choices'=>Usuario::getArrayGenero(),
+                'preferred_choices'=>Usuario::getPreferedGenero(),
+                'attr'=>array(
+                    'class'=>'validate[required] form-control placeholder',
+                    'placeholder'=>'Grupo',
+                )))
+            ->add('ubicacionLongitud','text',array('required'=>false))
+            ->add('ubicacionLatitud','text',array('required'=>false))
+            ->add('noOfertas','hidden')
             ->add('isActive')
-            ->add('grupo')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('facebook_id')
-            ->add('facebook_access_token')
-            ->add('amigos')
+            ->add('grupo','choice',array(
+                'label'=>'Grupo',
+                'empty_value'=>false,
+                'choices'=>Usuario::getArrayTipoGrupo(),
+                'preferred_choices'=>Usuario::getPreferedTipoGrupo(),
+                'attr'=>array(
+                    'class'=>'validate[required] form-control placeholder',
+                    'placeholder'=>'Grupo',
+                )))
+            ->add('facebook_id','hidden')
+            ->add('facebook_access_token','hidden')
+            ->add('tokenCelular','hidden')
+            ->add('marcaCelular','hidden')   
         ;
     }
     

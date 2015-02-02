@@ -6,12 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * TipoEmpresa
  *
  * @ORM\Table(name="tipos_empresa")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class TipoEmpresa
 {
@@ -21,6 +25,9 @@ class TipoEmpresa
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -28,6 +35,9 @@ class TipoEmpresa
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $nombre;
 
@@ -35,13 +45,19 @@ class TipoEmpresa
      * @var integer
      *
      * @ORM\Column(name="orden", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $orden;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="imagen", type="string", length=255)
+     * @ORM\Column(name="imagen", type="string", length=255,nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $imagen;
     
@@ -49,6 +65,9 @@ class TipoEmpresa
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
     
@@ -56,8 +75,18 @@ class TipoEmpresa
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $updatedAt;
+    
+    /**
+     * @var Especialidades de Tipo de Empresa
+     *
+     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Especialidad", mappedBy="tipoEmpresa")
+     */
+    private $especialidades;
 	
     /*
      * Timestable
@@ -261,6 +290,9 @@ class TipoEmpresa
         return null === $this->imagen ? null : $this->getUploadRootDir().'/thumbnails/'.$this->imagen;
     }
 
+    public function __toString() {
+        return $this->nombre;
+    }
 	
     /**
      * Get id
@@ -386,5 +418,45 @@ class TipoEmpresa
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->especialidades = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add especialidades
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Especialidad $especialidades
+     * @return TipoEmpresa
+     */
+    public function addEspecialidade(\Checkengine\DashboardBundle\Entity\Especialidad $especialidades)
+    {
+        $this->especialidades[] = $especialidades;
+
+        return $this;
+    }
+
+    /**
+     * Remove especialidades
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Especialidad $especialidades
+     */
+    public function removeEspecialidade(\Checkengine\DashboardBundle\Entity\Especialidad $especialidades)
+    {
+        $this->especialidades->removeElement($especialidades);
+    }
+
+    /**
+     * Get especialidades
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEspecialidades()
+    {
+        return $this->especialidades;
     }
 }

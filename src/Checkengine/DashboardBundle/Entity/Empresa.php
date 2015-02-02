@@ -6,12 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Empresa
  *
  * @ORM\Table(name="empresas")
  * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\EmpresaRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class Empresa
 {
@@ -21,6 +25,9 @@ class Empresa
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -29,14 +36,30 @@ class Empresa
      *
      * @ORM\Column(name="nombre", type="string", length=255)
      * @Assert\NotBlank(message="Ingresa el nombre de la empresa o razon social")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $nombre;
+    
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="rubro", type="text",nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     */
+    private $rubro;
 	
 	
     /**
      * @var string
      *
-     * @ORM\Column(name="sucursal", type="string", length=255)
+     * @ORM\Column(name="sucursal", type="string", length=255,nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $sucursal;
 	
@@ -47,34 +70,50 @@ class Empresa
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Checkengine\DashboardBundle\Entity\Usuario")
+     * @Serializer\Groups({"list", "details"})
      */
     private $usuario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="text")
+     * @ORM\Column(name="direccion", type="text",nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $direccion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="rut", type="string", length=255)
+     * @ORM\Column(name="rut", type="string", length=255,nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $rut;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="region", type="integer")
+     * @ORM\Column(name="region", type="string",nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $region;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="comuna", type="integer")
+     * @ORM\Column(name="comuna", type="string",nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $comuna;
 
@@ -85,6 +124,11 @@ class Empresa
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\TipoEmpresa")
      * @ORM\JoinTable(name="empresa_tipos")
      * @ORM\OrderBy({"nombre" = "ASC"})
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\TipoEmpresa>")
+     * @Serializer\MaxDepth(1)
+     * @Serializer\Groups({"details"})
      */
     private $tipos;
 
@@ -95,36 +139,53 @@ class Empresa
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Especialidad")
      * @ORM\JoinTable(name="empresa_especialidades")
      * @ORM\OrderBy({"nombre" = "ASC"})
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\Especialidad>")
+     * @Serializer\MaxDepth(1)
+     * @Serializer\Groups({"details"})
      */
     private $especialidades;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="horarios", type="string", length=255)
+     * @ORM\Column(name="horarios", type="string", length=255,nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $horarios;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="imagen", type="string", length=255)
+     * @ORM\Column(name="imagen", type="string", length=255,nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $imagen;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ubicacion_longitud", type="string", length=255)
+     * @ORM\Column(name="ubicacion_longitud", type="string", length=255,nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $ubicacionLongitud;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ubicacion_latitutd", type="string", length=255)
+     * @ORM\Column(name="ubicacion_latitud", type="string", length=255,nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
-    private $ubicacionLatitutd;
+    private $ubicacionLatitud;
 
     /**
      * @var integer
@@ -143,6 +204,11 @@ class Empresa
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Servicio")
      * @ORM\JoinTable(name="empresa_servicios")
      * @ORM\OrderBy({"nombre" = "ASC"})
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\Servicio>")
+     * @Serializer\MaxDepth(1)
+     * @Serializer\Groups({"details"})
      */
     private $servicios;
 
@@ -150,6 +216,9 @@ class Empresa
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
      */
     private $isActive;
     
@@ -157,6 +226,9 @@ class Empresa
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
     
@@ -164,6 +236,9 @@ class Empresa
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $updatedAt;
 	
@@ -368,7 +443,10 @@ class Empresa
     public function getAbosluteThumbnailPath(){
         return null === $this->imagen ? null : $this->getUploadRootDir().'/thumbnails/'.$this->imagen;
     }
-
+    
+    public function getNombreCompleto(){
+        return sprintf("%s - %s",$this->getNombre(),$this->getSucursal());
+    }
 	
     /**
      * Get id
@@ -388,6 +466,11 @@ class Empresa
         $this->especialidades = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comentarios = new \Doctrine\Common\Collections\ArrayCollection();
         $this->servicios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive = true;
+    }
+    
+    public function __toString() {
+        return $this->getNombreCompleto();
     }
 
     /**
@@ -598,26 +681,26 @@ class Empresa
     }
 
     /**
-     * Set ubicacionLatitutd
+     * Set ubicacionLatitud
      *
-     * @param string $ubicacionLatitutd
+     * @param string $ubicacionLatitud
      * @return Empresa
      */
-    public function setUbicacionLatitutd($ubicacionLatitutd)
+    public function setUbicacionLatitud($ubicacionLatitud)
     {
-        $this->ubicacionLatitutd = $ubicacionLatitutd;
+        $this->ubicacionLatitud = $ubicacionLatitud;
 
         return $this;
     }
 
     /**
-     * Get ubicacionLatitutd
+     * Get ubicacionLatitud
      *
      * @return string 
      */
-    public function getUbicacionLatitutd()
+    public function getUbicacionLatitud()
     {
-        return $this->ubicacionLatitutd;
+        return $this->ubicacionLatitud;
     }
 
     /**
@@ -842,5 +925,28 @@ class Empresa
     public function getServicios()
     {
         return $this->servicios;
+    }
+
+    /**
+     * Set rubro
+     *
+     * @param string $rubro
+     * @return Empresa
+     */
+    public function setRubro($rubro)
+    {
+        $this->rubro = $rubro;
+
+        return $this;
+    }
+
+    /**
+     * Get rubro
+     *
+     * @return string 
+     */
+    public function getRubro()
+    {
+        return $this->rubro;
     }
 }

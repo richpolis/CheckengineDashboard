@@ -4,11 +4,15 @@ namespace Checkengine\DashboardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Par
  *
  * @ORM\Table()
  * @ORM\Entity
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class Par
 {
@@ -18,6 +22,9 @@ class Par
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -25,6 +32,10 @@ class Par
      * @var integer
      *
      * @ORM\Column(name="oferta", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Checkengine\DashboardBundle\Entity\Oferta")
+     * @Serializer\Groups({"list", "details"})
      */
     private $oferta;
 
@@ -32,6 +43,9 @@ class Par
      * @var string
      *
      * @ORM\Column(name="marca", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $marca;
 
@@ -39,6 +53,9 @@ class Par
      * @var string
      *
      * @ORM\Column(name="modelo", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $modelo;
 

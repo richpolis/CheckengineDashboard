@@ -33,6 +33,8 @@ security:
             form_login:
                 login_path: login
                 check_path: login_check
+                success_handler: checkengine.security.authentication.handler
+                failure_handler: checkengine.security.authentication.handler
                 remember_me: true
                 use_referer: false
             logout:

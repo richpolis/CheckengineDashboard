@@ -4,12 +4,16 @@ namespace Checkengine\DashboardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Vehiculo
  *
  * @ORM\Table(name="vehiculos")
  * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\VehiculoRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
  * 
  */
 class Vehiculo
@@ -20,6 +24,9 @@ class Vehiculo
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -27,6 +34,9 @@ class Vehiculo
      * @var integer
      *
      * @ORM\Column(name="tipo", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $tipo;
 
@@ -34,6 +44,9 @@ class Vehiculo
      * @var string
      *
      * @ORM\Column(name="marca", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $marca;
 
@@ -41,6 +54,9 @@ class Vehiculo
      * @var string
      *
      * @ORM\Column(name="modelo", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $modelo;
 
@@ -48,6 +64,9 @@ class Vehiculo
      * @var integer
      *
      * @ORM\Column(name="año", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $año;
 
@@ -55,6 +74,9 @@ class Vehiculo
      * @var integer
      *
      * @ORM\Column(name="puertas", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $puertas;
 
@@ -62,6 +84,9 @@ class Vehiculo
      * @var integer
      *
      * @ORM\Column(name="cilindros", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $cilindros;
 
@@ -69,6 +94,9 @@ class Vehiculo
      * @var integer
      *
      * @ORM\Column(name="kms", type="bigint")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $kms;
 
@@ -76,6 +104,9 @@ class Vehiculo
      * @var integer
      *
      * @ORM\Column(name="combustible", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $combustible;
 
@@ -83,6 +114,9 @@ class Vehiculo
      * @var integer
      *
      * @ORM\Column(name="transmision", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $transmision;
 
@@ -90,6 +124,9 @@ class Vehiculo
      * @var integer
      *
      * @ORM\Column(name="seguro", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $seguro;
 
@@ -97,6 +134,9 @@ class Vehiculo
      * @var integer
      * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\Usuario", inversedBy="vehiculos")
      * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Checkengine\DashboardBundle\Entity\Usuario")
      */
     private $usuario;
     

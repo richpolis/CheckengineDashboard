@@ -4,12 +4,16 @@ namespace Checkengine\DashboardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Servicio
  *
  * @ORM\Table(name="servicios")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class Servicio
 {
@@ -19,6 +23,9 @@ class Servicio
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -26,6 +33,9 @@ class Servicio
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $nombre;
     
@@ -33,6 +43,9 @@ class Servicio
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
     
@@ -40,6 +53,9 @@ class Servicio
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $updatedAt;
 	
@@ -69,7 +85,10 @@ class Servicio
     {
         $this->updatedAt = new \DateTime();
     }
-
+    
+    public function __toString() {
+        return $this->nombre;
+    }
 
     /**
      * Get id

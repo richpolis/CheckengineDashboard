@@ -5,12 +5,16 @@ namespace Checkengine\DashboardBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Pregunta
  *
  * @ORM\Table(name="preguntas")
  * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\PreguntaRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class Pregunta
 {
@@ -20,6 +24,9 @@ class Pregunta
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -28,6 +35,9 @@ class Pregunta
      *
      * @ORM\Column(name="pregunta", type="string", length=255)
      * @Assert\NotBlank(message="Ingresa una pregunta")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $pregunta;
 
@@ -35,6 +45,9 @@ class Pregunta
      * @var string
      *
      * @ORM\Column(name="respuesta", type="text")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $respuesta;
 
@@ -42,6 +55,9 @@ class Pregunta
      * @var integer
      *
      * @ORM\Column(name="orden", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $orden;
 	
@@ -49,6 +65,9 @@ class Pregunta
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
     
@@ -56,10 +75,13 @@ class Pregunta
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $updatedAt;
 	
-	/*
+    /*
      * Timestable
      */
     

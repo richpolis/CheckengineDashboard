@@ -367,4 +367,423 @@ class Oferta
     }
 
     
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->sucursales = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comentarios = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set titulo
+     *
+     * @param string $titulo
+     * @return Oferta
+     */
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+
+        return $this;
+    }
+
+    /**
+     * Get titulo
+     *
+     * @return string 
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return Oferta
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param integer $tipo
+     * @return Oferta
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return integer 
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * Set tipoOferta
+     *
+     * @param integer $tipoOferta
+     * @return Oferta
+     */
+    public function setTipoOferta($tipoOferta)
+    {
+        $this->tipoOferta = $tipoOferta;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoOferta
+     *
+     * @return integer 
+     */
+    public function getTipoOferta()
+    {
+        return $this->tipoOferta;
+    }
+
+    /**
+     * Set oferta
+     *
+     * @param string $oferta
+     * @return Oferta
+     */
+    public function setOferta($oferta)
+    {
+        $this->oferta = $oferta;
+
+        return $this;
+    }
+
+    /**
+     * Get oferta
+     *
+     * @return string 
+     */
+    public function getOferta()
+    {
+        return $this->oferta;
+    }
+
+    /**
+     * Set banner
+     *
+     * @param string $banner
+     * @return Oferta
+     */
+    public function setBanner($banner)
+    {
+        $this->banner = $banner;
+
+        return $this;
+    }
+
+    /**
+     * Get banner
+     *
+     * @return string 
+     */
+    public function getBanner()
+    {
+        return $this->banner;
+    }
+
+    /**
+     * Set inicia
+     *
+     * @param \DateTime $inicia
+     * @return Oferta
+     */
+    public function setInicia($inicia)
+    {
+        $this->inicia = $inicia;
+
+        return $this;
+    }
+
+    /**
+     * Get inicia
+     *
+     * @return \DateTime 
+     */
+    public function getInicia()
+    {
+        return $this->inicia;
+    }
+
+    /**
+     * Set termina
+     *
+     * @param \DateTime $termina
+     * @return Oferta
+     */
+    public function setTermina($termina)
+    {
+        $this->termina = $termina;
+
+        return $this;
+    }
+
+    /**
+     * Get termina
+     *
+     * @return \DateTime 
+     */
+    public function getTermina()
+    {
+        return $this->termina;
+    }
+
+    /**
+     * Set tipoPago
+     *
+     * @param integer $tipoPago
+     * @return Oferta
+     */
+    public function setTipoPago($tipoPago)
+    {
+        $this->tipoPago = $tipoPago;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoPago
+     *
+     * @return integer 
+     */
+    public function getTipoPago()
+    {
+        return $this->tipoPago;
+    }
+
+    /**
+     * Set marcas
+     *
+     * @param integer $marcas
+     * @return Oferta
+     */
+    public function setMarcas($marcas)
+    {
+        $this->marcas = $marcas;
+
+        return $this;
+    }
+
+    /**
+     * Get marcas
+     *
+     * @return integer 
+     */
+    public function getMarcas()
+    {
+        return $this->marcas;
+    }
+
+    /**
+     * Set modelos
+     *
+     * @param integer $modelos
+     * @return Oferta
+     */
+    public function setModelos($modelos)
+    {
+        $this->modelos = $modelos;
+
+        return $this;
+    }
+
+    /**
+     * Get modelos
+     *
+     * @return integer 
+     */
+    public function getModelos()
+    {
+        return $this->modelos;
+    }
+
+    /**
+     * Set clicks
+     *
+     * @param integer $clicks
+     * @return Oferta
+     */
+    public function setClicks($clicks)
+    {
+        $this->clicks = $clicks;
+
+        return $this;
+    }
+
+    /**
+     * Get clicks
+     *
+     * @return integer 
+     */
+    public function getClicks()
+    {
+        return $this->clicks;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Oferta
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Oferta
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $usuario
+     * @return Oferta
+     */
+    public function setUsuario(\Checkengine\DashboardBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Checkengine\DashboardBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Add sucursales
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $sucursales
+     * @return Oferta
+     */
+    public function addSucursale(\Checkengine\DashboardBundle\Entity\Empresa $sucursales)
+    {
+        $this->sucursales[] = $sucursales;
+
+        return $this;
+    }
+
+    /**
+     * Remove sucursales
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $sucursales
+     */
+    public function removeSucursale(\Checkengine\DashboardBundle\Entity\Empresa $sucursales)
+    {
+        $this->sucursales->removeElement($sucursales);
+    }
+
+    /**
+     * Get sucursales
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSucursales()
+    {
+        return $this->sucursales;
+    }
+
+    /**
+     * Add comentarios
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Comentario $comentarios
+     * @return Oferta
+     */
+    public function addComentario(\Checkengine\DashboardBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Checkengine\DashboardBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
 }

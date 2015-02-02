@@ -25,15 +25,25 @@ class EmpresaController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('DashboardBundle:Empresa')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
+        if ($this->get('security.context')->isGranted('ROLE_CLIENTE')) {
+            $buscar = $request->get('buscar','');
+            if(strlen($buscar)>0){
+                $options = array('filterParam'=>'buscar','filterValue'=>$buscar);
+            }else{
+                $options = array();
+            }
+            $query = $em->getRepository('DashboardBundle:Empresa')->queryFindEmpresas($buscar);
+            $paginator = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                    $query, $this->get('request')->query->get('page', 1),10,$options
+            );
+            
+            return  compact('pagination');
+        } 
+        return $this->redirect('login');
     }
     /**
      * Creates a new Empresa entity.
@@ -76,7 +86,7 @@ class EmpresaController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -146,7 +156,7 @@ class EmpresaController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'        => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -165,7 +175,7 @@ class EmpresaController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -198,7 +208,7 @@ class EmpresaController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'        => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -240,8 +250,26 @@ class EmpresaController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('empresas_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Delete','attr'=>array('class'=>'btn btn-danger')))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Exporta la lista completa de empresas.
+     *
+     * @Route("/exportar", name="empresas_export")
+     * @Method("GET")
+     */
+    public function exportarAction() {
+        $empresas = $this->getDoctrine()
+                ->getRepository('DashboardBundle:Empresa')
+                ->findEmpresas();
+        $response = $this->render(
+                'DashboardBundle:Empresa:list.xls.twig', array('empresas' => $empresas)
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-empresas.xls"');
+        return $response;
     }
 }

@@ -8,6 +8,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Usuario
  *
@@ -15,6 +17,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\UsuarioRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("email")
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class Usuario implements UserInterface, \Serializable 
 {
@@ -24,6 +28,9 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -32,6 +39,9 @@ class Usuario implements UserInterface, \Serializable
      *
      * @ORM\Column(name="nombre", type="string", length=255)
      * @Assert\NotBlank(message="Ingresa un nombre")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $nombre;
 
@@ -39,13 +49,19 @@ class Usuario implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="apellidos", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $apellidos;
 	
-	/**
+    /**
      * @var string
      *
-     * @ORM\Column(name="imagen", type="string", length=255)
+     * @ORM\Column(name="imagen", type="string", length=255, nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $imagen;
 
@@ -55,6 +71,9 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\Column(name="email", type="string", length=255)
      * @Assert\NotBlank(message = "Por favor ingresa tu email")
      * @Assert\Email()
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $email;
 
@@ -75,21 +94,30 @@ class Usuario implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="celular", type="string", length=255)
+     * @ORM\Column(name="celular", type="string", length=255, nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $celular;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_nacimiento", type="date")
+     * @ORM\Column(name="fecha_nacimiento", type="date", nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Date")
      */
     private $fechaNacimiento;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="genero", type="integer")
+     * @ORM\Column(name="genero", type="integer", nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $genero;
 
@@ -103,14 +131,20 @@ class Usuario implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="ubicacion_longitud", type="string", length=255)
+     * @ORM\Column(name="ubicacion_longitud", type="string", length=255, nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $ubicacionLongitud;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ubicacion_latitud", type="string", length=255)
+     * @ORM\Column(name="ubicacion_latitud", type="string", length=255, nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $ubicacionLatitud;
 
@@ -118,6 +152,9 @@ class Usuario implements UserInterface, \Serializable
      * @var Favoritos de usuario
      *
      * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Favorito", mappedBy="usuario")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\Usuario>")
      */
     private $favoritos;
 
@@ -128,20 +165,26 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
      * @ORM\JoinTable(name="amigos")
      * @ORM\OrderBy({"nombre" = "ASC"})
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\Usuario>")
      */
     private $amigos;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="no_ofertas", type="integer")
+     * @ORM\Column(name="no_ofertas", type="integer", nullable=true)
      */
     private $noOfertas;
 
-	/**
+    /**
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
      */
     private $isActive;
     
@@ -149,6 +192,9 @@ class Usuario implements UserInterface, \Serializable
      * @var integer
      *
      * @ORM\Column(name="grupo", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $grupo;
     
@@ -156,6 +202,9 @@ class Usuario implements UserInterface, \Serializable
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
     
@@ -163,26 +212,103 @@ class Usuario implements UserInterface, \Serializable
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $updatedAt;
     
-    /** @ORM\Column(name="facebook_id", type="string", length=255, nullable=true) */
+    /** 
+     * @ORM\Column(name="facebook_id", type="string", length=255, nullable=true) 
+     */
     protected $facebook_id;
  
-    /** @ORM\Column(name="facebook_access_token", type="string", length=255, nullable=true) */
+    /** 
+     * @ORM\Column(name="facebook_access_token", type="string", length=255, nullable=true) 
+     */
     protected $facebook_access_token;
-	
-	const GRUPO_USUARIOS=1;
-    const GRUPO_ClIENTE=2;
-	const GRUPO_ADMIN=3;
     
-    static public $sGrupo=array(
-        self::GRUPO_USUARIOS=>'Usuarios',
-		self::GRUPO_CLIENTE=>'Clientes',
-		self::GRUPO_ADMIN=>'Administradores'
-    );
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token_celular", type="string", length=255, nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     */
+    private $tokenCelular;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="marca_celular", type="string", length=255, nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     */
+    private $marcaCelular;
 	
-	/**
+    const GRUPO_USUARIOS    = 1;
+    const GRUPO_CLIENTES    = 2;
+    const GRUPO_ADMIN       = 3;
+
+    static public $sGrupo=array(
+        self::GRUPO_USUARIOS    => 'Usuarios',
+        self::GRUPO_CLIENTES    => 'Clientes',
+        self::GRUPO_ADMIN       => 'Administradores'
+    );
+
+    static function getPreferedTipoGrupo(){
+        return array(self::GRUPO_USUARIOS);
+    }
+    
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("stringGrupo")
+     */
+    public function getStringTipoGrupo(){
+        $arreglo = self::$sGrupo;
+        return $arreglo[$this->getGrupo()];
+    }
+
+    static function getArrayTipoGrupo(){
+        $sTipoGrupo=array(
+            self::GRUPO_USUARIOS => 'Usuarios',
+            self::GRUPO_CLIENTES => 'Clientes'
+        );
+        return $sTipoGrupo;
+    }
+    
+    const GENERO_MASCULINO    = 1;
+    const GENERO_FEMENINO     = 2;
+    
+    static public $sGenero=array(
+        self::GENERO_MASCULINO  => 'Masculino',
+        self::GENERO_FEMENINO   => 'Femenino'
+    );
+
+    static function getPreferedGenero(){
+        return array(self::GENERO_MASCULINO);
+    }
+    
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("stringGenero")
+     */
+    public function getStringGenero(){
+        $arreglo = $this->getArrayGenero();
+        return $arreglo[$this->getGenero()];
+    }
+
+    static function getArrayGenero(){
+        return self::$sGenero;
+    }
+
+    public function __toString() {
+        return $this->getNombreCompleto();
+    }
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -190,32 +316,12 @@ class Usuario implements UserInterface, \Serializable
         // may not be needed, see section on salt below
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         $this->isActive = true;
-        $this->grupo = self::GRUPO_USUARIOS;
+        $this->grupo = self::GRUPO_CLIENTES;
+        $this->genero = self::GENERO_MASCULINO;
     }
     
-    public function __toString() {
-        return $this->getNombreCompleto();
-    }
-    
-     public function getStringTipoGrupo(){
-        $arreglo = $this->getArrayTipoGrupo();
-        return $arreglo[$this->getGrupo()];
-    }
-
-    static function getArrayTipoGrupo(){
-        $sTipoGrupo=array(
-            self::GRUPO_USUARIOS=>'Usuarios',
-			self::GRUPO_CLIENTE=>'Clientes'
-        );
-        return $sTipoGrupo;
-    }
-
-    static function getPreferedTipoGrupo(){
-        return array(self::GRUPO_USUARIOS);
-    }
-
 	
-	/**
+    /**
      * @see UserInterface::getUsername
      */
     public function getUsername() {
@@ -228,14 +334,14 @@ class Usuario implements UserInterface, \Serializable
      */
     public function getRoles() {
 
-        if($this->getGrupo() == self::GRUPO_USUARIOS){
-            return array('ROLE_USUARIO','ROLE_API');
-		}elseif($this->getGrupo() == self::GRUPO_CLIENTES){
-			return array('ROLE_USUARIO','ROLE_API');
-        }elseif($this->getGrupo() == self::GRUPO_ADMIN){
-            return array('ROLE_ADMIN','ROLE_API');
-        }else{
-            return array('ROLE_SUPER_ADMIN','ROLE_API');
+        if ($this->getGrupo() == self::GRUPO_USUARIOS) {
+            return array('ROLE_USUARIO', 'ROLE_API');
+        } elseif ($this->getGrupo() == self::GRUPO_CLIENTES) {
+            return array('ROLE_CLIENTE', 'ROLE_API');
+        } elseif ($this->getGrupo() == self::GRUPO_ADMIN) {
+            return array('ROLE_ADMIN', 'ROLE_API');
+        } else {
+            return array('ROLE_SUPER_ADMIN', 'ROLE_API');
         }
     }
 
@@ -252,7 +358,12 @@ class Usuario implements UserInterface, \Serializable
      */
     public function serialize() {
         return \json_encode(
-                array($this->nombre, $this->apellidos, $this->telefono, $this->email ,$this->isActive, $this->id)
+                array($this->nombre, 
+                    $this->apellidos, 
+                    $this->celular, 
+                    $this->email, 
+                    $this->isActive, 
+                    $this->id)
         );
     }
 
@@ -260,7 +371,12 @@ class Usuario implements UserInterface, \Serializable
      * @param $serialized
      */
     public function unserialize($serialized) {
-        list($this->nombre, $this->apellido, $this->telefono, $this->email ,$this->isActive, $this->id) = \json_decode($serialized);
+        list($this->nombre, 
+                $this->apellido, 
+                $this->celular, 
+                $this->email ,
+                $this->isActive, 
+                $this->id) = \json_decode($serialized);
     }
     
 
@@ -982,5 +1098,51 @@ class Usuario implements UserInterface, \Serializable
     public function getAmigos()
     {
         return $this->amigos;
+    }
+
+    /**
+     * Set tokenCelular
+     *
+     * @param string $tokenCelular
+     * @return Usuario
+     */
+    public function setTokenCelular($tokenCelular)
+    {
+        $this->tokenCelular = $tokenCelular;
+
+        return $this;
+    }
+
+    /**
+     * Get tokenCelular
+     *
+     * @return string 
+     */
+    public function getTokenCelular()
+    {
+        return $this->tokenCelular;
+    }
+
+    /**
+     * Set marcaCelular
+     *
+     * @param string $marcaCelular
+     * @return Usuario
+     */
+    public function setMarcaCelular($marcaCelular)
+    {
+        $this->marcaCelular = $marcaCelular;
+
+        return $this;
+    }
+
+    /**
+     * Get marcaCelular
+     *
+     * @return string 
+     */
+    public function getMarcaCelular()
+    {
+        return $this->marcaCelular;
     }
 }

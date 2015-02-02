@@ -3,3 +3,10 @@ services:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
+    
+    checkengine.security.authentication.handler:
+        class: Checkengine\DashboardBundle\Security\Core\Authentication\AuthenticationHandler
+        public: false
+        arguments: 
+            - @router
+            - @session

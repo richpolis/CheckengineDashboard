@@ -1,0 +1,35 @@
+usuarios_api:
+    type:       rest
+    prefix:     /v1
+    name_prefix: api_1_
+    resource: Checkengine\ApiBundle\Controller\UsuariosApiController
+    
+empresas_api:
+    type:       rest
+    prefix:     /v1
+    name_prefix: api_1_
+    resource: Checkengine\ApiBundle\Controller\EmpresasApiController
+    
+ofertas_api:
+    type:       rest
+    prefix:     /v1
+    name_prefix: api_1_
+    resource: Checkengine\ApiBundle\Controller\OfertasApiController
+    
+tipos_api:
+    type:       rest
+    prefix:     /v1
+    name_prefix: api_1_
+    resource: Checkengine\ApiBundle\Controller\TiposEmpresaApiController
+    
+especialidades_api:
+    type:       rest
+    prefix:     /v1
+    name_prefix: api_1_
+    resource: Checkengine\ApiBundle\Controller\EspecialidadesApiController
+
+servicios_api:
+    type:       rest
+    prefix:     /v1
+    name_prefix: api_1_
+    resource: Checkengine\ApiBundle\Controller\ServiciosApiController

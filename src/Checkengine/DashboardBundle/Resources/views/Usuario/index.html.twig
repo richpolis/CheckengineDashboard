@@ -1,75 +1,84 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
 {% block body -%}
-    <h1>Usuario list</h1>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Imagen</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>Salt</th>
-                <th>Celular</th>
-                <th>Fechanacimiento</th>
-                <th>Genero</th>
-                <th>Ubicacionlongitud</th>
-                <th>Ubicacionlatitud</th>
-                <th>Noofertas</th>
-                <th>Isactive</th>
-                <th>Grupo</th>
-                <th>Createdat</th>
-                <th>Updatedat</th>
-                <th>Facebook_id</th>
-                <th>Facebook_access_token</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('usuarios_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.nombre }}</td>
-                <td>{{ entity.apellidos }}</td>
-                <td>{{ entity.imagen }}</td>
-                <td>{{ entity.email }}</td>
-                <td>{{ entity.password }}</td>
-                <td>{{ entity.salt }}</td>
-                <td>{{ entity.celular }}</td>
-                <td>{% if entity.fechaNacimiento %}{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.genero }}</td>
-                <td>{{ entity.ubicacionLongitud }}</td>
-                <td>{{ entity.ubicacionLatitud }}</td>
-                <td>{{ entity.noOfertas }}</td>
-                <td>{{ entity.isActive }}</td>
-                <td>{{ entity.grupo }}</td>
-                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.facebookid }}</td>
-                <td>{{ entity.facebookaccesstoken }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('usuarios_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('usuarios_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'usuarios' } %}
+    <div class="container container-principal">
+        <br>
+        <div class="well">
+            <form action="{{path('usuarios')}}" class="form-inline" role="search">
+                <div class="form-group row" style="width: 100%;">
+                    <label class="col-md-4 text-center">Buscar usuario por: </label>    
+                    <div class="input-group col-md-8">
+                        <input placeholder="nombre, apellidos, email" class="form-control" name="buscar"
+                               type="text">
+                        <span class="input-group-btn">
+                            <input type="submit" class="btn btn-warning" value="Buscar"/>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </form>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">
+                    Usuarios
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="text-center">
+                                Nombre
+                            </th>
+                            <th class="text-center">
+                                Apellidos
+                            </th>
+                            <th class="text-center">
+                                Accion
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in pagination %}  
+                            <tr>
+                                <td class="text-center">
+                                    {{usuario.nombre}}
+                                </td>
+                                <td class="text-center">
+                                    {{usuario.apellidos}}
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="{{ url('usuarios_show', { 'id' : usuario.id }) }}" class="btn btn-warning"> Mostar</a>
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="{{ url('usuarios_show', { 'id' : usuario.id }) }}">Mostrar</a></li>
+                                            <li><a href="{{ url('usuarios_edit', { 'id' : usuario.id }) }}">Editar</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('usuarios_delete', { 'id' : usuario.id }) }}';}">Eliminar</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <a href="{{ path('usuarios_export') }}" class="btn btn-default btn-sm">Exportar</a>
+                <a href="{{ path('usuarios_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
+            </div>
+        </div>
+        <div class="container">
 
-        <ul>
-        <li>
-            <a href="{{ path('usuarios_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+        </div>
+        <div class="container text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+{% endblock %}

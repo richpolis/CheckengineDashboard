@@ -1,0 +1,84 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Nombre
+            </th>
+            <th>
+                Apellidos
+            </th>
+            <th>
+                Celular
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Fecha nacimiento
+            </th>
+             <th>
+                Genero
+            </th>
+            <th>
+                longitud
+            </th>
+             <th>
+                latitud
+            </th>
+            <th>
+                Grupo
+            </th>
+            <th>
+                Activo
+            </th>
+            <th>
+                Alta
+            </th>
+             <th>
+                Actualizacion
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios %}
+            <tr>
+                <td>
+                    {{ usuario.nombre }}
+                </td>
+                <td>
+                    {{ usuario.apellidos }}
+                </td>
+                <td>
+                    {{ usuario.celular }}
+                </td>
+                <td>
+                    {{ usuario.email }}    
+                </td>
+                <td>
+                    {{ usuario.fechaNacimiento | date('d-m-Y') }}
+                </td>
+                <td>
+                    {{ usuario.stringGenero }}
+                </td>
+                <td>
+                    {{ usuario.ubicacionLongitud }}
+                </td>
+                <td>
+                    {{ usuario.ubicacionLatitud }}    
+                </td>
+                <td>
+                    {{ usuario.stringTipoGrupo }}    
+                </td>
+                <td>
+                    {{ ((usuario.isActive)?'Si':No) }}
+                </td>
+                <td>
+                    {{ usuario.createdAt | date('d-m-Y H:i:s') }}
+                </td>
+                <td>
+                    {{ usuario.updatedAt | date('d-m-Y H:i:s') }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody> 
+</table>

@@ -41,7 +41,7 @@ class TipoEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="imagen", type="string", length=255)
+     * @ORM\Column(name="imagen", type="string", length=255,nullable=true)
      */
     private $imagen;
     
@@ -58,6 +58,13 @@ class TipoEmpresa
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updatedAt;
+    
+    /**
+     * @var Especialidades de Tipo de Empresa
+     *
+     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Especialidad", mappedBy="tipoEmpresa")
+     */
+    private $especialidades;
 	
     /*
      * Timestable
@@ -272,4 +279,159 @@ class TipoEmpresa
         return $this->id;
     }
     
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     * @return TipoEmpresa
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string 
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     * @return TipoEmpresa
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer 
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
+     * Set imagen
+     *
+     * @param string $imagen
+     * @return TipoEmpresa
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+
+        return $this;
+    }
+
+    /**
+     * Get imagen
+     *
+     * @return string 
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return TipoEmpresa
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return TipoEmpresa
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->especialidades = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add especialidades
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Especialidad $especialidades
+     * @return TipoEmpresa
+     */
+    public function addEspecialidade(\Checkengine\DashboardBundle\Entity\Especialidad $especialidades)
+    {
+        $this->especialidades[] = $especialidades;
+
+        return $this;
+    }
+
+    /**
+     * Remove especialidades
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Especialidad $especialidades
+     */
+    public function removeEspecialidade(\Checkengine\DashboardBundle\Entity\Especialidad $especialidades)
+    {
+        $this->especialidades->removeElement($especialidades);
+    }
+
+    /**
+     * Get especialidades
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEspecialidades()
+    {
+        return $this->especialidades;
+    }
 }

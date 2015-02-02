@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="apirest.usuario.handler.class">Checkengine\ApiBundle\Handler\UsuarioHandler</parameter>
+        <parameter key="dashboard.usuario.class">Checkengine\DashboardBundle\Entity\Usuario</parameter>
+        <parameter key="apirest.empresa.handler.class">Checkengine\ApiBundle\Handler\EmpresaHandler</parameter>
+        <parameter key="dashboard.empresa.class">Checkengine\DashboardBundle\Entity\Empresa</parameter>
+        <parameter key="apirest.oferta.handler.class">Checkengine\ApiBundle\Handler\OfertaHandler</parameter>
+        <parameter key="dashboard.oferta.class">Checkengine\DashboardBundle\Entity\Oferta</parameter> 
+    </parameters>
+
+    <services>
+        <service id="apirest.usuario.handler" class="%apirest.usuario.handler.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%dashboard.usuario.class%</argument>
+            <argument type="service" id="form.factory"></argument>
+            <argument type="service" id="security.encoder_factory"></argument>
+        </service>
+        <service id="apirest.empresa.handler" class="%apirest.empresa.handler.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%dashboard.empresa.class%</argument>
+            <argument type="service" id="form.factory"></argument>
+            <argument type="service" id="security.encoder_factory"></argument>
+        </service>
+        <service id="apirest.oferta.handler" class="%apirest.oferta.handler.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%dashboard.empresa.class%</argument>
+            <argument type="service" id="form.factory"></argument>
+            <argument type="service" id="security.encoder_factory"></argument>
+        </service>
+    </services>
+    
+</container>

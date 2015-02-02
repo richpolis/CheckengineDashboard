@@ -5,12 +5,16 @@ namespace Checkengine\DashboardBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Oferta
  *
  * @ORM\Table(name="ofertas")
  * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\OfertaRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class Oferta
 {
@@ -20,6 +24,9 @@ class Oferta
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
     
@@ -30,6 +37,10 @@ class Oferta
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Checkengine\DashboardBundle\Entity\Usuario")
+     * @Serializer\Groups({"list", "details"})
      */
     private $usuario;
 
@@ -38,6 +49,9 @@ class Oferta
      *
      * @ORM\Column(name="titulo", type="string", length=255)
      * @Assert\NotBlank(message="Ingresa un titulo")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $titulo;
 	
@@ -45,6 +59,9 @@ class Oferta
      * @var text
      *
      * @ORM\Column(name="descripcion", type="text")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $descripcion;
 
@@ -52,6 +69,9 @@ class Oferta
      * @var integer (mensaje, banner u oferta)
      *
      * @ORM\Column(name="tipo", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $tipo;
 	
@@ -59,6 +79,9 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="tipo_oferta", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $tipoOferta;
 	
@@ -66,6 +89,9 @@ class Oferta
      * @var string
      *
      * @ORM\Column(name="oferta", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $oferta;
 
@@ -73,6 +99,9 @@ class Oferta
      * @var string
      *
      * @ORM\Column(name="banner", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $banner;
 	
@@ -80,6 +109,9 @@ class Oferta
      * @var \DateTime
      *
      * @ORM\Column(name="inicia", type="date")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Date")
      */
     private $inicia;
 	
@@ -87,6 +119,9 @@ class Oferta
      * @var \DateTime
      *
      * @ORM\Column(name="termina", type="date")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Date")
      */
     private $termina;
 
@@ -94,6 +129,9 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="tipo_pago", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $tipoPago;
 
@@ -113,6 +151,9 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="marcas", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $marcas;
 	
@@ -120,6 +161,9 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="modelos", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $modelos;
 	
@@ -137,6 +181,9 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="clicks", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $clicks;
     
@@ -144,6 +191,9 @@ class Oferta
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
     
@@ -151,6 +201,9 @@ class Oferta
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $updatedAt;
 	

@@ -12,4 +12,50 @@ use Doctrine\ORM\EntityRepository;
  */
 class EmpresaRepository extends EntityRepository
 {
+    public function queryFindEmpresas($buscar = "") {
+        $em = $this->getEntityManager();
+        if (strlen($buscar) == 0) {
+            $consulta = $em->createQuery('SELECT u '
+                    . 'FROM DashboardBundle:Empresa u '
+                    . 'ORDER BY u.nombre ASC, u.sucursal ASC');
+        } else {
+            $consulta = $em->createQuery("SELECT u "
+                    . "FROM DashboardBundle:Empresa u "
+                    . "WHERE u.nombre LIKE :nombre OR u.sucursal LIKE :sucursal OR u.rubro LIKE :rubro "
+                    . "ORDER BY u.nombre ASC, u.sucursal ASC");
+            $consulta->setParameters(array(
+                'nombre' => "%" . $buscar . "%",
+                'sucursal' => "%" . $buscar . "%",
+                'rubro' => "%" . $buscar . "%"
+            ));
+        }
+        return $consulta;
+    }
+
+    public function findEmpresas($buscar = "") {
+        return $this->queryFindEmpresas($buscar)->getResult();
+    }
+    
+    public function queryFindTipoEspecialidadBy($tipo = "",$especialidad = "") {
+        $query= $this->getEntityManager()->createQueryBuilder();
+            $query->select('e')
+                ->from('Checkengine\DashboardBundle\Entity\Empresa', 'e')
+                ->orderBy('e.createdAt', 'DESC'); 
+        if(strlen($tipo)>0){
+            $query->leftJoin('e.tipos', 't');
+            $query->andWhere('t.slug=:tipo')
+                  ->setParameter('tipo', $tipo);
+        }
+        if(strlen($especialidad)>0){
+            $query->leftJoin('e.especialidades', 's');
+            $query->andWhere('s.slug=:especialidad')
+                  ->setParameter('especialidad', $especialidad);
+        }
+        return $query->getQuery();
+
+    }
+
+    public function findTipoEspecialidadBy($tipo = "",$especialidad="") {
+        return $this->queryFindTipoEspecialidadBy($tipo,$especialidad)->getResult();
+    }
 }

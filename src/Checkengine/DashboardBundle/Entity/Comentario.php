@@ -5,12 +5,16 @@ namespace Checkengine\DashboardBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Comentario
  *
  * @ORM\Table(name="comentarios")
  * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\ComentarioRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class Comentario
 {
@@ -20,6 +24,9 @@ class Comentario
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -30,6 +37,10 @@ class Comentario
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Checkengine\DashboardBundle\Entity\Usuario")
+     * @Serializer\Groups({"list", "details"})
      */
     private $usuario;
 
@@ -38,6 +49,9 @@ class Comentario
      *
      * @ORM\Column(name="comentario", type="text")
      * @Assert\NotBlank(message="Ingresa tu comentario")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $comentario;
 
@@ -45,6 +59,9 @@ class Comentario
      * @var integer
      *
      * @ORM\Column(name="calificacion", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $calificacion;
 	
@@ -53,6 +70,9 @@ class Comentario
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
     
@@ -60,6 +80,9 @@ class Comentario
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $updatedAt;
 	

@@ -9,28 +9,38 @@
 {% endblock meta_tags %}
 
 {% block stylesheets %} 
-    {% stylesheets
+    {# stylesheets
         'css/bootstrap.min.css'
         'css/main.css'
-    filter='cssrewrite, ?uglifycss' output='css/compiled/all.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
+    filter='cssrewrite, ?uglifycss' output='css/compiled/all.css' #}
+    <!--link rel="stylesheet" href="{#{ asset_url }#}"  type="text/css"/-->
+    {# endstylesheets #}
+    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}"  type="text/css"/>
+    <link rel="stylesheet" href="{{asset('css/main.css')}}"  type="text/css"/>
+    
 {% endblock %}
 
 
 {% block content %}
     {% block nav %}
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background: white;">
             <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">
+                <div class="navbar-header" style="position: relative;">
+                    <a class="navbar-brand" href="#" style="position: absolute; top: -10px;">
                       <img alt="Checkengine" src="{{asset('images/logo_horizontal.jpg')}}" />
                     </a>
                 </div>
+                {% if app.user == null %}
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Login</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Contacto</a></li>
+                    <li><a class="link-nav-bar" href="#" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Login</a></li>
+                    <li><a class="link-nav-bar" href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Contacto</a></li>
                 </ul>
+                {% else %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><p class="navbar-text color-naranja nombre-usuario">Hola {{ app.user.nombreCompleto }}!</p> </li>
+                    <li><a class="link-nav-bar" href="{{path('logout')}}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Cerrar sesion</a></li>
+                </ul>
+                {% endif %}
             </div>
         </nav>
     {% endblock nav %}
@@ -53,14 +63,19 @@
 {% endblock content %}
 
 {% block javascripts %}
-    {% javascripts
+    {# javascripts
         'js/vendor/modernizr-2.6.2-respond-1.1.0.min.js'
         'js/vendor/jquery-1.11.1.min.js'
         'js/vendor/bootstrap.min.js'
         'js/*'
-    filter='?uglifyjs' output='js/compiled/all.js' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    filter='?uglifyjs' output='js/compiled/all.js' #}
+    <!--script src="{#{ asset_url }#}" type="text/javascript"></script-->
+    {# endjavascripts #}
+    <script src="{{ asset('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/vendor/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/vendor/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/plugins.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <!--script>
         (function (b, o, i, l, e, r) {

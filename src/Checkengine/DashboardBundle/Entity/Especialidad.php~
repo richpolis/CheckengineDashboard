@@ -58,6 +58,13 @@ class Especialidad
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updatedAt;
+    
+    /**
+     * @var integer
+     * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\TipoEmpresa", inversedBy="especialidades")
+     * @ORM\JoinColumn(name="tipo_empresa_id", referencedColumnName="id")
+     */
+    private $tipoEmpresa;
 	
     /*
      * Timestable
@@ -270,5 +277,143 @@ class Especialidad
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     * @return Especialidad
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string 
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     * @return Especialidad
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer 
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
+     * Set imagen
+     *
+     * @param string $imagen
+     * @return Especialidad
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+
+        return $this;
+    }
+
+    /**
+     * Get imagen
+     *
+     * @return string 
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Especialidad
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Especialidad
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set tipoEmpresa
+     *
+     * @param \Checkengine\DashboardBundle\Entity\TipoEmpresa $tipoEmpresa
+     * @return Especialidad
+     */
+    public function setTipoEmpresa(\Checkengine\DashboardBundle\Entity\TipoEmpresa $tipoEmpresa = null)
+    {
+        $this->tipoEmpresa = $tipoEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoEmpresa
+     *
+     * @return \Checkengine\DashboardBundle\Entity\TipoEmpresa 
+     */
+    public function getTipoEmpresa()
+    {
+        return $this->tipoEmpresa;
     }
 }

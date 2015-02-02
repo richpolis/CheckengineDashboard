@@ -1,15 +1,108 @@
-<div class="container">
-    <ul class="nav nav-pills">
-        <li {%if tabActive == "usuarios" %} class="active" {% endif %}>
-            <a href="{{path('usuarios')}}"> Usuarios</a>
-        </li>
-        <li {%if tabActive == "dreams" %} class="active" {% endif %}>
-            <a href="{{path('dreams')}}"> Sueños</a>
-        </li>
-        <li {%if tabActive == "reportes" %} class="active" {% endif %}>
-            <a href="#">Reportes</a>
-        </li>
-    </ul>
+<div class="container" style="margin-top: 60px;">
+    <div class="btn-group">
+        <a href="{{path('usuarios')}}" class="btn {{((tabActive=="usuarios")?"btn-warning":"btn-primary")}}"> Usuarios</a>
+        <button type="button" class="btn {{((tabActive=="usuarios")?"btn-warning":"btn-primary")}} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{path('usuarios')}}">Listado</a></li>
+            <li class="divider"></li>
+            <li><a href="{{path('usuarios_new')}}">Nuevo</a></li>
+            <li><a href="{{path('usuarios_export')}}">Exportar</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <a href="{{path('empresas')}}" class="btn {{((tabActive=="empresas")?"btn-warning":"btn-primary")}}">Empresas</a>
+        <button type="button" class="btn {{((tabActive=="empresas")?"btn-warning":"btn-primary")}} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{path('empresas')}}">Listado</a></li>
+            <li class="divider"></li>
+            <li><a href="{{path('empresas_new')}}">Nuevo</a></li>
+            <li><a href="#">Exportar</a></li>
+        </ul>
+    </div>
+   <div class="btn-group">
+        <a href="{{path('ofertas')}}" class="btn {{((tabActive=="ofertas")?"btn-warning":"btn-primary")}}">Ofertas</a>
+        <button type="button" class="btn {{((tabActive=="ofertas")?"btn-warning":"btn-primary")}} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{path('ofertas')}}">Listado</a></li>
+            <li class="divider"></li>
+            <li><a href="{{path('ofertas_new')}}">Nuevo</a></li>
+            <li><a href="#">Exportar</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <a href="{{path('vehiculos')}}" class="btn {{((tabActive=="vehiculos")?"btn-warning":"btn-primary")}}">Vehiculos</a>
+        <button type="button" class="btn {{((tabActive=="vehiculos")?"btn-warning":"btn-primary")}} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{path('vehiculos')}}">Listado</a></li>
+            <li class="divider"></li>
+            <li><a href="{{path('vehiculos_new')}}">Nuevo</a></li>
+            <li><a href="#">Exportar</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <a href="{{path('tiposempresa')}}" class="btn {{((tabActive=="tiposempresa")?"btn-warning":"btn-primary")}}">Tipos de Empresa</a>
+        <button type="button" class="btn {{((tabActive=="tiposempresa")?"btn-warning":"btn-primary")}} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{path('tiposempresa')}}">Listado</a></li>
+            <li class="divider"></li>
+            <li><a href="{{path('tiposempresa_new')}}">Nuevo</a></li>
+            <li><a href="#">Exportar</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <a href="{{path('especialidades')}}" class="btn {{((tabActive=="especialidades")?"btn-warning":"btn-primary")}}">Especialidades</a>
+        <button type="button" class="btn {{((tabActive=="especialidades")?"btn-warning":"btn-primary")}} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{path('especialidades')}}">Listado</a></li>
+            <li class="divider"></li>
+            <li><a href="{{path('especialidades_new')}}">Nuevo</a></li>
+            <li><a href="#">Exportar</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <a href="{{path('servicios')}}" class="btn {{((tabActive=="servicios")?"btn-warning":"btn-primary")}}">Servicios</a>
+        <button type="button" class="btn {{((tabActive=="servicios")?"btn-warning":"btn-primary")}} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{path('servicios')}}">Listado</a></li>
+            <li class="divider"></li>
+            <li><a href="{{path('servicios_new')}}">Nuevo</a></li>
+            <li><a href="#">Exportar</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <a href="{{path('preguntas')}}" class="btn {{((tabActive=="preguntas")?"btn-warning":"btn-primary")}}">Preguntas</a>
+        <button type="button" class="btn {{((tabActive=="preguntas")?"btn-warning":"btn-primary")}} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{path('preguntas')}}">Listado</a></li>
+            <li class="divider"></li>
+            <li><a href="{{path('preguntas_new')}}">Nuevo</a></li>
+            <li><a href="#">Exportar</a></li>
+        </ul>
+    </div>         
 </div>
 <div class="container">
 </div>

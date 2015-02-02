@@ -15,23 +15,20 @@ class OfertaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('titulo')
-            ->add('descripcion')
-            ->add('tipo')
-            ->add('tipoOferta')
-            ->add('oferta')
-            ->add('banner')
-            ->add('inicia')
+            ->add('titulo','text',array('required'=>false))
+            ->add('descripcion',null,array('required'=>false))
+            ->add('tipo','hidden')
+            ->add('tipoOferta','text',array('required'=>false))
+            ->add('oferta','text',array('required'=>false))
+            ->add('banner','hidden')
+            ->add('inicia','text',array('required'=>false))
             ->add('termina')
             ->add('tipoPago')
             ->add('marcas')
             ->add('modelos')
             ->add('clicks')
-            ->add('createdAt')
-            ->add('updatedAt')
             ->add('usuario')
             ->add('sucursales')
-            ->add('comentarios')
         ;
     }
     

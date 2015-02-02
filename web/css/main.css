@@ -1,8 +1,1 @@
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-
-body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
+body{padding-top:50px;padding-bottom:20px;}body .container-principal{min-height:60%}.navbar .nav p.color-naranja{color:#fb8100;}.navbar .nav p.color-naranja.nombre-usuario{font-size:16px}.navbar .nav a.link-nav-bar{color:#666;text-decoration:none;}.navbar .nav a.link-nav-bar:hover{color:#fb8100}

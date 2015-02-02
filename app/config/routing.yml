@@ -3,5 +3,14 @@ dashboard:
     type:     annotation
     prefix:   /
 
+_fosrest_api:
+    type:     rest
+    prefix:   /api
+    resource: "@ApiBundle/Resources/config/routing.yml"
+
+NelmioApiDocBundle:
+  resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+  prefix:   /api/doc
+
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
