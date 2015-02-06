@@ -1,59 +1,105 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
 {% block body -%}
-    <h1>Vehiculo list</h1>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Tipo</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Año</th>
-                <th>Puertas</th>
-                <th>Cilindros</th>
-                <th>Kms</th>
-                <th>Combustible</th>
-                <th>Transmision</th>
-                <th>Seguro</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.tipo }}</td>
-                <td>{{ entity.marca }}</td>
-                <td>{{ entity.modelo }}</td>
-                <td>{{ entity.año }}</td>
-                <td>{{ entity.puertas }}</td>
-                <td>{{ entity.cilindros }}</td>
-                <td>{{ entity.kms }}</td>
-                <td>{{ entity.combustible }}</td>
-                <td>{{ entity.transmision }}</td>
-                <td>{{ entity.seguro }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('vehiculos_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'vehiculos' } %}
+    <div class="container container-principal">
+        <br>
+        <div class="well">
+            <form action="{{path('vehiculos')}}" class="form-inline" role="search">
+                <div class="form-group row" style="width: 100%;">
+                    <label class="col-md-4 text-center">Buscar vehiculo por: </label>    
+                    <div class="input-group col-md-8">
+                        <input placeholder="nombre, apellidos, email" class="form-control" name="buscar"
+                               type="text">
+                        <span class="input-group-btn">
+                            <input type="submit" class="btn btn-warning" value="Buscar"/>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </form>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">
+                    Usuarios
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="text-center">
+                                Usuario
+                            </th>
+                            <th class="text-center">
+                                Tipo de vehiculo
+                            </th>
+                            <th class="text-center">
+                                Modelo
+                            </th>
+                            <th class="text-center">
+                                Marca
+                            </th>
+                            <th class="text-center">
+                                Modelo
+                            </th>
+                            <th class="text-center">
+                                Año
+                            </th>
+                            <th class="text-center">
+                                Accion
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vehiculo in pagination %}  
+                            <tr>
+                                <td class="text-center">
+                                    {{vehiculo.usuario.nombreCompleto}}
+                                </td>
+                                <td class="text-center">
+                                    {{vehiculo.stringTipo}}
+                                </td>
+                                <td class="text-center">
+                                    {{vehiculo.marca}}
+                                </td>
+                                <td class="text-center">
+                                    {{vehiculo.modelo}}
+                                </td>
+                                <td class="text-center">
+                                    {{vehiculo.year}}
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="{{ url('vehiculos_show', { 'id' : vehiculo.id }) }}" class="btn btn-warning"> Mostar</a>
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="{{ url('vehiculos_show', { 'id' : vehiculo.id }) }}">Mostrar</a></li>
+                                            <li><a href="{{ url('vehiculos_edit', { 'id' : vehiculo.id }) }}">Editar</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('vehiculos_delete', { 'id' : vehiculo.id }) }}';}">Eliminar</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <a href="{{ path('vehiculos_export') }}" class="btn btn-default btn-sm">Exportar</a>
+                <a href="{{ path('vehiculos_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
+            </div>
+        </div>
+        <div class="container">
 
-        <ul>
-        <li>
-            <a href="{{ path('vehiculos_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+        </div>
+        <div class="container text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+{% endblock %}

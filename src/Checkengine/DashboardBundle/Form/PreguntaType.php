@@ -15,11 +15,9 @@ class PreguntaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pregunta')
-            ->add('respuesta')
-            ->add('orden')
-            ->add('createdAt')
-            ->add('updatedAt')
+            ->add('pregunta','text',array('required'=>false))
+            ->add('respuesta','text',array('required'=>false))
+            ->add('orden','hidden')
         ;
     }
     

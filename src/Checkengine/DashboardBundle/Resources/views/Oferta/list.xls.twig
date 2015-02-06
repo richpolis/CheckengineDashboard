@@ -2,46 +2,37 @@
     <thead>
         <tr>
             <th>
-                Nombre
+                Usuario
             </th>
             <th>
-                Sucursal
+                Titulo
             </th>
             <th>
-                Rubro
+                Descripcion
             </th>
             <th>
-                Direccion
+                Tipo
             </th>
             <th>
-                RUT
+                Tipo de Oferta
             </th>
             <th>
-                Region
+                Oferta
             </th>
             <th>
-                Comuna
+                Tipo de Pago
             </th>
             <th>
-                Horarios
+                Inicia
             </th>
             <th>
-                Tipos_de_empresa
+                Termina
             </th>
             <th>
-                Especialidades
+                Sucursales
             </th>
             <th>
-                Servicios
-            </th>
-            <th>
-                longitud
-            </th>
-             <th>
-                latitud
-            </th>
-            <th>
-                Manager
+                Marcas y Modelos
             </th>
             <th>
                 Activo
@@ -55,61 +46,51 @@
         </tr>
     </thead>
     <tbody>
-        {% for empresa in empresas %}
+        {% for oferta in ofertas %}
             <tr>
                 <td>
-                    {{ empresa.nombre }}
+                    {{ oferta.usuario.nombreCompleto }}
                 </td>
                 <td>
-                    {{ empresa.sucursal }}
+                    {{ oferta.titulo }}
                 </td>
                 <td>
-                    {{ empresa.rubro }}
+                    {{ oferta.descripcion | raw }}
                 </td>
                 <td>
-                    {{ empresa.direccion | striptags }}
+                    {{ oferta.stringTipo }}
                 </td>
                 <td>
-                    {{ empresa.rut }}
+                    {{ oferta.stringTipoOferta }}
                 </td>
                 <td>
-                    {{ empresa.region }}    
+                    {{ oferta.oferta }}
                 </td>
                 <td>
-                    {{ empresa.comuna }}    
+                    {{ oferta.stringTipoPago }}    
                 </td>
                 <td>
-                    {{ empresa.horarios }}    
+                    {{ oferta.inicia | date('d-m-Y') }}    
                 </td>
                 <td>
-                    {% for tipo in empresa.tipos %}
-                        {{ tipo }},
+                    {{ oferta.termina | date('d-m-Y') }}    
+                </td>
+                <td>
+                    {% for sucursal in oferta.sucursales %}
+                        {{ sucursal.nombreCompleto }},
                     {% endfor %}
                 </td>
                 <td>
-                    {% for espe in empresa.especialidades %}
-                        {{ espe }},
-                    {% endfor %}
+                    {{ oferta.marcas }}
                 </td>
                 <td>
-                    {% for serv in empresa.servicios %}
-                        {{ serv }},
-                    {% endfor %} 
+                    {{ ((oferta.isActive)?'Si':No) }}
                 </td>
                 <td>
-                    {{ empresa.ubicacionLongitud }}
+                    {{ oferta.createdAt | date('d-m-Y') }}
                 </td>
                 <td>
-                    {{ empresa.ubicacionLatitud }}    
-                </td>
-                <td>
-                    {{ ((empresa.isActive)?'Si':No) }}
-                </td>
-                <td>
-                    {{ empresa.createdAt | date('d-m-Y') }}
-                </td>
-                <td>
-                    {{ empresa.updatedAt | date('d-m-Y') }}
+                    {{ oferta.updatedAt | date('d-m-Y') }}
                 </td>
             </tr>
         {% endfor %}

@@ -15,11 +15,10 @@ class EspecialidadType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('orden')
-            ->add('imagen')
-            ->add('createdAt')
-            ->add('updatedAt')
+            ->add('nombre','text',array('required'=>false))
+            ->add('orden','hidden')
+            ->add('file','file',array('label'=>'Imagen','required'=>true))
+            ->add('imagen','hidden')
         ;
     }
     

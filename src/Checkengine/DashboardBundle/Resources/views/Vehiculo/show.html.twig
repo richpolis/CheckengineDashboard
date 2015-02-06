@@ -1,68 +1,117 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
 {% block body -%}
-    <h1>Vehiculo</h1>
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'vehiculos' } %}
+    <div class="container container-principal">
+        <br>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">
+                    Mostrar Vehiculo
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">Datos generales</a></li>
+                        <li role="presentation"><a href="#seguridad" aria-controls="seguridad" role="tab" data-toggle="tab">Seguridad</a></li>
+                        <li role="presentation"><a href="#sistema" aria-controls="sistema" role="tab" data-toggle="tab">Sistema</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="general">
+                            <table class="record_properties table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th>Id</th>
+                                        <td>{{ entity.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tipo de vehiculo</th>
+                                        <td>{{ entity.stringTipo }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Marca</th>
+                                        <td>{{ entity.marca }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Modelo</th>
+                                        <td>{{ entity.modelo }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Año</th>
+                                        <td>{{ entity.year }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Puertas</th>
+                                        <td>{{ entity.puertas }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cilindro</th>
+                                        <td>{{ entity.cilindro }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Kms</th>
+                                        <td>{{ entity.kms }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Combustible</th>
+                                        <td>{{ entity.combustible }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Transmision</th>
+                                        <td>{{ entity.transmision }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="seguridad">
+                            <table class="record_properties table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <td>{{ entity.usuario.nombreCompleto }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tiene seguro?</th>
+                                        <td>{{ ((entity.seguro)?'Si':'No') }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="sistema">
+                            <table class="record_properties table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th>Creado</th>
+                                        <td>{{ entity.createdAt|date('d-m-Y H:i:s') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Actualizado</th>
+                                        <td>{{ entity.updatedAt|date('d-m-Y H:i:s') }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="text-left">
+                    <a href="{{ path('vehiculos') }}" class="btn btn-primary">
+                        Regresar
+                    </a>
+                    <a href="{{ path('vehiculos_edit', { 'id': entity.id }) }}" class="btn btn-warning">
+                        Editar
+                    </a>
+                    <span class="pull-right">{{ form(delete_form) }}</span>            
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Tipo</th>
-                <td>{{ entity.tipo }}</td>
-            </tr>
-            <tr>
-                <th>Marca</th>
-                <td>{{ entity.marca }}</td>
-            </tr>
-            <tr>
-                <th>Modelo</th>
-                <td>{{ entity.modelo }}</td>
-            </tr>
-            <tr>
-                <th>Año</th>
-                <td>{{ entity.año }}</td>
-            </tr>
-            <tr>
-                <th>Puertas</th>
-                <td>{{ entity.puertas }}</td>
-            </tr>
-            <tr>
-                <th>Cilindros</th>
-                <td>{{ entity.cilindros }}</td>
-            </tr>
-            <tr>
-                <th>Kms</th>
-                <td>{{ entity.kms }}</td>
-            </tr>
-            <tr>
-                <th>Combustible</th>
-                <td>{{ entity.combustible }}</td>
-            </tr>
-            <tr>
-                <th>Transmision</th>
-                <td>{{ entity.transmision }}</td>
-            </tr>
-            <tr>
-                <th>Seguro</th>
-                <td>{{ entity.seguro }}</td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>                        
+        </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('vehiculos') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('vehiculos_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+        <div class="container text-center">
+        </div>
+    </div>   
 {% endblock %}

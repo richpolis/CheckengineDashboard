@@ -76,7 +76,7 @@ class ServicioController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -146,7 +146,7 @@ class ServicioController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -165,7 +165,7 @@ class ServicioController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -198,7 +198,7 @@ class ServicioController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -240,7 +240,7 @@ class ServicioController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('servicios_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Borrar','attr'=>array('class'=>'btn btn-danger')))
             ->getForm()
         ;
     }

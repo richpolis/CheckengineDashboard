@@ -5,6 +5,7 @@ namespace Checkengine\DashboardBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Checkengine\DashboardBundle\Entity\Vehiculo;
 
 class VehiculoType extends AbstractType
 {
@@ -15,17 +16,25 @@ class VehiculoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tipo')
-            ->add('marca')
-            ->add('modelo')
-            ->add('año')
-            ->add('puertas')
-            ->add('cilindros')
-            ->add('kms')
-            ->add('combustible')
-            ->add('transmision')
-            ->add('seguro')
-            ->add('usuario')
+            ->add('tipo','choice',array(
+                'label'=>'Tipo de vehiculo',
+                'empty_value'=>false,
+                'choices'=>Vehiculo::getArrayTipo(),
+                'preferred_choices'=>Vehiculo::getPreferedTipo(),
+                'attr'=>array(
+                    'class'=>'validate[required] form-control placeholder',
+                    'placeholder'=>'Tipo de vehiculo',
+                )))
+            ->add('marca','text',array('required'=>false))
+            ->add('modelo','text',array('required'=>false))
+            ->add('year','text',array('required'=>false))
+            ->add('puertas','text',array('required'=>false))
+            ->add('cilindros','text',array('required'=>false))
+            ->add('kms','text',array('required'=>false))
+            ->add('combustible','text',array('required'=>false))
+            ->add('transmision','text',array('required'=>false))
+            ->add('seguro',null,array('required'=>false))
+            ->add('usuario',null,array('required'=>false))
         ;
     }
     

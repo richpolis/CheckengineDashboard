@@ -1,0 +1,90 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Usuario
+            </th>
+            <th>
+                Tipo de vehiculo
+            </th>
+            <th>
+                Marca
+            </th>
+            <th>
+                Modelo
+            </th>
+            <th>
+                Año
+            </th>
+             <th>
+                Puertas
+            </th>
+            <th>
+                Cilindros
+            </th>
+             <th>
+                Kms
+            </th>
+            <th>
+                Combustible
+            </th>
+            <th>
+                Transmision
+            </th>
+            <th>
+                Seguro
+            </th>
+            <th>
+                Alta
+            </th>
+             <th>
+                Actualizacion
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vehiculo in vehiculos %}
+            <tr>
+                <td>
+                    {{ vehiculo.usuario.nombreCompleto }}
+                </td>
+                <td>
+                    {{ vehiculo.stringTipo }}
+                </td>
+                <td>
+                    {{ vehiculo.marca }}
+                </td>
+                <td>
+                    {{ vehiculo.modelo }}    
+                </td>
+                <td>
+                    {{ vehiculo.year }}
+                </td>
+                <td>
+                    {{ vehiculo.puertas }}
+                </td>
+                <td>
+                    {{ vehiculo.cilindros }}
+                </td>
+                <td>
+                    {{ vehiculo.Kms }}    
+                </td>
+                <td>
+                    {{ vehiculo.combustible }}    
+                </td>
+                <td>
+                    {{ vehiculo.transmision }}    
+                </td>
+                <td>
+                    {{ ((vehiculo.seguro)?'Si':No) }}
+                </td>
+                <td>
+                    {{ vehiculo.createdAt | date('d-m-Y H:i:s') }}
+                </td>
+                <td>
+                    {{ vehiculo.updatedAt | date('d-m-Y H:i:s') }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody> 
+</table>

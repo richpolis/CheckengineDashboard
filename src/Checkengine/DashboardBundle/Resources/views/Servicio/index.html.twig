@@ -1,45 +1,84 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
 {% block body -%}
-    <h1>Servicio list</h1>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Createdat</th>
-                <th>Updatedat</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('servicios_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.nombre }}</td>
-                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('servicios_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('servicios_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'servicios' } %}
+    <div class="container container-principal">
+        <br>
+        <div class="well">
+            <form action="{{path('servicios')}}" class="form-inline" role="search">
+                <div class="form-group row" style="width: 100%;">
+                    <label class="col-md-4 text-center">Buscar servicio por: </label>    
+                    <div class="input-group col-md-8">
+                        <input placeholder="nombre, apellidos, email" class="form-control" name="buscar"
+                               type="text">
+                        <span class="input-group-btn">
+                            <input type="submit" class="btn btn-warning" value="Buscar"/>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </form>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">
+                    Servicios
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="text-center">
+                                Servicio
+                            </th>
+                            <th class="text-center">
+                                Orden
+                            </th>
+                            <th class="text-center">
+                                Accion
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for servicio in entities %}  
+                            <tr>
+                                <td class="text-center">
+                                    {{servicio.nombre}}
+                                </td>
+                                <td class="text-center">
+                                    {{servicio.orden}}
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="{{ url('servicios_show', { 'id' : servicio.id }) }}" class="btn btn-warning"> Mostar</a>
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="{{ url('servicios_show', { 'id' : servicio.id }) }}">Mostrar</a></li>
+                                            <li><a href="{{ url('servicios_edit', { 'id' : servicio.id }) }}">Editar</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('servicios_delete', { 'id' : servicio.id }) }}';}">Eliminar</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <a href="{{ path('servicios_export') }}" class="btn btn-default btn-sm">Exportar</a>
+                <a href="{{ path('servicios_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
+            </div>
+        </div>
+        <div class="container">
 
-        <ul>
-        <li>
-            <a href="{{ path('servicios_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+        </div>
+        <div class="container text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+{% endblock %}

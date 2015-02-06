@@ -1,40 +1,74 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
 {% block body -%}
-    <h1>Servicio</h1>
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'servicios' } %}
+    <div class="container container-principal">
+        <br>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">
+                    Mostrar Servicio
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">Datos generales</a></li>
+                        <li role="presentation"><a href="#sistema" aria-controls="sistema" role="tab" data-toggle="tab">Sistema</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="general">
+                            <table class="record_properties table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th>Id</th>
+                                        <td>{{ entity.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Servicio</th>
+                                        <td>{{ entity.nombre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Orden</th>
+                                        <td>{{ entity.orden }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="sistema">
+                            <table class="record_properties table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th>Creado</th>
+                                        <td>{{ entity.createdAt|date('d-m-Y H:i:s') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Actualizado</th>
+                                        <td>{{ entity.updatedAt|date('d-m-Y H:i:s') }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="text-left">
+                    <a href="{{ path('servicios') }}" class="btn btn-primary">
+                        Regresar
+                    </a>
+                    <a href="{{ path('servicios_edit', { 'id': entity.id }) }}" class="btn btn-warning">
+                        Editar
+                    </a>
+                    <span class="pull-right">{{ form(delete_form) }}</span>            
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Nombre</th>
-                <td>{{ entity.nombre }}</td>
-            </tr>
-            <tr>
-                <th>Createdat</th>
-                <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Updatedat</th>
-                <td>{{ entity.updatedAt|date('Y-m-d H:i:s') }}</td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>                        
+        </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('servicios') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('servicios_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+        <div class="container text-center">
+        </div>
+    </div>   
 {% endblock %}

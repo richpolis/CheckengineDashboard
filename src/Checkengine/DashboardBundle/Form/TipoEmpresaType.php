@@ -15,11 +15,10 @@ class TipoEmpresaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('orden')
+            ->add('nombre','text',array('required'=>false))
+            ->add('orden','hidden')
+            ->add('file','file',array('label'=>'Imagen','required'=>true))    
             ->add('imagen')
-            ->add('createdAt')
-            ->add('updatedAt')
         ;
     }
     

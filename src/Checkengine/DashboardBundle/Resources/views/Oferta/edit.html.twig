@@ -1,121 +1,55 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
 {% block body %}
-    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'empresas' } %}
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'ofertas' } %}
     <div class="container container-principal">
-        <form action="{{ path('empresas_update',{'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
+        <form action="{{ path('ofertas_update',{'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
             <input name="_method" value="put" type="hidden"/>
             <br>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title text-center">
-                        Editar Empresa "{{entity.nombreCompleto}}"
+                        Editar Oferta "{{entity.titulo}}"
                     </h3>
                 </div>
                 <div class="panel-body">
                     {{ form_errors(form) }}  
-                    <div role="tabpanel">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">Datos generales</a></li>
-                            <li role="presentation"><a href="#manager" aria-controls="manager" role="tab" data-toggle="tab">Manager y Servicios</a></li>
-                            <li role="presentation"><a href="#ubicacion" aria-controls="ubicacion" role="tab" data-toggle="tab">Ubicacion</a></li>
-                            <li role="presentation"><a href="#comentarios" aria-controls="comentarios" role="tab" data-toggle="tab">Comentarios</a></li>
-                        </ul>
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="general">
-                                <div class="form-group">
-                                    {{ form_widget(form.nombre,{'attr':{'class':'form-control','placeholder':'Razon Social'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.sucursal,{'attr':{'class':'form-control','placeholder':'Sucursal'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_row(form.rubro,{'attr':{'class':'form-control','placeholder':'Rubro'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.direccion,{'attr':{'class':'form-control','placeholder':'Direccion'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.rut,{'attr':{'class':'form-control','placeholder':'RUT'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.region,{'attr':{'class':'form-control','placeholder':'Region'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.comuna,{'attr':{'class':'form-control','placeholder':'Comuna'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.horarios,{'attr':{'class':'form-control','placeholder':'Horarios'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.file,{'attr':{'class':'form-control','placeholder':'Logo'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.horarios,{'attr':{'class':'form-control','placeholder':'Horarios'}}) }}
-                                </div>  
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="seguridad">
-                                <div class="form-group">
-                                    {{ form_widget(form.usuario,{'attr':{'class':'form-control','placeholder':'Manager'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    <label class="checkbox">
-                                      {{ form_widget(form.isActive) }}
-                                      Activo
-                                    </label>
-                                </div>
-                                <br/>
-                                <div class="form-group">
-                                    {{ form_row(form.tipos,{'attr':{'class':'form-control','placeholder':'Tipo'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_row(form.especialidades,{'attr':{'class':'form-control','placeholder':'Especialidades'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_row(form.servicios,{'attr':{'class':'form-control','placeholder':'Servicios'}}) }}
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="ubicacion">
-                                <div class="form-group">
-                                    {{ form_widget(form.ubicacionLongitud,{'attr':{'class':'form-control','placeholder':'Longitud'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.ubicacionLatitud,{'attr':{'class':'form-control','placeholder':'Latitud'}}) }}
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="comentarios">
-                                {% for comentario in entity.comentarios %}
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <a href="#">
-                                                <img class="media-object" data-src="{{comentario.usuario.webPath}}" alt="{{comentario.usuario.nombreCompleto}}">
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">{{comentario.usuario.nombreCompleto}} - {{comentario.usuario.createdAt|date('d-m-Y H:i:s')}}</h4>
-                                            {{ comentario.comentario | raw }}
-                                            <p>
-                                                {{ comentario.calificacion }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>          
-                        </div>
+                    <div class="form-group">
+                        {{ form_widget(form.titulo,{'attr':{'class':'form-control','placeholder':'Titulo'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.descripcion,{'attr':{'class':'form-control','placeholder':'Descripcion'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.tipoOferta,{'attr':{'class':'form-control','placeholder':'Tipo de oferta'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.oferta,{'attr':{'class':'form-control','placeholder':'Oferta'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.inicia,{'attr':{'class':'form-control','placeholder':'Inicia'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.termina,{'attr':{'class':'form-control','placeholder':'Termina'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.tipoPago,{'attr':{'class':'form-control','placeholder':'Tipo de pago'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.marcas,{'attr':{'class':'form-control','placeholder':'Marcas'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.modelos,{'attr':{'class':'form-control','placeholder':'Modelos'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.sucursales,{'attr':{'class':'form-control','placeholder':'Sucursales'}}) }}
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <a href="{{path('empresas')}}" class="btn btn-primary">Regresar</a>
+                    <a href="{{path('ofertas')}}" class="btn btn-primary">Regresar</a>
                     <input type="submit" class="btn btn-warning btn-sm pull-right" name="botonGuardar" id="botonGuardar" value="Actualizar"/>
                     {{ form_rest(form) }}
                 </div>        
-            </div>
-            <div class="container">
-
-            </div>
-            <div class="container text-center">
             </div>
         </form>
     </div>

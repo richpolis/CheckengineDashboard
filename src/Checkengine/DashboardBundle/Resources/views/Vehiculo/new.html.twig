@@ -1,15 +1,63 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
-{% block body -%}
-    <h1>Vehiculo creation</h1>
+{% block body %}
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'vehiculos' } %}
+    <div class="container container-principal">
+        <form action="{{ path('vehiculos_create') }}" method="post" {{ form_enctype(form) }}>
+            <br>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">
+                        Crear vehiculo
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    {{ form_errors(form) }}  
+                    <div class="form-group">
+                        {{ form_widget(form.tipo,{'attr':{'class':'form-control','placeholder':'Tipo de vehiculo'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.marca,{'attr':{'class':'form-control','placeholder':'Marca'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.modelo,{'attr':{'class':'form-control','placeholder':'Modelo'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.year,{'attr':{'class':'form-control','placeholder':'Año'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.puertas,{'attr':{'class':'form-control','placeholder':'Puertas'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.cilindros,{'attr':{'class':'form-control','placeholder':'Cilindros'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.kms,{'attr':{'class':'form-control','placeholder':'Kms'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.combustible,{'attr':{'class':'form-control','placeholder':'Combustible'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.transmision,{'attr':{'class':'form-control','placeholder':'Transmision'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.seguro,{'attr':{'class':'form-control','placeholder':'Seguro'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.vehiculo,{'attr':{'class':'form-control','placeholder':'Usuario'}}) }}
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a href="{{path('vehiculos')}}" class="btn btn-primary">Regresar</a>
+                    <input type="submit" class="btn btn-warning btn-sm pull-right" name="botonGuardar" id="botonGuardar" value="Guardar"/>
+                    {{ form_rest(form) }}
+                </div>        
+            </div>
+            <div class="container">
 
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('vehiculos') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+            </div>
+            <div class="container text-center">
+            </div>
+        </form>
+    </div>
 {% endblock %}

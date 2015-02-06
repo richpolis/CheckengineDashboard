@@ -1,15 +1,36 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
-{% block body -%}
-    <h1>TipoEmpresa creation</h1>
+{% block body %}
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'especialidades' } %}
+    <div class="container container-principal">
+        <form action="{{ path('especialidades_create') }}" method="post" {{ form_enctype(form) }}>
+            <br>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">
+                        Crear especialidad
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    {{ form_errors(form) }}  
+                    <div class="form-group">
+                        {{ form_widget(form.nombre,{'attr':{'class':'form-control','placeholder':'Especialidad'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.file,{'attr':{'class':'form-control','placeholder':'Imagen'}}) }}
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a href="{{path('especialidades')}}" class="btn btn-primary">Regresar</a>
+                    <input type="submit" class="btn btn-warning btn-sm pull-right" name="botonGuardar" id="botonGuardar" value="Guardar"/>
+                    {{ form_rest(form) }}
+                </div>        
+            </div>
+            <div class="container">
 
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('tiposempresa') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+            </div>
+            <div class="container text-center">
+            </div>
+        </form>
+    </div>
 {% endblock %}

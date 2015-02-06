@@ -28,12 +28,25 @@ class VehiculoController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('DashboardBundle:Vehiculo')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            $buscar = $request->get('buscar','');
+            if(strlen($buscar)>0){
+                $options = array('filterParam'=>'buscar','filterValue'=>$buscar);
+            }else{
+                $options = array();
+            }
+            $query = $em->getRepository('DashboardBundle:Vehiculo')->queryFindVehiculos($buscar);
+            $paginator = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                    $query, $this->get('request')->query->get('page', 1),10,$options
+            );
+            
+            return  compact('pagination');
+        } elseif ($this->get('security.context')->isGranted('ROLE_USUARIO')) {
+            $usuario = $this->get('security.context')->getToken()->getUser();
+            return array($usuario);
+        }
+        return $this->redirect('login');
     }
     /**
      * Creates a new Vehiculo entity.
@@ -76,7 +89,7 @@ class VehiculoController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -146,7 +159,7 @@ class VehiculoController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'        => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -165,7 +178,7 @@ class VehiculoController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -197,9 +210,9 @@ class VehiculoController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'entity'        => $entity,
+            'form'          => $editForm->createView(),
+            'delete_form'   => $deleteForm->createView(),
         );
     }
     /**
@@ -240,8 +253,26 @@ class VehiculoController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('vehiculos_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Delete','attr'=>array('class'=>'btn btn-danger')))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Exporta la lista completa de vehiculos.
+     *
+     * @Route("/exportar", name="vehiculos_export")
+     * @Method("GET")
+     */
+    public function exportarAction() {
+        $vehiculos = $this->getDoctrine()
+                ->getRepository('DashboardBundle:Vehiculo')
+                ->findVehiculos();
+        $response = $this->render(
+                'DashboardBundle:Vehiculo:list.xls.twig', array('vehiculos' => $vehiculos)
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-vehiculos.xls"');
+        return $response;
     }
 }

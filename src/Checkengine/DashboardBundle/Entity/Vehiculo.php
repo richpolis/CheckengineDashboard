@@ -63,12 +63,12 @@ class Vehiculo
     /**
      * @var integer
      *
-     * @ORM\Column(name="año", type="integer")
+     * @ORM\Column(name="year", type="integer")
      * 
      * @Serializer\Expose
      * @Serializer\Type("integer")
      */
-    private $año;
+    private $year;
 
     /**
      * @var integer
@@ -140,6 +140,40 @@ class Vehiculo
      */
     private $usuario;
     
+    const TIPO_CARRO = 1;
+    const TIPO_MOTO = 2;
+    const TIPO_CAMION = 3;
+
+
+    static public $sTipo = array(
+        self::TIPO_CARRO => 'Carro',
+        self::TIPO_MOTO => 'Moto',
+        self::TIPO_CAMION => 'Camion'
+    );
+
+    static function getPreferedTipo(){
+        return array(self::TIPO_CARRO);
+    }
+    
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("stringTipo")
+     */
+    public function getStringTipo(){
+        return self::$sTipo[$this->getTipo()];
+    }
+
+    static function getArrayTipo(){
+        return self::$sTipo;
+    }
+    
+    public function __toString() {
+        return sprintf("%s %s %i",$this->marca,$this->modelo,$this->year);
+    }
+    
+    public function __construct() {
+        $this->tipo = self::TIPO_CARRO;
+    }
 
     /**
      * Get id
@@ -221,26 +255,26 @@ class Vehiculo
     }
 
     /**
-     * Set año
+     * Set year
      *
-     * @param integer $año
+     * @param integer $year
      * @return Vehiculo
      */
-    public function setAño($año)
+    public function setYear($year)
     {
-        $this->año = $año;
+        $this->year = $year;
 
         return $this;
     }
 
     /**
-     * Get año
+     * Get year
      *
      * @return integer 
      */
-    public function getAño()
+    public function getYear()
     {
-        return $this->año;
+        return $this->year;
     }
 
     /**

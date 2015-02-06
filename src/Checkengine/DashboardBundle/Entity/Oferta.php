@@ -188,6 +188,16 @@ class Oferta
     private $clicks;
     
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     */
+    private $isActive;
+    
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -206,6 +216,86 @@ class Oferta
      * @Serializer\Type("DateTime")
      */
     private $updatedAt;
+    
+    const TIPO_OFERTA = 1;
+    const TIPO_BANNER = 2;
+    const TIPO_MENSAJE_1K = 3;
+    const TIPO_MENSAJE_3K = 4;
+    const TIPO_MENSAJE_5K = 5;
+    const TIPO_MENSAJE_10K = 6;
+
+    static public $sTipo = array(
+        self::TIPO_OFERTA => 'Oferta',
+        self::TIPO_BANNER => 'Banner',
+        self::TIPO_MENSAJE_1K => 'Notificacion push 1km',
+        self::TIPO_MENSAJE_3K => 'Notificacion push 3km',
+        self::TIPO_MENSAJE_5K => 'Notificacion push 5km',
+        self::TIPO_MENSAJE_10K => 'Notificacion push 10km'
+    );
+
+    static function getPreferedTipo(){
+        return array(self::TIPO_OFERTA);
+    }
+    
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("stringTipo")
+     */
+    public function getStringTipo(){
+        return self::$sTipo[$this->getTipo()];
+    }
+
+    static function getArrayTipo(){
+        return self::$sTipo;
+    }
+    
+    const TIPO_OFERTA_DESCUENTO = 1;
+    const TIPO_OFERTA_CANTIDAD = 2;
+
+    static public $sTipoOferta = array(
+        self::TIPO_OFERTA_DESCUENTO => 'Descuento',
+        self::TIPO_OFERTA_CANTIDAD => 'Por cantidad'
+    );
+
+    static function getPreferedTipoOferta(){
+        return array(self::TIPO_OFERTA_DESCUENTO);
+    }
+    
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("stringTipoOferta")
+     */
+    public function getStringTipoOferta(){
+        return self::$sTipoOferta[$this->getTipoOferta()];
+    }
+
+    static function getArrayTipoOferta(){
+        return self::$sTipoOferta;
+    }
+    
+    const TIPO_PAGO_FACTURACION = 1;
+    const TIPO_PAGO_TRANSFERENCIA = 2;
+
+    static public $sTipoPago = array(
+        self::TIPO_PAGO_FACTURACION => 'Facturacion',
+        self::TIPO_PAGO_TRANSFERENCIA => 'Transferencia'
+    );
+
+    static function getPreferedTipoPago(){
+        return array(self::TIPO_PAGO_FACTURACION);
+    }
+    
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("stringTipoPago")
+     */
+    public function getStringTipoPago(){
+        return self::$sTipoPago[$this->getTipoPago()];
+    }
+
+    static function getArrayTipoPago(){
+        return self::$sTipoPago;
+    }
 	
     /*
      * Timestable
@@ -427,6 +517,10 @@ class Oferta
     {
         $this->sucursales = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comentarios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive = false;
+        $this->tipo = self::TIPO_OFERTA;
+        $this->tipoOferta = self::TIPO_OFERTA_DESCUENTO;
+        $this->tipoPago = self::TIPO_PAGO_FACTURACION;
     }
 
     /**

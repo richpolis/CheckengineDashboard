@@ -1,13 +1,13 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
 {% block body -%}
-    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'empresas' } %}
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'ofertas' } %}
     <div class="container container-principal">
         <br>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title text-center">
-                    Mostrar Empresa "{{entity.nombreCompleto}}"
+                    Mostrar Oferta "{{entity.titulo}}"
                 </h3>
             </div>
             <div class="panel-body">
@@ -29,42 +29,28 @@
                                         <td>{{ entity.id }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Razon social</th>
-                                        <td>{{ entity.nombre }}</td>
+                                        <th>Titulo</th>
+                                        <td>{{ entity.titulo }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Sucursal</th>
-                                        <td>{{ entity.sucursal }}</td>
+                                        <th>Descripcion</th>
+                                        <td>{{ entity.descripcion }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Rubro</th>
-                                        <td>{{ entity.rubro }}</td>
+                                        <th>Tipo</th>
+                                        <td>{{ entity.stringTipo }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Logo</th>
-                                        <td>
-                                            <img src="{{ entity.webPath }}" alt="{{ entity.nombreCompleto }}"/>
-                                        </td>
+                                        <th>Tipo de Oferta</th>
+                                        <td>{{ entity.stringTipoOferta }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Direccion</th>
-                                        <td>{{ entity.direccion | raw }}</td>
+                                        <th>Oferta</th>
+                                        <td>{{ entity.oferta }}</td>
                                     </tr>
                                     <tr>
-                                        <th>RUT</th>
-                                        <td>{{ entity.rut }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Region</th>
-                                        <td>{{ entity.region }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Comuna</th>
-                                        <td>{{ entity.comuna }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Horarios</th>
-                                        <td>{{ entity.horarios }}</td>
+                                        <th>Tipo de pago</th>
+                                        <td>{{ entity.stringTipoPago }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -81,30 +67,20 @@
                                         <td>{{ ((entity.isActive)?'Si':'No') }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Tipos de empresa</th>
+                                        <th>Sucursales</th>
                                         <td>
                                             <ul class="lista-tipos-empresa">
-                                                {% for registro in entity.tipos %}
-                                                    <li class="item-tipo-empresa">{{ registro }}</li>
+                                                {% for registro in entity.sucursales %}
+                                                    <li class="item-tipo-empresa">{{ registro.nombreCompleto }}</li>
                                                     {% endfor %}
                                             </ul>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Especialidades</th>
-                                        <td>
-                                            <ul class="lista-especialidades">
-                                                {% for registro in entity.especialidades %}
-                                                    <li class="item-especialidad">{{ registro}}</li>
-                                                    {% endfor %}
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Servicios</th>
+                                        <th>Filtros</th>
                                         <td>
                                             <ul class="lista-servicios">
-                                                {% for registro in entity.servicios %}
+                                                {% for registro in entity.marcas %}
                                                     <li class="item-servicio">{{ registro}}</li>
                                                     {% endfor %}
                                             </ul>
@@ -116,14 +92,6 @@
                         <div role="tabpanel" class="tab-pane" id="ubicacion">
                             <table class="record_properties table table-striped">
                                 <tbody>
-                                    <tr>
-                                        <th>Longitud</th>
-                                        <td>{{ entity.ubicacionLongitud }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Latitud</th>
-                                        <td>{{ entity.ubicacionLatitud }}</td>
-                                    </tr>
                                     <tr>
                                         <th>Creado</th>
                                         <td>{{ entity.createdAt|date('d-m-Y H:i:s') }}</td>
@@ -158,10 +126,10 @@
             </div>
             <div class="panel-footer">
                 <div class="text-left">
-                    <a href="{{ path('empresas') }}" class="btn btn-primary">
+                    <a href="{{ path('ofertas') }}" class="btn btn-primary">
                         Regresar
                     </a>
-                    <a href="{{ path('empresas_edit', { 'id': entity.id }) }}" class="btn btn-warning">
+                    <a href="{{ path('ofertas_edit', { 'id': entity.id }) }}" class="btn btn-warning">
                         Editar
                     </a>
                     <span class="pull-right">{{ form(delete_form) }}</span>            
