@@ -212,7 +212,7 @@ class Empresa
      */
     private $servicios;
 
-	/**
+    /**
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")

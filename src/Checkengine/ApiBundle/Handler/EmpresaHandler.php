@@ -11,7 +11,7 @@ use Checkengine\ApiBundle\Form\EmpresaApiType;
 use Checkengine\ApiBundle\Exception\InvalidFormException;
 
 use Checkengine\DashboardBundle\Entity\Comentario;
-use Checkengine\ApiBundle\Form\ComentarioApiType;
+use Checkengine\DashboardBundle\Form\ComentarioType;
 
 class EmpresaHandler
 {
@@ -75,19 +75,29 @@ class EmpresaHandler
      *
      * @return Comentario
      */
-    public function postComentario(array $parameters,$usuario,$idEmpresa)
+    public function postComentario(array $parameters,$idEmpresa)
     {
-        $empresa = $this->repository->find($idEmpresa);
-        $parameters['usuario']=$usuario;
-        $comentario = new Comentario();
-        $comentario->setUsuario($usuario);
-        $comentario->setComentario($parameters['comentario']);
-        $comentario->setCalificacion($paremeters['calificacion']);
-        $this->om->persist($comentario);
-        $this->om->flush();
-        $empresa->addComentario($comentario);
-        $this->om->flush();
-        return $comentario;
+        $method = "POST";
+        $form = $this->formFactory->create(new ComentarioType(), new Comentario(), array(
+            'method' => $method,
+            'em' => $this->om
+        ));
+        
+        if(isset($parameters['_method'])){
+            unset($parameters['_method']);
+        }
+        
+        $form->submit($parameters, 'PATCH' !== $method);
+        
+        if ($form->isValid()) {
+            $comentario = $form->getData();
+            $this->om->persist($comentario);
+            $empresa = $this->repository->find($idEmpresa);
+            $empresa->AddComentario($comentario);
+            $this->om->flush();
+            return $comentario;
+        }
+        throw new InvalidFormException('Invalid submitted data', $form);
     }
     
     /**

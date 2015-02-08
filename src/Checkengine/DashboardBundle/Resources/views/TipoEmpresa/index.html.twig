@@ -2,11 +2,11 @@
 
 {% block body -%}
 
-    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'especialidades' } %}
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'tiposempresa' } %}
     <div class="container container-principal">
         <br>
         <div class="well">
-            <form action="{{path('especialidades')}}" class="form-inline" role="search">
+            <form action="{{path('tiposempresa')}}" class="form-inline" role="search">
                 <div class="form-group row" style="width: 100%;">
                     <label class="col-md-4 text-center">Buscar especialidad por: </label>    
                     <div class="input-group col-md-8">
@@ -44,29 +44,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for especialidad in entities %}  
+                        {% for registro in entities %}  
                             <tr>
                                 <td class="text-center">
                                     <img src="{{especialidad.thumbnailWebPath}}"/>
                                 </td>
                                 <td class="text-center">
-                                    {{especialidad.nombre}}
+                                    {{registro.nombre}}
                                 </td>
                                 <td class="text-center">
-                                    {{especialidad.orden}}
+                                    {{registro.orden}}
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <a href="{{ url('especialidades_show', { 'id' : especialidad.id }) }}" class="btn btn-warning"> Mostar</a>
+                                        <a href="{{ url('tiposempresa_show', { 'id' : especialidad.id }) }}" class="btn btn-warning"> Mostar</a>
                                         <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                             <span class="caret"></span>
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{ url('especialidades_show', { 'id' : especialidad.id }) }}">Mostrar</a></li>
-                                            <li><a href="{{ url('especialidades_edit', { 'id' : especialidad.id }) }}">Editar</a></li>
+                                            <li><a href="{{ url('tiposempresa_show', { 'id' : especialidad.id }) }}">Mostrar</a></li>
+                                            <li><a href="{{ url('tiposempresa_edit', { 'id' : especialidad.id }) }}">Editar</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('especialidades_delete', { 'id' : especialidad.id }) }}';}">Eliminar</a></li>
+                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('tiposempresa_delete', { 'id' : especialidad.id }) }}';}">Eliminar</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -76,8 +76,8 @@
                 </table>
             </div>
             <div class="panel-footer">
-                <a href="{{ path('especialidades_export') }}" class="btn btn-default btn-sm">Exportar</a>
-                <a href="{{ path('especialidades_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
+                <a href="{{ path('tiposempresa_export') }}" class="btn btn-default btn-sm">Exportar</a>
+                <a href="{{ path('tiposempresa_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
             </div>
         </div>
         <div class="container">

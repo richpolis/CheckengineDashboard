@@ -100,7 +100,7 @@ class EmpresasApiController extends FOSRestController
     }
     
     /**
-     * List all comentarios de una empresa.
+     * Lista todos los comentarios de una empresa.
      *
      * @ApiDoc(
      *   resource = true,
@@ -114,7 +114,7 @@ class EmpresasApiController extends FOSRestController
      *
      * @Annotations\View(
      *  template = "DashboardBundle:Comentario:index.html.twig",
-     *  templateVar = "comentarios"
+     *  templateVar = "entities"
      * )
      *
      * @param Request               $request      the request object
@@ -129,23 +129,22 @@ class EmpresasApiController extends FOSRestController
     }
     
     /**
-     * Create a comentario from the submitted data for one empresa.
+     * Crea un comentario y lo agrega a una empresa.
      *
      * @ApiDoc(
      *   resource = true,
-     *   description = "Create a comentario from the submitted data for one empresa.",
+     *   description = "Crea un comentario y lo agrega a una empresa.",
      *   input = "Checkengine\DashboardBundle\Form\ComentarioType",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @Annotations\QueryParam(name="usuario", nullable=false, description="Id del Usuario que hace el comentario.")
      *
      * @Annotations\View(
      *  template = "DashboardBundle:Comentario:new.html.twig",
      *  statusCode = Codes::HTTP_BAD_REQUEST,
-     *  templateVar = "result"
+     *  templateVar = "form"
      * )
      *
      * @param Request $request the request object
@@ -155,25 +154,19 @@ class EmpresasApiController extends FOSRestController
     public function postEmpresaComentarioAction(Request $request,$id)
     {
         try {
-            $data = $request->request->all();
-            
-            $idUsuario = $paramFetcher->get('usuario');
-            
-            $usuario = $this->getDoctrine()->getRepository('DashboardBundle:Usuario')->find($idUsuario);
-            
             $nuevoComentario = $this->container->get('apirest.empresa.handler')->postComentario(
-                $request->request->all(),$usuario,$id
+                $request->request->all(),$id
             );
             $routeOptions = array(
                 'id' => $nuevoComentario->getId(),
                 '_format' => $request->getRequestFormat()
             );
             if($routeOptions['_format']=="html"){
-                return $this->routeRedirectView('get_empresa', $routeOptions, Codes::HTTP_CREATED);
+                return $this->routeRedirectView('api_1_get_empresas', $routeOptions, Codes::HTTP_CREATED);
             }else{
                 return $this->handleView($this->view($nuevoComentario,Codes::HTTP_CREATED));
             }
-            return $this->routeRedirectView('get_usuario', $routeOptions, Codes::HTTP_CREATED);
+            return $this->routeRedirectView('api_1_get_empresas', $routeOptions, Codes::HTTP_CREATED);
         } catch (InvalidFormException $exception) {
             return $exception->getForm();
         }

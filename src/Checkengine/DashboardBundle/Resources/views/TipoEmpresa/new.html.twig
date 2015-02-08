@@ -1,9 +1,9 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
 {% block body %}
-    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'especialidades' } %}
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'tiposempresa' } %}
     <div class="container container-principal">
-        <form action="{{ path('especialidades_create') }}" method="post" {{ form_enctype(form) }}>
+        <form action="{{ path('tiposempresa_create') }}" method="post" {{ form_enctype(form) }}>
             <br>
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <a href="{{path('especialidades')}}" class="btn btn-primary">Regresar</a>
+                    <a href="{{path('tiposempresa')}}" class="btn btn-primary">Regresar</a>
                     <input type="submit" class="btn btn-warning btn-sm pull-right" name="botonGuardar" id="botonGuardar" value="Guardar"/>
                     {{ form_rest(form) }}
                 </div>        

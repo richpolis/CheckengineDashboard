@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation as Serializer;
  * Especialidad
  *
  * @ORM\Table(name="especialidades")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\EspecialidadRepository")
  * @ORM\HasLifecycleCallbacks()
  * 
  * @Serializer\ExclusionPolicy("all")

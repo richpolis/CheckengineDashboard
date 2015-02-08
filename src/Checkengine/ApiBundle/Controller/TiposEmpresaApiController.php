@@ -26,7 +26,6 @@ class TiposEmpresaApiController extends FOSRestController
      *     200 = "Returned when successful"
      *   }
      * )
-     * @Annotations\QueryParam(name="tipo", nullable=true, description="Tipo de empresa.")
      *
      * @Annotations\View(
      *  template = "DashboardBundle:TipoEmpresa:index.html.twig",
@@ -34,14 +33,11 @@ class TiposEmpresaApiController extends FOSRestController
      * )
      *
      * @param Request               $request      the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getTiposAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getTiposAction(Request $request)
     {
-        $tipo = $paramFetcher->get('tipo');
-        $tipo = null == $tipo ? "" : $tipo;
         $em = $this->getDoctrine();
         $entities = $em->getRepository('DashboardBundle:TipoEmpresa')->findAll();
         return $entities;
@@ -62,7 +58,7 @@ class TiposEmpresaApiController extends FOSRestController
      *
      * @Annotations\View(
      *  template = "DashboardBundle:TipoEmpresa:show.html.twig",
-     *  templateVar="tipo"
+     *  templateVar="entity"
      * )
      *
      * @param int|string    $id      the tipo id or slug

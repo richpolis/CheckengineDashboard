@@ -27,8 +27,7 @@ class OfertasApiController extends FOSRestController
      *   }
      * )
      *
-     * @Annotations\QueryParam(name="tipo", nullable=true, description="Tipo de oferta.")
-     * @Annotations\QueryParam(name="especialidad", nullable=true, description="Especialidad de la oferta.")
+     * @Annotations\QueryParam(name="tipo", default=1, description="Tipo de oferta, por default son el tipo de oferta 1.")
      *
      * @Annotations\View(
      *  template = "DashboardBundle:Oferta:index.html.twig",
@@ -43,11 +42,9 @@ class OfertasApiController extends FOSRestController
     public function getOfertasAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
         $tipo = $paramFetcher->get('tipo');
-        $tipo = null == $tipo ? "" : $tipo;
-        $especialidad = $paramFetcher->get('especialidad');
-        $especialidad = null == $especialidad ? "" : $especialidad;
+        $tipo = null == $tipo ? 1 : $tipo;
         $handler = $this->container->get('apirest.oferta.handler');
-        return $handler->all($tipo, $especialidad);
+        return $handler->all($tipo);
     }
     
     /**
@@ -139,12 +136,11 @@ class OfertasApiController extends FOSRestController
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @Annotations\QueryParam(name="usuario", nullable=false, description="Id del Oferta que hace el comentario.")
      *
      * @Annotations\View(
      *  template = "DashboardBundle:Comentario:new.html.twig",
      *  statusCode = Codes::HTTP_BAD_REQUEST,
-     *  templateVar = "result"
+     *  templateVar = "form"
      * )
      *
      * @param Request $request the request object
@@ -154,25 +150,19 @@ class OfertasApiController extends FOSRestController
     public function postOfertaComentarioAction(Request $request,$id)
     {
         try {
-            $data = $request->request->all();
-            
-            $idUsuario = $paramFetcher->get('usuario');
-            
-            $usuario = $this->getDoctrine()->getRepository('DashboardBundle:Oferta')->find($idUsuario);
-            
             $nuevoComentario = $this->container->get('apirest.oferta.handler')->postComentario(
-                $request->request->all(),$usuario,$id
+                $request->request->all(),$id
             );
             $routeOptions = array(
                 'id' => $nuevoComentario->getId(),
                 '_format' => $request->getRequestFormat()
             );
             if($routeOptions['_format']=="html"){
-                return $this->routeRedirectView('get_oferta', $routeOptions, Codes::HTTP_CREATED);
+                return $this->routeRedirectView('api_1_get_ofertas', $routeOptions, Codes::HTTP_CREATED);
             }else{
                 return $this->handleView($this->view($nuevoComentario,Codes::HTTP_CREATED));
             }
-            return $this->routeRedirectView('get_usuario', $routeOptions, Codes::HTTP_CREATED);
+            return $this->routeRedirectView('api_1_get_ofertas', $routeOptions, Codes::HTTP_CREATED);
         } catch (InvalidFormException $exception) {
             return $exception->getForm();
         }

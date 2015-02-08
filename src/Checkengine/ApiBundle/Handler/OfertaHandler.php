@@ -11,7 +11,7 @@ use Checkengine\ApiBundle\Form\OfertaApiType;
 use Checkengine\ApiBundle\Exception\InvalidFormException;
 
 use Checkengine\DashboardBundle\Entity\Comentario;
-use Checkengine\ApiBundle\Form\ComentarioApiType;
+use Checkengine\DashboardBundle\Form\ComentarioType;
 
 class OfertaHandler
 {
@@ -46,13 +46,12 @@ class OfertaHandler
      * Get a list of Ofertas.
      *
      * @param string $tipo  el tipo de oferta
-     * @param string $especialidad la especialidad de la oferta
      *
      * @return array
      */
-    public function all($tipo = "", $especialidad = "")
+    public function all($tipo = 1)
     {
-        return $this->repository->findTipoEspecialidadBy($tipo,$especialidad);
+        return $this->repository->findTipoBy(array('tipo'=>$tipo));
     }
     
     /**
@@ -75,19 +74,29 @@ class OfertaHandler
      *
      * @return Comentario
      */
-    public function postComentario(array $parameters,$usuario,$idOferta)
+    public function postComentario(array $parameters,$idOferta)
     {
-        $oferta = $this->repository->find($idOferta);
-        $parameters['usuario']=$usuario;
-        $comentario = new Comentario();
-        $comentario->setUsuario($usuario);
-        $comentario->setComentario($parameters['comentario']);
-        $comentario->setCalificacion($paremeters['calificacion']);
-        $this->om->persist($comentario);
-        $this->om->flush();
-        $oferta->addComentario($comentario);
-        $this->om->flush();
-        return $comentario;
+        $method = "POST";
+        $form = $this->formFactory->create(new ComentarioType(), new Comentario(), array(
+            'method' => $method,
+            'em' => $this->om
+        ));
+        
+        if(isset($parameters['_method'])){
+            unset($parameters['_method']);
+        }
+        
+        $form->submit($parameters, 'PATCH' !== $method);
+        
+        if ($form->isValid()) {
+            $comentario = $form->getData();
+            $this->om->persist($comentario);
+            $oferta = $this->repository->find($idOferta);
+            $oferta->AddComentario($comentario);
+            $this->om->flush();
+            return $comentario;
+        }
+        throw new InvalidFormException('Invalid submitted data', $form);
     }
     
     /**

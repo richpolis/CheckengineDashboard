@@ -59,7 +59,8 @@ class UsuarioApiType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Checkengine\DashboardBundle\Entity\Usuario'
+            'data_class' => 'Checkengine\DashboardBundle\Entity\Usuario',
+            'csrf_protection'   => false,
         ));
     }
 

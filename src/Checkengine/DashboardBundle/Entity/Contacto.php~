@@ -1,0 +1,111 @@
+<?php
+
+namespace Checkengine\DashboardBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+
+/**
+ * Contacto
+ *
+ * @ORM\Table(name="tickets")
+ * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\ContactoRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
+ */
+class Contacto
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     */
+    private $id;
+
+    /**
+     * @var \Checkengine\DashboardBundle\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * })
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Checkengine\DashboardBundle\Entity\Usuario")
+     * @Serializer\Groups({"list", "details"})
+     */
+    private $usuario;
+
+    /**
+     * @var integer
+     * @todo Comentarios de la empresa. 
+     *
+     * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Comentario")
+     * @ORM\JoinTable(name="empresa_comentarios")
+     * @ORM\OrderBy({"createdAt" = "ASC"})
+     */
+    private $comentarios;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     */
+    private $isActive;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
+     */
+    private $createdAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
+     */
+    private $updatedAt;
+	
+    /*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+}

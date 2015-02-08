@@ -26,7 +26,6 @@ class ServiciosApiController extends FOSRestController
      *     200 = "Returned when successful"
      *   }
      * )
-     * @Annotations\QueryParam(name="tipo", nullable=true, description="Tipo de empresa.")
      *
      * @Annotations\View(
      *  template = "DashboardBundle:Servicio:index.html.twig",
@@ -34,11 +33,10 @@ class ServiciosApiController extends FOSRestController
      * )
      *
      * @param Request               $request      the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getServiciosAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getServiciosAction(Request $request)
     {
         $em = $this->getDoctrine();
         $entities = $em->getRepository('DashboardBundle:Servicio')->findAll();
@@ -46,12 +44,12 @@ class ServiciosApiController extends FOSRestController
     }
     
     /**
-     * Get single Tipo.
+     * Get single Servicio.
      *
      * @ApiDoc(
      *   resource = true,
-     *   description = "Gets a Tipo for a given id",
-     *   output = "Checkengine\DashboardBundle\Entity\Tipo",
+     *   description = "Gets a Servicio for a given id",
+     *   output = "Checkengine\DashboardBundle\Entity\Servicio",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the servicio is not found"
@@ -60,10 +58,10 @@ class ServiciosApiController extends FOSRestController
      *
      * @Annotations\View(
      *  template = "DashboardBundle:Servicio:show.html.twig",
-     *  templateVar="servicio"
+     *  templateVar="entity"
      * )
      *
-     * @param int|string    $id      the servicio id or slug
+     * @param int|string    $id      the servicio id
      *
      * @return array
      *

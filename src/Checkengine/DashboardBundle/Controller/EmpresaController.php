@@ -272,4 +272,31 @@ class EmpresaController extends Controller
         $response->headers->set('Content-Disposition', 'attachment; filename="export-empresas.xls"');
         return $response;
     }
+    
+    /**
+     * Delete a Comentario from one empresa, response to json.
+     *
+     * @Route("/{id}/comentario/{idc}", name="empresas_comentario_delete")
+     * @Method("DELETE")
+     */
+    public function deleteComentarioAction(Request $request, $id, $idc) 
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa = $em->getRepository('DashboardBundle:Empresa')->find($id);
+
+        if (!$empresa) {
+            return new JsonResponse(array('status'=>false,'message'=>'Id de empresa no encontrado'));
+        }
+        
+        $comentario = $em->getRepository('DashboardBundle:Comentario')->find($idc);
+        
+        if (!$comentario) {
+            return new JsonResponse(array('status'=>false,'message'=>'Id de comentario no encontrado'));
+        }
+        $empresa->removeComentario($comentario);
+        $em->remove($comentario);
+        $em->flush();
+
+        return new JsonResponse(array('status'=>true,'message'=>'Id de comentario eliminado'));
+    }
 }

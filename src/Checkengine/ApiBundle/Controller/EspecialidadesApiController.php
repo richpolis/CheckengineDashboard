@@ -18,7 +18,7 @@ use Checkengine\ApiBundle\Exception\InvalidFormException;
 class EspecialidadesApiController extends FOSRestController
 { 
     /**
-     * List all tipos.
+     * List all Especialidades.
      *
      * @ApiDoc(
      *   resource = true,
@@ -26,7 +26,7 @@ class EspecialidadesApiController extends FOSRestController
      *     200 = "Returned when successful"
      *   }
      * )
-     * @Annotations\QueryParam(name="tipo", nullable=true, description="Tipo de empresa.")
+     * @Annotations\QueryParam(name="tipo", default="", description="Tipo de empresa.")
      *
      * @Annotations\View(
      *  template = "DashboardBundle:Especialidad:index.html.twig",
@@ -43,12 +43,12 @@ class EspecialidadesApiController extends FOSRestController
         $tipo = $paramFetcher->get('tipo');
         $tipo = null == $tipo ? "" : $tipo;
         $em = $this->getDoctrine();
-        $entities = $em->getRepository('DashboardBundle:Especialidad')->findAll();
+        $entities = $em->getRepository('DashboardBundle:Especialidad')->findByTipoDeEmpresa($tipo);
         return $entities;
     }
     
     /**
-     * Get single Tipo.
+     * Get single Especialidad.
      *
      * @ApiDoc(
      *   resource = true,
@@ -62,7 +62,7 @@ class EspecialidadesApiController extends FOSRestController
      *
      * @Annotations\View(
      *  template = "DashboardBundle:Especialidad:show.html.twig",
-     *  templateVar="tipo"
+     *  templateVar="entity"
      * )
      *
      * @param int|string    $id      the tipo id or slug

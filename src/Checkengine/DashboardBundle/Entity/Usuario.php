@@ -149,12 +149,16 @@ class Usuario implements UserInterface, \Serializable
     private $ubicacionLatitud;
 
     /**
-     * @var Favoritos de usuario
+     * @var integer
+     * @todo Favoritos del usuario.
      *
-     * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Favorito", mappedBy="usuario")
+     * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Empresa")
+     * @ORM\JoinTable(name="favoritos")
+     * @ORM\OrderBy({"nombre" = "ASC"})
      * 
      * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\Usuario>")
+     * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\Empresa>")
+     * @Serializer\MaxDepth(1)
      */
     private $favoritos;
 
@@ -168,13 +172,21 @@ class Usuario implements UserInterface, \Serializable
      * 
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\Usuario>")
+     * @Serializer\MaxDepth(1)
      */
     private $amigos;
 
     /**
      * @var integer
+     * @todo No recibir ofertas del usuario.
      *
-     * @ORM\Column(name="no_ofertas", type="integer", nullable=true)
+     * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Empresa")
+     * @ORM\JoinTable(name="no_ofertas")
+     * @ORM\OrderBy({"nombre" = "ASC"})
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\Empresa>")
+     * @Serializer\MaxDepth(1)
      */
     private $noOfertas;
 
@@ -841,29 +853,6 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Set noOfertas
-     *
-     * @param integer $noOfertas
-     * @return Usuario
-     */
-    public function setNoOfertas($noOfertas)
-    {
-        $this->noOfertas = $noOfertas;
-
-        return $this;
-    }
-
-    /**
-     * Get noOfertas
-     *
-     * @return integer 
-     */
-    public function getNoOfertas()
-    {
-        return $this->noOfertas;
-    }
-
-    /**
      * Set isActive
      *
      * @param boolean $isActive
@@ -1035,12 +1024,58 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Add favoritos
+     * Set tokenCelular
      *
-     * @param \Checkengine\DashboardBundle\Entity\Favorito $favoritos
+     * @param string $tokenCelular
      * @return Usuario
      */
-    public function addFavorito(\Checkengine\DashboardBundle\Entity\Favorito $favoritos)
+    public function setTokenCelular($tokenCelular)
+    {
+        $this->tokenCelular = $tokenCelular;
+
+        return $this;
+    }
+
+    /**
+     * Get tokenCelular
+     *
+     * @return string 
+     */
+    public function getTokenCelular()
+    {
+        return $this->tokenCelular;
+    }
+
+    /**
+     * Set marcaCelular
+     *
+     * @param string $marcaCelular
+     * @return Usuario
+     */
+    public function setMarcaCelular($marcaCelular)
+    {
+        $this->marcaCelular = $marcaCelular;
+
+        return $this;
+    }
+
+    /**
+     * Get marcaCelular
+     *
+     * @return string 
+     */
+    public function getMarcaCelular()
+    {
+        return $this->marcaCelular;
+    }
+
+    /**
+     * Add favoritos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $favoritos
+     * @return Usuario
+     */
+    public function addFavorito(\Checkengine\DashboardBundle\Entity\Empresa $favoritos)
     {
         $this->favoritos[] = $favoritos;
 
@@ -1050,9 +1085,9 @@ class Usuario implements UserInterface, \Serializable
     /**
      * Remove favoritos
      *
-     * @param \Checkengine\DashboardBundle\Entity\Favorito $favoritos
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $favoritos
      */
-    public function removeFavorito(\Checkengine\DashboardBundle\Entity\Favorito $favoritos)
+    public function removeFavorito(\Checkengine\DashboardBundle\Entity\Empresa $favoritos)
     {
         $this->favoritos->removeElement($favoritos);
     }
@@ -1101,48 +1136,35 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Set tokenCelular
+     * Add noOfertas
      *
-     * @param string $tokenCelular
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $noOfertas
      * @return Usuario
      */
-    public function setTokenCelular($tokenCelular)
+    public function addNoOferta(\Checkengine\DashboardBundle\Entity\Empresa $noOfertas)
     {
-        $this->tokenCelular = $tokenCelular;
+        $this->noOfertas[] = $noOfertas;
 
         return $this;
     }
 
     /**
-     * Get tokenCelular
+     * Remove noOfertas
      *
-     * @return string 
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $noOfertas
      */
-    public function getTokenCelular()
+    public function removeNoOferta(\Checkengine\DashboardBundle\Entity\Empresa $noOfertas)
     {
-        return $this->tokenCelular;
+        $this->noOfertas->removeElement($noOfertas);
     }
 
     /**
-     * Set marcaCelular
+     * Get noOfertas
      *
-     * @param string $marcaCelular
-     * @return Usuario
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function setMarcaCelular($marcaCelular)
+    public function getNoOfertas()
     {
-        $this->marcaCelular = $marcaCelular;
-
-        return $this;
-    }
-
-    /**
-     * Get marcaCelular
-     *
-     * @return string 
-     */
-    public function getMarcaCelular()
-    {
-        return $this->marcaCelular;
+        return $this->noOfertas;
     }
 }

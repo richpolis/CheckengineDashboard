@@ -342,4 +342,298 @@ class UsuariosApiController extends FOSRestController
         }
         return $usuario;
     }
+    
+    /**
+     * Lista todos los vehiculos de un usuario.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
+     *
+     * @Annotations\QueryParam(name="active", default=true, description="Visualizar galerias activas o inactivas.")
+     * @Annotations\QueryParam(name="all", default=true, description="Muestra todas las imagenes inactivas o activas.")
+     *
+     * @Annotations\View(
+     *  template = "DashboardBundle:Vehiculo:index.html.twig",
+     *  templateVar = "entities"
+     * )
+     *
+     * @param Request               $request      the request object
+     * @param ParamFetcherInterface $paramFetcher param fetcher service
+     *
+     * @return array
+     */
+    public function getUsuarioVehiculosAction($id){
+        $usuario = $this->findOr404($id);
+        $vehiculos = $usuario->getVehiculos();
+        return $vehiculos;
+    }
+    
+    /**
+     * Crea un vehiculo y lo agrega a una usuario.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Crea un vehiculo y lo agrega a un usuario.",
+     *   input = "Checkengine\ApiBundle\Form\VehiculoApiType",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
+     * )
+     *
+     * @Annotations\View(
+     *  template = "DashboardBundle:Vehiculo:new.html.twig",
+     *  statusCode = Codes::HTTP_BAD_REQUEST,
+     *  templateVar = "form"
+     * )
+     *
+     * @param Request $request the request object
+     *
+     * @return FormTypeInterface|View
+     */
+    public function postUsuarioVehiculoAction(Request $request,$id)
+    {
+        try {
+            $nuevoVehiculo = $this->container->get('apirest.usuario.handler')->postVehiculo(
+                $request->request->all(),$id
+            );
+            $routeOptions = array(
+                'id' => $nuevoVehiculo->getId(),
+                '_format' => $request->getRequestFormat()
+            );
+            if($routeOptions['_format']=="html"){
+                return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+            }else{
+                return $this->handleView($this->view($nuevoVehiculo,Codes::HTTP_CREATED));
+            }
+            return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+        } catch (InvalidFormException $exception) {
+            return $exception->getForm();
+        }
+    }
+    
+    /**
+     * Agrega los amigos del usuario.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Crea los amigos del usaurio basados en un arreglo de emails.",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     400 = "Returned when user is null"
+     *   }
+     * )
+     * 
+     * @Annotations\View(
+     *  template = "DashboardBundle:Usuario:show.html.twig",
+     *  templateVar="entity"
+     * )
+     *
+     * @param int     $id      the usuario id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when usuario not exist
+     */
+    public function postUsuarioAmigosAction(Request $request,$id)
+    {
+        $contAmigos = $this->container->get('apirest.usuario.handler')->postAmigos(
+            $request->request->all(),$id
+        );
+        $routeOptions = array(
+            'id' => $id,
+            '_format' => $request->getRequestFormat()
+        );
+        if($routeOptions['_format']=="html"){
+            return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+        }else{
+            return $this->handleView($this->view(array('amigos'=>$contAmigos),Codes::HTTP_CREATED));
+        }
+        return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+    }
+    
+    /**
+     * Agrega favoritos del usuario.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Crea los favoritos del usuario.",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     400 = "Returned when user is null"
+     *   }
+     * )
+     * @Annotations\QueryParam(name="empresaId", requirements="\d+", nullable=false, description="El Id de la empresa que va a ser Favorito del usuario.")
+     * 
+     * @Annotations\View(
+     *  template = "DashboardBundle:Usuario:show.html.twig",
+     *  templateVar="entity"
+     * )
+     *
+     * @param int     $id      the usuario id
+     *
+     * @return $usuario | Usuario
+     *
+     * @throws NotFoundHttpException when usuario not exist
+     */
+    public function postUsuarioFavoritosAction(Request $request,$id, ParamFetcherInterface $paramFetcher)
+    {
+        $empresaId = $paramFetcher->get('empresaId');
+        $empresa = $this->om->getRepository('DashboardBundle:Empresa')->find($empresaId);
+        $usuario = $this->container->get('apirest.usuario.handler')->postFavorito(
+            $empresa,$id
+        );
+        $routeOptions = array(
+            'id' => $id,
+            '_format' => $request->getRequestFormat()
+        );
+        if($routeOptions['_format']=="html"){
+            return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+        }else{
+            return $this->handleView($this->view($usuario,Codes::HTTP_CREATED));
+        }
+        return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+    }
+    
+    /**
+     * Agrega No ofertas del usuario.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Crea las empresas de las que no quiere recibir ofertas el usuario.",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     400 = "Returned when user is null"
+     *   }
+     * )
+     * @Annotations\QueryParam(name="empresaId", requirements="\d+", nullable=false, description="El Id de la empresa de la que no quiere recibir ofertas el usuario.")
+     * 
+     * @Annotations\View(
+     *  template = "DashboardBundle:Usuario:show.html.twig",
+     *  templateVar="entity"
+     * )
+     *
+     * @param int     $id      the usuario id
+     *
+     * @return $usuario | Usuario
+     *
+     * @throws NotFoundHttpException when usuario not exist
+     */
+    public function postUsuarioNofertasAction(Request $request,$id, ParamFetcherInterface $paramFetcher)
+    {
+        $empresaId = $paramFetcher->get('empresaId');
+        $empresa = $this->om->getRepository('DashboardBundle:Empresa')->find($empresaId);
+        $usuario = $this->container->get('apirest.usuario.handler')->postFavoritos(
+            $empresa,$id
+        );
+        $routeOptions = array(
+            'id' => $id,
+            '_format' => $request->getRequestFormat()
+        );
+        if($routeOptions['_format']=="html"){
+            return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+        }else{
+            return $this->handleView($this->view($usuario,Codes::HTTP_CREATED));
+        }
+        return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+    }
+    
+    /**
+     * Crea una busqueda realizada por el usuario.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Crea una busqueda realizada por el usuario.",
+     *   input = "Checkengine\ApiBundle\Form\BusquedaApiType",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
+     * )
+     *
+     * @Annotations\View(
+     *  template = "DashboardBundle:Busqueda:new.html.twig",
+     *  statusCode = Codes::HTTP_BAD_REQUEST,
+     *  templateVar = "form"
+     * )
+     *
+     * @param Request $request the request object
+     *
+     * @return FormTypeInterface|View
+     */
+    public function postUsuarioBusquedaAction(Request $request,$id)
+    {
+        try {
+            $busqueda = $request->request->all();
+            if(!isset($busqueda['usuario'])){ $busqueda['usuario']=$id; }
+            $nuevaBusqueda = $this->container->get('apirest.usuario.handler')->postBusqueda(
+                $busqueda
+            );
+            $routeOptions = array(
+                'id' => $nuevaBusqueda->getId(),
+                '_format' => $request->getRequestFormat()
+            );
+            if($routeOptions['_format']=="html"){
+                return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+            }else{
+                return $this->handleView($this->view($nuevaBusqueda,Codes::HTTP_CREATED));
+            }
+            return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+        } catch (InvalidFormException $exception) {
+            return $exception->getForm();
+        }
+    }
+    
+    /**
+     * Crea un comentario del usuario al administrador y lo agrega en una conversacion de contacto.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Crea un comentario del usuario al administrador y lo agrega en una conversacion de contacto.",
+     *   input = "Checkengine\ApiBundle\Form\ContactoApiType",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
+     * )
+     *
+     * @Annotations\View(
+     *  template = "DashboardBundle:Contacto:new.html.twig",
+     *  statusCode = Codes::HTTP_BAD_REQUEST,
+     *  templateVar = "form"
+     * )
+     *
+     * @param Request $request the request object
+     *
+     * @return FormTypeInterface|View
+     */
+    public function postUsuarioContactoAction(Request $request,$id)
+    {
+        try {
+            $busqueda = $request->request->all();
+            if(!isset($busqueda['usuario'])){ $busqueda['usuario']=$id; }
+            $nuevoComentario = $this->container->get('apirest.usuario.handler')->postComentario(
+                $busqueda
+            );
+            $nuevoContacto = $this->container->get('apirest.usuario.handler')->postContacto(
+                $nuevoComentario,$id
+            );
+            $routeOptions = array(
+                'id' => $nuevoContacto->getId(),
+                '_format' => $request->getRequestFormat()
+            );
+            if($routeOptions['_format']=="html"){
+                return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+            }else{
+                return $this->handleView($this->view($nuevoContacto,Codes::HTTP_CREATED));
+            }
+            return $this->routeRedirectView('api_1_get_usuarios', $routeOptions, Codes::HTTP_CREATED);
+        } catch (InvalidFormException $exception) {
+            return $exception->getForm();
+        }
+    }
 }

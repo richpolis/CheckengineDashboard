@@ -5,12 +5,16 @@ namespace Checkengine\DashboardBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Oferta
  *
  * @ORM\Table(name="ofertas")
  * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\OfertaRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class Oferta
 {
@@ -20,6 +24,9 @@ class Oferta
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
     
@@ -30,6 +37,10 @@ class Oferta
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Checkengine\DashboardBundle\Entity\Usuario")
+     * @Serializer\Groups({"list", "details"})
      */
     private $usuario;
 
@@ -38,6 +49,9 @@ class Oferta
      *
      * @ORM\Column(name="titulo", type="string", length=255)
      * @Assert\NotBlank(message="Ingresa un titulo")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $titulo;
 	
@@ -45,6 +59,9 @@ class Oferta
      * @var text
      *
      * @ORM\Column(name="descripcion", type="text")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $descripcion;
 
@@ -52,6 +69,9 @@ class Oferta
      * @var integer (mensaje, banner u oferta)
      *
      * @ORM\Column(name="tipo", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $tipo;
 	
@@ -59,6 +79,9 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="tipo_oferta", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $tipoOferta;
 	
@@ -66,6 +89,9 @@ class Oferta
      * @var string
      *
      * @ORM\Column(name="oferta", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $oferta;
 
@@ -73,6 +99,9 @@ class Oferta
      * @var string
      *
      * @ORM\Column(name="banner", type="string", length=255)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $banner;
 	
@@ -80,6 +109,9 @@ class Oferta
      * @var \DateTime
      *
      * @ORM\Column(name="inicia", type="date")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Date")
      */
     private $inicia;
 	
@@ -87,6 +119,9 @@ class Oferta
      * @var \DateTime
      *
      * @ORM\Column(name="termina", type="date")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Date")
      */
     private $termina;
 
@@ -94,6 +129,9 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="tipo_pago", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $tipoPago;
 
@@ -113,6 +151,9 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="marcas", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $marcas;
 	
@@ -120,6 +161,9 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="modelos", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $modelos;
 	
@@ -137,13 +181,29 @@ class Oferta
      * @var integer
      *
      * @ORM\Column(name="clicks", type="integer")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $clicks;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     */
+    private $isActive;
     
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
     
@@ -151,8 +211,91 @@ class Oferta
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $updatedAt;
+    
+    const TIPO_OFERTA = 1;
+    const TIPO_BANNER = 2;
+    const TIPO_MENSAJE_1K = 3;
+    const TIPO_MENSAJE_3K = 4;
+    const TIPO_MENSAJE_5K = 5;
+    const TIPO_MENSAJE_10K = 6;
+
+    static public $sTipo = array(
+        self::TIPO_OFERTA => 'Oferta',
+        self::TIPO_BANNER => 'Banner',
+        self::TIPO_MENSAJE_1K => 'Notificacion push 1km',
+        self::TIPO_MENSAJE_3K => 'Notificacion push 3km',
+        self::TIPO_MENSAJE_5K => 'Notificacion push 5km',
+        self::TIPO_MENSAJE_10K => 'Notificacion push 10km'
+    );
+
+    static function getPreferedTipo(){
+        return array(self::TIPO_OFERTA);
+    }
+    
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("stringTipo")
+     */
+    public function getStringTipo(){
+        return self::$sTipo[$this->getTipo()];
+    }
+
+    static function getArrayTipo(){
+        return self::$sTipo;
+    }
+    
+    const TIPO_OFERTA_DESCUENTO = 1;
+    const TIPO_OFERTA_CANTIDAD = 2;
+
+    static public $sTipoOferta = array(
+        self::TIPO_OFERTA_DESCUENTO => 'Descuento',
+        self::TIPO_OFERTA_CANTIDAD => 'Por cantidad'
+    );
+
+    static function getPreferedTipoOferta(){
+        return array(self::TIPO_OFERTA_DESCUENTO);
+    }
+    
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("stringTipoOferta")
+     */
+    public function getStringTipoOferta(){
+        return self::$sTipoOferta[$this->getTipoOferta()];
+    }
+
+    static function getArrayTipoOferta(){
+        return self::$sTipoOferta;
+    }
+    
+    const TIPO_PAGO_FACTURACION = 1;
+    const TIPO_PAGO_TRANSFERENCIA = 2;
+
+    static public $sTipoPago = array(
+        self::TIPO_PAGO_FACTURACION => 'Facturacion',
+        self::TIPO_PAGO_TRANSFERENCIA => 'Transferencia'
+    );
+
+    static function getPreferedTipoPago(){
+        return array(self::TIPO_PAGO_FACTURACION);
+    }
+    
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("stringTipoPago")
+     */
+    public function getStringTipoPago(){
+        return self::$sTipoPago[$this->getTipoPago()];
+    }
+
+    static function getArrayTipoPago(){
+        return self::$sTipoPago;
+    }
 	
     /*
      * Timestable
@@ -374,6 +517,10 @@ class Oferta
     {
         $this->sucursales = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comentarios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive = false;
+        $this->tipo = self::TIPO_OFERTA;
+        $this->tipoOferta = self::TIPO_OFERTA_DESCUENTO;
+        $this->tipoPago = self::TIPO_PAGO_FACTURACION;
     }
 
     /**
@@ -785,5 +932,28 @@ class Oferta
     public function getComentarios()
     {
         return $this->comentarios;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Oferta
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }

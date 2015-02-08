@@ -5,12 +5,16 @@ namespace Checkengine\DashboardBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Favorito
  *
  * @ORM\Table(name="favoritos")
  * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\FavoritoRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class Favorito
 {
@@ -20,6 +24,9 @@ class Favorito
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -30,6 +37,9 @@ class Favorito
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Checkengine\DashboardBundle\Entity\Usuario")
      */
     private $usuario;
 
@@ -40,6 +50,9 @@ class Favorito
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="empresa_id", referencedColumnName="id")
      * })
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("Checkengine\DashboardBundle\Entity\Empresa")
      */
     private $empresa;
 
@@ -48,6 +61,9 @@ class Favorito
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
     
@@ -55,6 +71,9 @@ class Favorito
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
      */
     private $updatedAt;
 	

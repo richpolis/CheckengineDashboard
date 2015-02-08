@@ -256,20 +256,47 @@ class OfertaController extends Controller
     }
     
     /**
-     * Exporta la lista completa de empresas.
+     * Exporta la lista completa de ofertas.
      *
-     * @Route("/exportar", name="empresas_export")
+     * @Route("/exportar", name="ofertas_export")
      * @Method("GET")
      */
     public function exportarAction() {
-        $empresas = $this->getDoctrine()
-                ->getRepository('DashboardBundle:Empresa')
-                ->findEmpresas();
+        $ofertas = $this->getDoctrine()
+                ->getRepository('DashboardBundle:Oferta')
+                ->findOfertas();
         $response = $this->render(
-                'DashboardBundle:Empresa:list.xls.twig', array('empresas' => $empresas)
+                'DashboardBundle:Oferta:list.xls.twig', array('ofertas' => $ofertas)
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment; filename="export-empresas.xls"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-ofertas.xls"');
         return $response;
+    }
+    
+    /**
+     * Delete a Comentario from one oferta, response to json.
+     *
+     * @Route("/{id}/comentario/{idc}", name="ofertas_comentario_delete")
+     * @Method("DELETE")
+     */
+    public function deleteComentarioAction(Request $request, $id, $idc) 
+    {
+        $em = $this->getDoctrine()->getManager();
+        $oferta = $em->getRepository('DashboardBundle:Oferta')->find($id);
+
+        if (!$oferta) {
+            return new JsonResponse(array('status'=>false,'message'=>'Id de oferta no encontrado'));
+        }
+        
+        $comentario = $em->getRepository('DashboardBundle:Comentario')->find($idc);
+        
+        if (!$comentario) {
+            return new JsonResponse(array('status'=>false,'message'=>'Id de comentario no encontrado'));
+        }
+        $oferta->removeComentario($comentario);
+        $em->remove($comentario);
+        $em->flush();
+
+        return new JsonResponse(array('status'=>true,'message'=>'Id de comentario eliminado'));
     }
 }

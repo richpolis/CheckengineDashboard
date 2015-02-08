@@ -1,0 +1,84 @@
+{% extends 'DashboardBundle::layout.html.twig' %}
+
+{% block body -%}
+
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'contactos' } %}
+    <div class="container container-principal">
+        <br>
+        {% if app.user.isGranted('ROLE_ADMIN') %}
+        <div class="well">
+            <form action="{{path('contactos')}}" class="form-inline" role="search">
+                <div class="form-group row" style="width: 100%;">
+                    <label class="col-md-4 text-center">Buscar contacto por: </label>    
+                    <div class="input-group col-md-8">
+                        <input placeholder="nombre, apellidos, email" class="form-control" name="buscar"
+                               type="text">
+                        <span class="input-group-btn">
+                            <input type="submit" class="btn btn-warning" value="Buscar"/>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">
+                    Contacto directo con administrador
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="text-center">
+                                Usuario
+                            </th>
+                            <th class="text-center">
+                                Fecha
+                            </th>
+                            <th class="text-center">
+                                Accion
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contacto in entities %}  
+                            <tr>
+                                <td class="text-center">
+                                    {{ contacto.usuario.nombreCompleto }}
+                                </td>
+                                <td class="text-center">
+                                    {{ contacto.updatedAt | date('d-m-Y') }}
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="{{ url('contactos_show', { 'id' : especialidad.id }) }}" class="btn btn-warning"> Mostar</a>
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="{{ url('contactos_show', { 'id' : especialidad.id }) }}">Mostrar</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('contactos_delete', { 'id' : especialidad.id }) }}';}">Eliminar</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <a href="{{ path('contactos_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
+            </div>
+        </div>
+        <div class="container">
+
+        </div>
+        <div class="container text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+{% endblock %}
