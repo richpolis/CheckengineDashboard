@@ -153,7 +153,7 @@ class Usuario implements UserInterface, \Serializable
      * @todo Favoritos del usuario.
      *
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Empresa")
-     * @ORM\JoinTable(name="favoritos")
+     * @ORM\JoinTable(name="usuario_favoritos")
      * @ORM\OrderBy({"nombre" = "ASC"})
      * 
      * @Serializer\Expose
@@ -167,7 +167,7 @@ class Usuario implements UserInterface, \Serializable
      * @todo Amigos del usuario. 
      *
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
-     * @ORM\JoinTable(name="amigos")
+     * @ORM\JoinTable(name="usuario_amigos")
      * @ORM\OrderBy({"nombre" = "ASC"})
      * 
      * @Serializer\Expose

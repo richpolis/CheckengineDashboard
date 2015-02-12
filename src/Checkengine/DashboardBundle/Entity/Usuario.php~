@@ -153,7 +153,7 @@ class Usuario implements UserInterface, \Serializable
      * @todo Favoritos del usuario.
      *
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Empresa")
-     * @ORM\JoinTable(name="favoritos")
+     * @ORM\JoinTable(name="usuario_favoritos")
      * @ORM\OrderBy({"nombre" = "ASC"})
      * 
      * @Serializer\Expose
@@ -167,7 +167,7 @@ class Usuario implements UserInterface, \Serializable
      * @todo Amigos del usuario. 
      *
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Usuario")
-     * @ORM\JoinTable(name="amigos")
+     * @ORM\JoinTable(name="usuario_amigos")
      * @ORM\OrderBy({"nombre" = "ASC"})
      * 
      * @Serializer\Expose
@@ -1067,5 +1067,104 @@ class Usuario implements UserInterface, \Serializable
     public function getMarcaCelular()
     {
         return $this->marcaCelular;
+    }
+
+    /**
+     * Add favoritos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $favoritos
+     * @return Usuario
+     */
+    public function addFavorito(\Checkengine\DashboardBundle\Entity\Empresa $favoritos)
+    {
+        $this->favoritos[] = $favoritos;
+
+        return $this;
+    }
+
+    /**
+     * Remove favoritos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $favoritos
+     */
+    public function removeFavorito(\Checkengine\DashboardBundle\Entity\Empresa $favoritos)
+    {
+        $this->favoritos->removeElement($favoritos);
+    }
+
+    /**
+     * Get favoritos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFavoritos()
+    {
+        return $this->favoritos;
+    }
+
+    /**
+     * Add amigos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $amigos
+     * @return Usuario
+     */
+    public function addAmigo(\Checkengine\DashboardBundle\Entity\Usuario $amigos)
+    {
+        $this->amigos[] = $amigos;
+
+        return $this;
+    }
+
+    /**
+     * Remove amigos
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $amigos
+     */
+    public function removeAmigo(\Checkengine\DashboardBundle\Entity\Usuario $amigos)
+    {
+        $this->amigos->removeElement($amigos);
+    }
+
+    /**
+     * Get amigos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAmigos()
+    {
+        return $this->amigos;
+    }
+
+    /**
+     * Add noOfertas
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $noOfertas
+     * @return Usuario
+     */
+    public function addNoOferta(\Checkengine\DashboardBundle\Entity\Empresa $noOfertas)
+    {
+        $this->noOfertas[] = $noOfertas;
+
+        return $this;
+    }
+
+    /**
+     * Remove noOfertas
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $noOfertas
+     */
+    public function removeNoOferta(\Checkengine\DashboardBundle\Entity\Empresa $noOfertas)
+    {
+        $this->noOfertas->removeElement($noOfertas);
+    }
+
+    /**
+     * Get noOfertas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNoOfertas()
+    {
+        return $this->noOfertas;
     }
 }

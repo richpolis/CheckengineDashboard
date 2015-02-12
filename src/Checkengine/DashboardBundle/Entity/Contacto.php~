@@ -47,7 +47,7 @@ class Contacto
      * @todo Comentarios de la empresa. 
      *
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Comentario")
-     * @ORM\JoinTable(name="empresa_comentarios")
+     * @ORM\JoinTable(name="contacto_comentarios")
      * @ORM\OrderBy({"createdAt" = "ASC"})
      */
     private $comentarios;
@@ -107,5 +107,175 @@ class Contacto
     public function setUpdatedAtValue()
     {
         $this->updatedAt = new \DateTime();
+    }
+    /**
+     * @var \Checkengine\DashboardBundle\Entity\Empresa
+     */
+    private $empresa;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->comentarios = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Contacto
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Contacto
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Contacto
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $usuario
+     * @return Contacto
+     */
+    public function setUsuario(\Checkengine\DashboardBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Checkengine\DashboardBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Set empresa
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Empresa $empresa
+     * @return Contacto
+     */
+    public function setEmpresa(\Checkengine\DashboardBundle\Entity\Empresa $empresa = null)
+    {
+        $this->empresa = $empresa;
+
+        return $this;
+    }
+
+    /**
+     * Get empresa
+     *
+     * @return \Checkengine\DashboardBundle\Entity\Empresa 
+     */
+    public function getEmpresa()
+    {
+        return $this->empresa;
+    }
+
+    /**
+     * Add comentarios
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Comentario $comentarios
+     * @return Contacto
+     */
+    public function addComentario(\Checkengine\DashboardBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Checkengine\DashboardBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
     }
 }

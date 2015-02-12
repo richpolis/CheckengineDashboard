@@ -47,7 +47,7 @@ class Contacto
      * @todo Comentarios de la empresa. 
      *
      * @ORM\ManyToMany(targetEntity="Checkengine\DashboardBundle\Entity\Comentario")
-     * @ORM\JoinTable(name="empresa_comentarios")
+     * @ORM\JoinTable(name="contacto_comentarios")
      * @ORM\OrderBy({"createdAt" = "ASC"})
      */
     private $comentarios;

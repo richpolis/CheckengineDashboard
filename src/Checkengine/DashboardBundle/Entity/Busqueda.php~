@@ -91,4 +91,106 @@ class Busqueda
           $this->updatedAt = new \DateTime();
         }
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set busca
+     *
+     * @param string $busca
+     * @return Busqueda
+     */
+    public function setBusca($busca)
+    {
+        $this->busca = $busca;
+
+        return $this;
+    }
+
+    /**
+     * Get busca
+     *
+     * @return string 
+     */
+    public function getBusca()
+    {
+        return $this->busca;
+    }
+
+    /**
+     * Set clicks
+     *
+     * @param integer $clicks
+     * @return Busqueda
+     */
+    public function setClicks($clicks)
+    {
+        $this->clicks = $clicks;
+
+        return $this;
+    }
+
+    /**
+     * Get clicks
+     *
+     * @return integer 
+     */
+    public function getClicks()
+    {
+        return $this->clicks;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Busqueda
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Checkengine\DashboardBundle\Entity\Usuario $usuario
+     * @return Busqueda
+     */
+    public function setUsuario(\Checkengine\DashboardBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Checkengine\DashboardBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
 }
