@@ -47,7 +47,7 @@
                         {% for especialidad in pagination %}  
                             <tr>
                                 <td class="text-center">
-                                    <img src="{{especialidad.thumbnailWebPath}}"/>
+                                    <img src="{{constant('Checkengine\\DashboardBundle\\Entity\\Enquiry::IMAGENES')}}{{especialidad.thumbnailWebPath}}"/>
                                 </td>
                                 <td class="text-center">
                                     {{especialidad.nombre}}

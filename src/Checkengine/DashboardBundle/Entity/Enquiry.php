@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Enquiry
 {
+    const IMAGENES = '/apps/checkengine/web';
+    
     /**
      * @Assert\NotBlank(message="El nombre no puede estar vacio.")
      */

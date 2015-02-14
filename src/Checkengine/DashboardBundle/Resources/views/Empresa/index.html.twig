@@ -53,7 +53,7 @@
                         {% for empresa in pagination %}  
                             <tr>
                                 <td class="text-center">
-                                    <img src="{{empresa.thumbnailWebPath}}" alt="{{empresa.nombreCompleto}}" style="max-width: 120px;"
+                                    <img src="{{constant('Checkengine\\DashboardBundle\\Entity\\Enquiry::IMAGENES')}}{{empresa.thumbnailWebPath}}" alt="{{empresa.nombreCompleto}}" style="max-width: 120px;"
                                 </td>
                                 <td class="text-center">
                                     {{empresa.nombre}}
