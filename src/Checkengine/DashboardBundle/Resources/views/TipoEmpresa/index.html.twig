@@ -47,7 +47,7 @@
                         {% for registro in entities %}  
                             <tr>
                                 <td class="text-center">
-                                    <img src="{{constant('Checkengine\\DashboardBundle\\Entity\\Enquiry::IMAGENES')}}{{registro.thumbnailWebPath}}"/>
+                                    <img src="{{registro.thumbnailWebPath}}"/>
                                 </td>
                                 <td class="text-center">
                                     {{registro.nombre}}
