@@ -8,7 +8,7 @@
         <div class="well">
             <form action="{{path('tiposempresa')}}" class="form-inline" role="search">
                 <div class="form-group row" style="width: 100%;">
-                    <label class="col-md-4 text-center">Buscar especialidad por: </label>    
+                    <label class="col-md-4 text-center">Buscar por tipo: </label>    
                     <div class="input-group col-md-8">
                         <input placeholder="nombre, apellidos, email" class="form-control" name="buscar"
                                type="text">
@@ -22,7 +22,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title text-center">
-                    Usuarios
+                    Tipos de empresa
                 </h3>
             </div>
             <div class="panel-body">
@@ -47,7 +47,7 @@
                         {% for registro in entities %}  
                             <tr>
                                 <td class="text-center">
-                                    <img src="{{especialidad.thumbnailWebPath}}"/>
+                                    <img src="{{registro.thumbnailWebPath}}"/>
                                 </td>
                                 <td class="text-center">
                                     {{registro.nombre}}
@@ -57,16 +57,16 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <a href="{{ url('tiposempresa_show', { 'id' : especialidad.id }) }}" class="btn btn-warning"> Mostar</a>
+                                        <a href="{{ url('tiposempresa_show', { 'id' : registro.id }) }}" class="btn btn-warning"> Mostar</a>
                                         <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                             <span class="caret"></span>
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{ url('tiposempresa_show', { 'id' : especialidad.id }) }}">Mostrar</a></li>
-                                            <li><a href="{{ url('tiposempresa_edit', { 'id' : especialidad.id }) }}">Editar</a></li>
+                                            <li><a href="{{ url('tiposempresa_show', { 'id' : registro.id }) }}">Mostrar</a></li>
+                                            <li><a href="{{ url('tiposempresa_edit', { 'id' : registro.id }) }}">Editar</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('tiposempresa_delete', { 'id' : especialidad.id }) }}';}">Eliminar</a></li>
+                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('tiposempresa_delete', { 'id' : registro.id }) }}';}">Eliminar</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -76,15 +76,8 @@
                 </table>
             </div>
             <div class="panel-footer">
-                <a href="{{ path('tiposempresa_export') }}" class="btn btn-default btn-sm">Exportar</a>
-                <a href="{{ path('tiposempresa_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
+                <a href="{{ path('tiposempresa_new') }}" class="btn btn-warning btn-sm">Nuevo tipo de empresa</a>
             </div>
-        </div>
-        <div class="container">
-
-        </div>
-        <div class="container text-center">
-            {{ knp_pagination_render(pagination) }}
         </div>
     </div>
 {% endblock %}

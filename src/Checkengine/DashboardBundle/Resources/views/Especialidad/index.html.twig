@@ -10,7 +10,7 @@
                 <div class="form-group row" style="width: 100%;">
                     <label class="col-md-4 text-center">Buscar especialidad por: </label>    
                     <div class="input-group col-md-8">
-                        <input placeholder="nombre, apellidos, email" class="form-control" name="buscar"
+                        <input placeholder="Tipo de empresa, especialidad" class="form-control" name="buscar"
                                type="text">
                         <span class="input-group-btn">
                             <input type="submit" class="btn btn-warning" value="Buscar"/>
@@ -44,7 +44,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for especialidad in entities %}  
+                        {% for especialidad in pagination %}  
                             <tr>
                                 <td class="text-center">
                                     <img src="{{especialidad.thumbnailWebPath}}"/>
@@ -76,8 +76,7 @@
                 </table>
             </div>
             <div class="panel-footer">
-                <a href="{{ path('especialidades_export') }}" class="btn btn-default btn-sm">Exportar</a>
-                <a href="{{ path('especialidades_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
+                <a href="{{ path('especialidades_new') }}" class="btn btn-warning btn-sm">Nueva especialidad</a>
             </div>
         </div>
         <div class="container">

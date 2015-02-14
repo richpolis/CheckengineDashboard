@@ -25,15 +25,25 @@ class ServicioController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('DashboardBundle:Servicio')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            $buscar = $request->get('buscar','');
+            if(strlen($buscar)>0){
+                $options = array('filterParam'=>'buscar','filterValue'=>$buscar);
+            }else{
+                $options = array();
+            }
+            $query = $em->getRepository('DashboardBundle:Servicio')->queryFindServicios($buscar);
+            $paginator = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                    $query, $this->get('request')->query->get('page', 1),10,$options
+            );
+            
+            return  compact('pagination');
+        } 
+        return $this->redirect('login');
     }
     /**
      * Creates a new Servicio entity.

@@ -1,4 +1,4 @@
-<form onsubmit="return false;" action="{{path('frontend_contacto')}}" method="post" class="form-contacto {%if error == true%}invalid{%endif%} {%if ok == true%}sent{%endif%}" novalidate="novalidate" role="form">
+<form onsubmit="return false;" action="{{path('frontend_contacto')}}" method="post" class="form-contacto" novalidate="novalidate" role="form">
     <div class="form-group">
         {{ form_label(form.name) }}
         {{ form_widget(form.name, {'attr': {'class': 'form-control','placeholder':'nombre'}}) }}
@@ -35,21 +35,8 @@
         </span>
     </div> 
     <div class="form-group">
-        <input type="submit" value="Enviar" class="form-contacto-control form-submit">
+        <input type="submit" value="Enviar" class="form-contacto-control form-submit btn btn-default">
         <img class="ajax-loader" src="/images/bx_loader.gif" alt="Enviando ..." style="visibility: hidden;">
     </div>
-    {% if ok == true and error == false%}    
-        <div class="form-response-output form-mail-sent-ok">
-            {{mensaje}}
-        </div>
-    {% elseif ok == false and error == true %}
-        <div class="form-response-output form-mail-sent-ng form-validation-errors">
-            {{mensaje}}{{form_errors(form)}}
-        </div>    
-    {% else %}
-        <div class="form-response-output">
-            {{mensaje}}
-        </div>    
-    {% endif %}    
     {{ form_rest(form) }}    
 </form>

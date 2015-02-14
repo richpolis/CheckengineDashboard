@@ -25,15 +25,25 @@ class PreguntaController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('DashboardBundle:Pregunta')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            $buscar = $request->get('buscar','');
+            if(strlen($buscar)>0){
+                $options = array('filterParam'=>'buscar','filterValue'=>$buscar);
+            }else{
+                $options = array();
+            }
+            $query = $em->getRepository('DashboardBundle:Pregunta')->queryFindPreguntas($buscar);
+            $paginator = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                    $query, $this->get('request')->query->get('page', 1),10,$options
+            );
+            
+            return  compact('pagination');
+        } 
+        return $this->redirect('login');
     }
     /**
      * Creates a new Pregunta entity.
@@ -243,5 +253,23 @@ class PreguntaController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete','attr'=>array('class'=>'btn btn-danger')))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Exporta la lista completa de preguntas.
+     *
+     * @Route("/exportar", name="preguntas_export")
+     * @Method("GET")
+     */
+    public function exportarAction() {
+        $preguntas = $this->getDoctrine()
+                ->getRepository('DashboardBundle:Pregunta')
+                ->findPreguntas();
+        $response = $this->render(
+                'DashboardBundle:Pregunta:list.xls.twig', array('preguntas' => $preguntas)
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-preguntas.xls"');
+        return $response;
     }
 }

@@ -10,7 +10,7 @@
                 <div class="form-group row" style="width: 100%;">
                     <label class="col-md-4 text-center">Buscar servicio por: </label>    
                     <div class="input-group col-md-8">
-                        <input placeholder="nombre, apellidos, email" class="form-control" name="buscar"
+                        <input placeholder="Servicio" class="form-control" name="buscar"
                                type="text">
                         <span class="input-group-btn">
                             <input type="submit" class="btn btn-warning" value="Buscar"/>
@@ -41,7 +41,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for servicio in entities %}  
+                        {% for servicio in pagination %}  
                             <tr>
                                 <td class="text-center">
                                     {{servicio.nombre}}
@@ -70,8 +70,7 @@
                 </table>
             </div>
             <div class="panel-footer">
-                <a href="{{ path('servicios_export') }}" class="btn btn-default btn-sm">Exportar</a>
-                <a href="{{ path('servicios_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
+                <a href="{{ path('servicios_new') }}" class="btn btn-warning btn-sm">Nuevo servicio</a>
             </div>
         </div>
         <div class="container">

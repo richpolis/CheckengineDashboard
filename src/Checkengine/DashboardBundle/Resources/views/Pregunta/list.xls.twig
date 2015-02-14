@@ -2,49 +2,13 @@
     <thead>
         <tr>
             <th>
-                Nombre
+                Orden
             </th>
             <th>
-                Sucursal
+                Pregunta
             </th>
             <th>
-                Rubro
-            </th>
-            <th>
-                Direccion
-            </th>
-            <th>
-                RUT
-            </th>
-            <th>
-                Region
-            </th>
-            <th>
-                Comuna
-            </th>
-            <th>
-                Horarios
-            </th>
-            <th>
-                Tipos_de_empresa
-            </th>
-            <th>
-                Especialidades
-            </th>
-            <th>
-                Servicios
-            </th>
-            <th>
-                longitud
-            </th>
-             <th>
-                latitud
-            </th>
-            <th>
-                Manager
-            </th>
-            <th>
-                Activo
+                Respuesta
             </th>
             <th>
                 Alta
@@ -55,61 +19,22 @@
         </tr>
     </thead>
     <tbody>
-        {% for empresa in empresas %}
+        {% for pregunta in preguntas %}
             <tr>
                 <td>
-                    {{ empresa.nombre }}
+                    {{ pregunta.orden }}
                 </td>
                 <td>
-                    {{ empresa.sucursal }}
+                    {{ pregunta.pregunta }}
                 </td>
                 <td>
-                    {{ empresa.rubro }}
+                    {{ pregunta.respuesta }}
                 </td>
                 <td>
-                    {{ empresa.direccion | striptags }}
+                    {{ pregunta.createdAt | date('d-m-Y') }}
                 </td>
                 <td>
-                    {{ empresa.rut }}
-                </td>
-                <td>
-                    {{ empresa.region }}    
-                </td>
-                <td>
-                    {{ empresa.comuna }}    
-                </td>
-                <td>
-                    {{ empresa.horarios }}    
-                </td>
-                <td>
-                    {% for tipo in empresa.tipos %}
-                        {{ tipo }},
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for espe in empresa.especialidades %}
-                        {{ espe }},
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for serv in empresa.servicios %}
-                        {{ serv }},
-                    {% endfor %} 
-                </td>
-                <td>
-                    {{ empresa.ubicacionLongitud }}
-                </td>
-                <td>
-                    {{ empresa.ubicacionLatitud }}    
-                </td>
-                <td>
-                    {{ ((empresa.isActive)?'Si':No) }}
-                </td>
-                <td>
-                    {{ empresa.createdAt | date('d-m-Y') }}
-                </td>
-                <td>
-                    {{ empresa.updatedAt | date('d-m-Y') }}
+                    {{ pregunta.updatedAt | date('d-m-Y') }}
                 </td>
             </tr>
         {% endfor %}

@@ -1,13 +1,13 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
 {% block body -%}
-    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'empresas' } %}
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'preguntas' } %}
     <div class="container container-principal">
         <br>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title text-center">
-                    Mostrar Empresa "{{entity.nombreCompleto}}"
+                    Mostrar pregunta "{{entity.pregunta}}"
                 </h3>
             </div>
             <div class="panel-body">
@@ -15,9 +15,7 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">Datos generales</a></li>
-                        <li role="presentation"><a href="#manager" aria-controls="manager" role="tab" data-toggle="tab">Manager y Servicios</a></li>
-                        <li role="presentation"><a href="#ubicacion" aria-controls="ubicacion" role="tab" data-toggle="tab">Ubicacion y Sistema</a></li>
-                        <li role="presentation"><a href="#comentarios" aria-controls="comentarios" role="tab" data-toggle="tab">Comentarios</a></li>
+                        <li role="presentation"><a href="#sistema" aria-controls="sistema" role="tab" data-toggle="tab">Sistema</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -29,101 +27,19 @@
                                         <td>{{ entity.id }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Razon social</th>
-                                        <td>{{ entity.nombre }}</td>
+                                        <th>Pregunta</th>
+                                        <td>{{ entity.pregunta }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Sucursal</th>
-                                        <td>{{ entity.sucursal }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Rubro</th>
-                                        <td>{{ entity.rubro }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Logo</th>
-                                        <td>
-                                            <img src="{{ entity.webPath }}" alt="{{ entity.nombreCompleto }}"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Direccion</th>
-                                        <td>{{ entity.direccion | raw }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>RUT</th>
-                                        <td>{{ entity.rut }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Region</th>
-                                        <td>{{ entity.region }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Comuna</th>
-                                        <td>{{ entity.comuna }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Horarios</th>
-                                        <td>{{ entity.horarios }}</td>
+                                        <th>Respuesta</th>
+                                        <td>{{ entity.respuesta }}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="manager">
+                        <div role="tabpanel" class="tab-pane" id="sistema">
                             <table class="record_properties table table-striped">
                                 <tbody>
-                                    <tr>
-                                        <th>Manager</th>
-                                        <td>{{ entity.usuario.nombreCompleto }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Activo?</th>
-                                        <td>{{ ((entity.isActive)?'Si':'No') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Tipos de empresa</th>
-                                        <td>
-                                            <ul class="lista-tipos-empresa">
-                                                {% for registro in entity.tipos %}
-                                                    <li class="item-tipo-empresa">{{ registro }}</li>
-                                                    {% endfor %}
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Especialidades</th>
-                                        <td>
-                                            <ul class="lista-especialidades">
-                                                {% for registro in entity.especialidades %}
-                                                    <li class="item-especialidad">{{ registro}}</li>
-                                                    {% endfor %}
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Servicios</th>
-                                        <td>
-                                            <ul class="lista-servicios">
-                                                {% for registro in entity.servicios %}
-                                                    <li class="item-servicio">{{ registro}}</li>
-                                                    {% endfor %}
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="ubicacion">
-                            <table class="record_properties table table-striped">
-                                <tbody>
-                                    <tr>
-                                        <th>Longitud</th>
-                                        <td>{{ entity.ubicacionLongitud }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Latitud</th>
-                                        <td>{{ entity.ubicacionLatitud }}</td>
-                                    </tr>
                                     <tr>
                                         <th>Creado</th>
                                         <td>{{ entity.createdAt|date('d-m-Y H:i:s') }}</td>
@@ -135,33 +51,15 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="comentarios">
-                            {% for comentario in entity.comentarios %}
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img class="media-object" data-src="{{comentario.usuario.webPath}}" alt="{{comentario.usuario.nombreCompleto}}">
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">{{comentario.usuario.nombreCompleto}} - {{comentario.usuario.createdAt|date('d-m-Y H:i:s')}}</h4>
-                                        {{ comentario.comentario | raw }}
-                                        <p>
-                                            {{ comentario.calificacion }}
-                                        </p>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>        
                     </div>
                 </div>
             </div>
             <div class="panel-footer">
                 <div class="text-left">
-                    <a href="{{ path('empresas') }}" class="btn btn-primary">
+                    <a href="{{ path('preguntas') }}" class="btn btn-primary">
                         Regresar
                     </a>
-                    <a href="{{ path('empresas_edit', { 'id': entity.id }) }}" class="btn btn-warning">
+                    <a href="{{ path('preguntas_edit', { 'id': entity.id }) }}" class="btn btn-warning">
                         Editar
                     </a>
                     <span class="pull-right">{{ form(delete_form) }}</span>            

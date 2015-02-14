@@ -56,7 +56,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
                 $url = $this->session->get('_security.main.target_path');
             } else {
 
-                $url = $this->router->generate('home_page');
+                $url = $this->router->generate('usuarios');
             } // end if
 
             return new RedirectResponse($url);
@@ -87,7 +87,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
             // set authentication exception to session
             $request->getSession()->set(SecurityContextInterface::AUTHENTICATION_ERROR, $exception);
 
-            return new RedirectResponse($this->router->generate('login_route'));
+            return new RedirectResponse($this->router->generate('login'));
         }
     }
 

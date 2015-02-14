@@ -2,15 +2,15 @@
 
 {% block body -%}
 
-    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'empresas' } %}
+    {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'preguntas' } %}
     <div class="container container-principal">
         <br>
         <div class="well">
-            <form action="{{path('empresas')}}" class="form-inline" role="search">
+            <form action="{{path('preguntas')}}" class="form-inline" role="search">
                 <div class="form-group row" style="width: 100%;">
-                    <label class="col-md-4 text-center">Buscar empresa por: </label>    
+                    <label class="col-md-4 text-center">Buscar pregunta: </label>    
                     <div class="input-group col-md-8">
-                        <input placeholder="Razon social, Sucursal, RUT" class="form-control" name="buscar"
+                        <input placeholder="Pregunta" class="form-control" name="buscar"
                                type="text">
                         <span class="input-group-btn">
                             <input type="submit" class="btn btn-warning" value="Buscar"/>
@@ -22,7 +22,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title text-center">
-                    Empresas
+                    Preguntas y respuestas
                 </h3>
             </div>
             <div class="panel-body">
@@ -30,19 +30,10 @@
                     <thead class="text-center">
                         <tr>
                             <th class="text-center">
-                                Logo
+                                Pregunta
                             </th>
                             <th class="text-center">
-                                Razon social
-                            </th>
-                            <th class="text-center">
-                                Sucursal
-                            </th>
-                            <th class="text-center">
-                                Manager
-                            </th>
-                            <th class="text-center">
-                                RUT
+                                Respuesta
                             </th>
                             <th class="text-center">
                                 Accion
@@ -50,35 +41,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for empresa in pagination %}  
+                        {% for pregunta in pagination %}  
                             <tr>
                                 <td class="text-center">
-                                    <img src="{{empresa.thumbnailWebPath}}" alt="{{empresa.nombreCompleto}}" style="max-width: 120px;"
+                                    {{pregunta.pregunta}}
                                 </td>
                                 <td class="text-center">
-                                    {{empresa.nombre}}
-                                </td>
-                                <td class="text-center">
-                                    {{empresa.sucursal}}
-                                </td>
-                                <td class="text-center">
-                                    {{empresa.usuario.nombreCompleto}}
-                                </td>
-                                <td class="text-center">
-                                    {{empresa.rut}}
+                                    {{pregunta.respuesta}}
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <a href="{{ url('empresas_show', { 'id' : empresa.id }) }}" class="btn btn-warning"> Mostar</a>
+                                        <a href="{{ url('preguntas_show', { 'id' : pregunta.id }) }}" class="btn btn-warning"> Mostar</a>
                                         <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                             <span class="caret"></span>
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{ url('empresas_show', { 'id' : empresa.id }) }}">Mostrar</a></li>
-                                            <li><a href="{{ url('empresas_edit', { 'id' : empresa.id }) }}">Editar</a></li>
+                                            <li><a href="{{ url('preguntas_show', { 'id' : pregunta.id }) }}">Mostrar</a></li>
+                                            <li><a href="{{ url('preguntas_edit', { 'id' : pregunta.id }) }}">Editar</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('empresas_delete', { 'id' : empresa.id }) }}';}">Eliminar</a></li>
+                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('preguntas_delete', { 'id' : pregunta.id }) }}';}">Eliminar</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -88,8 +70,8 @@
                 </table>
             </div>
             <div class="panel-footer">
-                <a href="{{ path('empresas_export') }}" class="btn btn-default btn-sm">Exportar</a>
-                <a href="{{ path('empresas_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Empresa</a>
+                <a href="{{ path('preguntas_export') }}" class="btn btn-default btn-sm">Exportar</a>
+                <a href="{{ path('preguntas_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Pregunta</a>
             </div>
         </div>
         <div class="container">

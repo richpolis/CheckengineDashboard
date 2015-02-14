@@ -24,7 +24,7 @@ class DefaultController extends Controller
     /**
      * @Route("/contacto", name="frontend_contacto")
      * @Method({"GET", "POST"})
-     * @Template("DashboardBundle:Default:formContacto.html.twig")
+     * @Template("DashboardBundle:Default:contacto.html.twig")
      */
     public function contactoAction() {
         $contacto = new Enquiry();
@@ -44,30 +44,34 @@ class DefaultController extends Controller
                         ->setTo($this->container->getParameter('richpolis.emails.to_email'))
                         ->setBody($this->renderView('FrontendBundle:Default:contactoEmail.html.twig', array('datos' => $datos)), 'text/html');
                 $this->get('mailer')->send($message);
-                // Redirige - Esto es importante para prevenir que el usuario
-                // reenvíe el formulario si actualiza la página
-                $ok=true;
-                $error=false;
-                $mensaje="Se ha enviado el mensaje";
-                $contacto = new Enquiry();
-                $form = $this->createForm(new EnquiryType(), $contacto);
+                $status     =   'enviado';
+                $mensaje    =   "Se ha enviado el mensaje";
+                $contacto   =   new Enquiry();
+                $form       =   $this->createForm(new EnquiryType(), $contacto);
             }else{
-                $ok=false;
-                $error=true;
-                $mensaje="El mensaje no se ha podido enviar";
+                $status     =   'error';
+                $mensaje    =   "El mensaje no se ha podido enviar";
             }
         }else{
-            $ok=false;
-            $error=false;
-            $mensaje="";
+            $status     =   '';
+            $mensaje    =   "";
+        }
+        
+        if($request->isXmlHttpRequest()){
+            $datos = array(
+              'form'    =>  $this->renderView('FrontendBundle:Default:formContacto.html.twig', 
+                    array('form'=>$form->createView())
+               ),
+              'status'  =>  $status,
+              'message' =>  $mensaje,  
+            );
+            return new \Symfony\Component\HttpFoundation\JsonResponse($datos);
         }
         
         return array(
-              /*'configuraciones'=>$configuraciones,*/
-              'form' => $form->createView(),
-              'ok'=>$ok,
-              'error'=>$error,
-              'mensaje'=>$mensaje,
+              'form'    =>  $form->createView(),
+              'status'  =>  $status,
+              'message' =>  $mensaje,
         );
     }
 

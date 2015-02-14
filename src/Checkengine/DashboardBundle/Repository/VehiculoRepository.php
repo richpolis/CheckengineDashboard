@@ -17,12 +17,12 @@ class VehiculoRepository extends EntityRepository
         if (strlen($buscar) == 0) {
             $consulta = $em->createQuery('SELECT u '
                     . 'FROM DashboardBundle:Vehiculo u '
-                    . 'ORDER BY u.marca ASC, u.modelo ASC, u.year as ASC');
+                    . 'ORDER BY u.marca ASC, u.modelo ASC, u.year ASC');
         } else {
             $consulta = $em->createQuery("SELECT u "
                     . "FROM DashboardBundle:Vehiculo u "
                     . "WHERE u.marca LIKE :marca OR u.modelo LIKE :modelo OR u.year=:year "
-                    . "ORDER BY u.marca ASC, u.modelo ASC, u.year as ASC");
+                    . "ORDER BY u.marca ASC, u.modelo ASC, u.year ASC");
             $consulta->setParameters(array(
                 'marca' => "%" . $buscar . "%",
                 'modelo' => "%" . $buscar . "%",

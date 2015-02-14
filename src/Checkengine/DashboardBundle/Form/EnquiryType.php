@@ -21,7 +21,7 @@ class EnquiryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Richpolis\FrontendBundle\Entity\Enquiry'
+            'data_class' => 'Checkengine\DashboardBundle\Entity\Enquiry'
         ));
     }
     public function getName()

@@ -12,4 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class PreguntaRepository extends EntityRepository
 {
+    public function queryFindPreguntas($buscar = "") {
+        $em = $this->getEntityManager();
+        if (strlen($buscar) == 0) {
+            $consulta = $em->createQuery('SELECT u '
+                    . 'FROM DashboardBundle:Pregunta u '
+                    . 'ORDER BY u.pregunta ASC');
+        } else {
+            $consulta = $em->createQuery("SELECT u "
+                    . "FROM DashboardBundle:Pregunta u "
+                    . "WHERE u.pregunta LIKE :pregunta "
+                    . "ORDER BY u.pregunta ASC");
+            $consulta->setParameters(array(
+                'pregunta' => "%" . $buscar . "%"
+            ));
+        }
+        return $consulta;
+    }
+
+    public function findPreguntas($buscar = "") {
+        return $this->queryFindPreguntas($buscar)->getResult();
+    }
 }

@@ -20,7 +20,7 @@ class EspecialidadRepository extends EntityRepository
                     . 'ORDER BY u.tipoEmpresa ASC, u.orden ASC');
         } else {
             $consulta = $em->createQuery("SELECT u "
-                    . "FROM DashboardBundle:Vehiculo u "
+                    . "FROM DashboardBundle:Especialidad u "
                     . "WHERE u.tipoEmpresa=:tipo "
                     . "ORDER BY u.tipoEmpresa ASC, u.orden ASC");
             $consulta->setParameters(array(
@@ -32,5 +32,29 @@ class EspecialidadRepository extends EntityRepository
 
     public function findByTipoDeEmpresa($tipo = "") {
         return $this->queryFindByTipoDeEmpresa($tipo)->getResult();
+    }
+    
+    public function queryFindEspecialidades($buscar = "") {
+        $em = $this->getEntityManager();
+        if (strlen($buscar) == 0) {
+            $consulta = $em->createQuery('SELECT u '
+                    . 'FROM DashboardBundle:Especialidad u '
+                    . 'ORDER BY u.nombre ASC');
+        } else {
+            $consulta = $em->createQuery("SELECT u "
+                    . "FROM DashboardBundle:Especialidad u "
+                    . "JOIN u.tipoEmpresa e "
+                    . "WHERE u.nombre LIKE :especialidad OR e.nombre LIKE :tipoEmpresa "
+                    . "ORDER BY u.nombre ASC");
+            $consulta->setParameters(array(
+                'especialidad' => "%" . $buscar . "%",
+                'tipoEmpresa' => "%" . $buscar . "%"
+            ));
+        }
+        return $consulta;
+    }
+
+    public function findEspecialidades($buscar = "") {
+        return $this->queryFindEspecialidades($buscar)->getResult();
     }
 }

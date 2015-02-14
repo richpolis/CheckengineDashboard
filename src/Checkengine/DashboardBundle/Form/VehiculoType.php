@@ -33,7 +33,7 @@ class VehiculoType extends AbstractType
             ->add('kms','text',array('required'=>false))
             ->add('combustible','text',array('required'=>false))
             ->add('transmision','text',array('required'=>false))
-            ->add('seguro',null,array('required'=>false))
+            ->add('seguro',null,array('label'=>'Tiene seguro?'))
             ->add('usuario',null,array('required'=>false))
         ;
     }

@@ -25,7 +25,7 @@ class OfertaController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         if ($this->get('security.context')->isGranted('ROLE_CLIENTE')) {

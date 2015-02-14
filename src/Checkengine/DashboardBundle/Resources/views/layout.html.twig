@@ -32,8 +32,9 @@
                 </div>
                 {% if app.user == null %}
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a class="link-nav-bar" href="#" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Login</a></li>
-                    <li><a class="link-nav-bar" href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Contacto</a></li>
+                    <!-- data-toggle="modal" data-target="#loginModal" -->
+                    <li><a class="link-nav-bar" href="{{ path('login') }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Login</a></li>
+                    <li><a class="link-nav-bar" href="{{ path('frontend_contacto') }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Contacto</a></li>
                 </ul>
                 {% else %}
                 <ul class="nav navbar-nav navbar-right">
@@ -56,7 +57,7 @@
         {% block footer %}
             <hr>
             <footer>
-                <p>&copy; Company 2014</p>
+                <p>&copy; Company 2015</p>
             </footer>
         {% endblock footer %}
     </div> <!-- /container -->

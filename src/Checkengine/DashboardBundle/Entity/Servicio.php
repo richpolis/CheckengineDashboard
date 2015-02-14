@@ -10,7 +10,7 @@ use JMS\Serializer\Annotation as Serializer;
  * Servicio
  *
  * @ORM\Table(name="servicios")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Checkengine\DashboardBundle\Repository\ServicioRepository")
  * @ORM\HasLifecycleCallbacks()
  * 
  * @Serializer\ExclusionPolicy("all")

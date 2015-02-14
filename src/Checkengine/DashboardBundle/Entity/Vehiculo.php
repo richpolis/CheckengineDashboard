@@ -123,10 +123,10 @@ class Vehiculo
     /**
      * @var integer
      *
-     * @ORM\Column(name="seguro", type="integer")
+     * @ORM\Column(name="seguro", type="boolean")
      * 
      * @Serializer\Expose
-     * @Serializer\Type("integer")
+     * @Serializer\Type("boolean")
      */
     private $seguro;
 
