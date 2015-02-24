@@ -1,0 +1,89 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body { padding:90px 0 50px 0; }
+body#landing { background:url(../../images/background.gif) center center repeat; }
+
+.loginbox { padding:15px 0; width:300px; box-shadow:none; border-radius:15px; }
+.loginbox input { background:#666; border:#666; color:#FFF; border-left:none !important; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius:10px; }
+
+.loginbox .form-control::-moz-placeholder { color:#FFF; }
+.loginbox .form-control:-ms-input-placeholder { color:#FFF; }
+.loginbox .form-control::-webkit-input-placeholder { color:#FFF; }
+
+.loginbox .input-group .input-group-addon { background:#666; border:#666; color:#FFF; -moz-border-radius-topleft:10px; -moz-border-radius-bottomleft:10px; -webkit-border-top-left-radius:10px; -webkit-border-bottom-left-radius:10px; border-top-left-radius:10px; border-bottom-left-radius:10px; }
+
+.loginbox .links { font-size:12px; color:#666; text-decoration:underline; font-weight:normal; }
+.loginbox .input-group { margin-bottom:5px; }
+.loginbox .btn { margin-top:15px; }
+
+.font-bold { font-weight:bold; }
+.font-size-12 { font-size:12px; }
+
+.jumbotron { background:none; margin-top:60px; }
+
+table thead { background:#ff7f00; color:#FFF; font-weight:bold; -moz-border-radius:4px; -webkit-border-radius:4px; border-radius:4px; }
+
+.inputsearchbox { background:#999; width:290px !important; }
+.naranja { color:#ff7f00; }
+
+
+/*PISANDO BOOTSTRAP*/
+
+.navbar-nav { font-size:16px; font-weight:bold; }
+.navbar-default { background:#FFF; border-bottom:1px solid #dedede; box-shadow:0px 3px 6px #dedede; }
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover { color:#ff7f00; background:#FFF; }
+.btn-default.active, .btn-default.focus, .btn-default:active, .btn-default:focus, .btn-default:hover, .open > .dropdown-toggle.btn-default { color:#FFF; background:#ff7f00; border-color:#ff7f00; box-shadow:none; }
+.text-normal { text-transform:none !important; }
+
+.tab-pane { margin-top:30px; }
+
+
+.btn-default { background:#CCC; text-transform:uppercase; font-weight:bold; padding:6px 23px; color:#FFF; border-bottom:3px solid #666; }
+.btn-default.active { background:#ff7f00; color:#FFF; border-color:#ff7f00; border-bottom:3px solid #a95401; box-shadow:none; }
+
+
+.btn-primary { background:#ff7f00; border:#ff7f00; }
+.btn-primary:hover, .btn-primary:focus { background:#333; border:#333; color:#ff7f00; }
+
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover { background:#ff7f00; }
+.nav-pills > li > a { color:#666; }
+.tab-content { margin-top:10px; }
+
+
+body#app .dropdown-menu { width:100%; min-width:100%; text-align:center; }
+body#app .open > .dropdown-menu { background-color:#ff7f00; border:none; box-shadow:none; text-transform:uppercase; margin-top:-10px; padding-top:20px; }
+.dropdown-menu > li > a { color:#ffbf81; font-weight:bold; }
+.dropdown-menu > li > a:focus, .dropdown-menu > li > a:hover { color:#FFF; background:none; }
+
+.nav li.bienvenida { color:#ff7f00; font-size:18px; line-height:16px; padding-top:10px; text-align:right; }
+.nav li.bienvenida a { color:#666; font-size:12px; font-weight:normal; }
+
+.well { margin-top:20px; border:none; background:#CCC; }
+.well input.form-control { font-size:16px; font-weight:bold; }
+
+.well .form-control::-moz-placeholder { color:#FFF; }
+.well .form-control:-ms-input-placeholder { color:#FFF; }
+.well .form-control::-webkit-input-placeholder { color:#FFF; }
+
+ul.pager li > a, .pager li > span { background:#CCC; color:#FFF; border:none; border-bottom:2px solid #666; border-radius:8px; }
+ul.pager li a:hover { color:#333; } 
+ul.pager li.active a { background:#ff7f00; border-bottom:2px solid #a95401; }
+
+.form-group input { background:#CCC; box-shadow:none; color:#333; }
+.form-group textarea { background:#CCC; box-shadow:none; color:#333; resize:none; }
+.form-group select { background:#999; box-shadow:none; color:#FFF; border:none; }
+
+.text-primary { color:#ff7f00; font-weight:bold; }
+
+table.table input { background:#CCC; box-shadow:none; color:#333; }
+table.table select { background:#999; box-shadow:none; color:#FFF; font-weight:bold; }
+
+.label-default { background:#CCC; font-weight:normal; color:#333; }
+.label-default a { color:#333; }
+
+.media { border-bottom:1px solid #CCC; padding-bottom:15px; }
+
+
+.glyphicon { top:0px !important; }

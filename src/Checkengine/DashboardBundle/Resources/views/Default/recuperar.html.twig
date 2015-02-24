@@ -1,0 +1,99 @@
+{% extends 'DashboardBundle::layout.html.twig' %}
+
+{% block clase_body %} id="landing" {% endblock %}
+
+{% block body %} 
+     <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="row">
+        	<div class="col-lg-3 col-md-3 col-sm-2">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-8 text-center">
+                <img src="{{asset('images/checkengine-logo.png')}}" style="margin-bottom:20px;">
+                <br/>
+                <div id="mensajeInfoRecuperar" class="label label-info" style="display: none;"></div>
+                <div id="mensajeErrorRecuperar" class="label label-danger" style="display: none;"></div>
+                <p>Para recuperar tu contraseña debes ingresar el Email asociado a esta cuenta</p>
+                <input type="text" id="textRecuperar" value="" class="form-control" style="margin:20px 0;">
+                <button type="button" id="botonRecuperar" class="btn btn-default">Recuperar</button>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-2">
+            </div>
+        </div>
+      </div>                       
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.dropdown-toggle').dropdown();
+            $('.dropdown-menu').find('form').click(function (e) {
+                e.stopPropagation();
+            });
+            
+           $("#botonLogin").on("click",function(e){
+               e.stopPropagation();
+               var form = $("#formLogin");
+               $.ajax({
+                   url: '{{path('login_check')}}',
+                   data: {'_username': $("#username_login").val(), '_password': $("#password_login").val()},
+                   dataType: 'json',
+                   type: 'POST',
+                   success: function(data){
+                        if(data.success == true){
+                            location.href = '{{path('usuarios')}}';
+                        }else{
+                            $("#mensajeError").text(data.message);
+                            $("#mensajeError").fadeIn('fast',function(){
+                               setTimeout(function(){
+                                   $("#mensajeError").fadeOut('fast');
+                               },2000); 
+                            });
+                        }
+                   },
+                   error: function(data){
+                       console.log(data);
+                       alert("Error");
+                   }
+               });
+           }); 
+           
+           $("#botonRecuperar").on("click",function(e){
+               e.stopPropagation();
+               $.ajax({
+                   url: '{{ path('recuperar') }}',
+                   data: { email: $("#textRecuperar").val() },
+                   dataType: 'json',
+                   type: 'POST',
+                   success: function(data){
+                        if(data.success == true){
+                            $("#mensajeInfoRecuperar").text(data.message);
+                            $("#mensajeInfoRecuperar").fadeIn('fast',function(){
+                               setTimeout(function(){
+                                   $("#mensajeInfoRecuperar").fadeOut('fast');
+                                   setTimeout(function(){
+                                       location.href='{{path('login')}}';
+                                   },500);
+                               },2000); 
+                            });
+                        }else{
+                            $("#mensajeErrorRecuperar").text(data.message);
+                            $("#mensajeErrorRecuperar").fadeIn('fast',function(){
+                               setTimeout(function(){
+                                   $("#mensajeErrorRecuperar").fadeOut('fast');
+                               },2000); 
+                            });
+                        }
+                   },
+                   error: function(data){
+                       console.log(data);
+                       alert("Error");
+                   }
+               });
+           }); 
+        });
+    </script>     
+{% endblock javascripts %}

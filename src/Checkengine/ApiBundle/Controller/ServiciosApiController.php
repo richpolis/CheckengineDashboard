@@ -3,12 +3,6 @@
 // Rest Full Api Servicios
 namespace Checkengine\ApiBundle\Controller;
 
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS ');
-header('Allow GET, POST, PUT, DELETE, OPTIONS ');
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Content-Type, *');
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\FOSRestController;

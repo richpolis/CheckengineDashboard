@@ -3,6 +3,13 @@
 {% block body -%}
 
     {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'usuarios' } %}
+    <h1>Es hora de trabajar !</h1>
+    <div class="row">
+    <p class="col-md-10">El contacto es la herramienta importante... entre ellos y nosotros !</p>
+    <p class="col-md-2 text-center">
+        <a href="{{ path('usuarios_export') }}" class="btn btn-default btn-sm">Exportar</a>
+    </p>
+    </div>
     <div class="container container-principal">
         <br>
         <div class="well">
@@ -20,15 +27,13 @@
             </form>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title text-center">
-                    Usuarios
-                </h3>
-            </div>
             <div class="panel-body">
                 <table class="table">
                     <thead class="text-center">
                         <tr>
+                            <th class="text-center">
+                                Fecha
+                            </th>
                             <th class="text-center">
                                 Nombre
                             </th>
@@ -36,7 +41,13 @@
                                 Apellidos
                             </th>
                             <th class="text-center">
-                                Accion
+                                Region
+                            </th>
+                            <th class="text-center">
+                                Comuna
+                            </th>
+                            <th class="text-center">
+                                &nbsp;
                             </th>
                         </tr>
                     </thead>
@@ -44,10 +55,19 @@
                         {% for usuario in pagination %}  
                             <tr>
                                 <td class="text-center">
+                                    {{usuario.createdAt|date('d-m-Y')}}
+                                </td>
+                                <td class="text-center">
                                     {{usuario.nombre}}
                                 </td>
                                 <td class="text-center">
                                     {{usuario.apellidos}}
+                                </td>
+                                <td class="text-center">
+                                    {{usuario.region}}
+                                </td>
+                                <td class="text-center">
+                                    {{usuario.comuna}}
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -60,7 +80,7 @@
                                             <li><a href="{{ url('usuarios_show', { 'id' : usuario.id }) }}">Mostrar</a></li>
                                             <li><a href="{{ url('usuarios_edit', { 'id' : usuario.id }) }}">Editar</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('usuarios_delete', { 'id' : usuario.id }) }}';}">Eliminar</a></li>
+                                            <li><a href="javascript: if (confirm('Desea eliminar el registro seleccionado?')) { location.href='{{ url('usuarios_delete', { 'id' : usuario.id }) }}';}">Eliminar</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -69,10 +89,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="panel-footer">
-                <a href="{{ path('usuarios_export') }}" class="btn btn-default btn-sm">Exportar</a>
+            <!--div class="panel-footer">
+                
                 <a href="{{ path('usuarios_new') }}" class="btn btn-warning btn-sm pull-right">Nuevo Usuario</a>
-            </div>
+            </div-->
         </div>
         <div class="container">
 

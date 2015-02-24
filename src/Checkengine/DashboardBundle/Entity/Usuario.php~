@@ -54,6 +54,26 @@ class Usuario implements UserInterface, \Serializable
      * @Serializer\Type("string")
      */
     private $apellidos;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="region", type="string", length=255, nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     */
+    private $region;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="comuna", type="string", length=255, nullable=true)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     */
+    private $comuna;
 	
     /**
      * @var string
@@ -107,7 +127,7 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\Column(name="fecha_nacimiento", type="date", nullable=true)
      * 
      * @Serializer\Expose
-     * @Serializer\Type("Date")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      */
     private $fechaNacimiento;
 
@@ -125,6 +145,10 @@ class Usuario implements UserInterface, \Serializable
      * @var Vehiculo
      *
      * @ORM\OneToMany(targetEntity="Checkengine\DashboardBundle\Entity\Vehiculo", mappedBy="usuario")
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<Checkengine\DashboardBundle\Entity\Vehiculo>")
+     * @Serializer\MaxDepth(1)
      */
     private $vehiculos;
 

@@ -2,12 +2,6 @@
 
 namespace Checkengine\ApiBundle\Controller;
 
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS ');
-header('Allow GET, POST, PUT, DELETE, OPTIONS ');
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Content-Type, *');
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -118,7 +112,7 @@ class UsuariosApiController extends FOSRestController
      * @ApiDoc(
      *   resource = true,
      *   description = "Creates a new usuario from the submitted data.",
-     *   input = "Checkengine\DashboardBundle\Form\UsuarioType",
+     *   input = "Checkengine\ApiBundle\Form\UsuarioApiType",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     400 = "Returned when the form has errors"
@@ -191,7 +185,7 @@ class UsuariosApiController extends FOSRestController
      *
      * @ApiDoc(
      *   resource = true,
-     *   input = "Checkengine\DashboardBundle\Form\UsuarioType",
+     *   input = "Checkengine\ApiBundle\Form\UsuarioApiType",
      *   statusCodes = {
      *     201 = "Returned when the Usuario is created",
      *     204 = "Returned when successful",
@@ -248,7 +242,7 @@ class UsuariosApiController extends FOSRestController
      *
      * @ApiDoc(
      *   resource = true,
-     *   input = "Checkengine\DashboardBundle\Form\UsuarioType",
+     *   input = "Checkengine\ApiBundle\Form\UsuarioApiType",
      *   statusCodes = {
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"

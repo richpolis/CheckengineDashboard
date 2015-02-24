@@ -19,6 +19,8 @@ class UsuarioType extends AbstractType
             ->add('nombre')
             ->add('apellidos','text',array('required'=>false))
             ->add('imagen','hidden')
+            ->add('region','text',array('required'=>false))
+            ->add('comuna','text',array('required'=>false))
             ->add('email')
             ->add('password','password',array('required'=>false))
             ->add('salt','hidden')

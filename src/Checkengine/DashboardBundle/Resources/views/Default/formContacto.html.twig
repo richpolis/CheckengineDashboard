@@ -1,39 +1,56 @@
-<form onsubmit="return false;" action="{{path('frontend_contacto')}}" method="post" class="form-contacto" novalidate="novalidate" role="form">
-    <div class="form-group">
-        {{ form_label(form.name) }}
-        {{ form_widget(form.name, {'attr': {'class': 'form-control','placeholder':'nombre'}}) }}
-        <span class="errores"> 
-            {{ form_errors(form.name) }}
-        </span>
-    </div>
-    <div class="form-group">
-        {{ form_label(form.email) }}
-        {{ form_widget(form.email, {'attr': {'class': 'form-control','placeholder':'email'}}) }}
-        <span class="errores"> 
-            {{ form_errors(form.email) }}
-        </span>
-    </div>
-    <div class="form-group">
-        {{ form_label(form.subject) }}
-        {{ form_widget(form.subject, {'attr': {'class': 'form-control','placeholder':'asunto'}}) }}
-        <span class="errores"> 
-            {{ form_errors(form.subject) }}
-        </span>
-    </div>
-    <div class="form-group">
-        {{ form_label(form.telefono) }}
-        {{ form_widget(form.telefono, {'attr': {'class': 'form-control','placeholder':'telefono'}}) }}
-        <span class="errores"> 
-            {{ form_errors(form.telefono) }}
-        </span>
-    </div>    
-    <div class="form-group">
-        {{ form_label(form.body) }}
-        {{ form_widget(form.body, {'attr': {'class': 'form-control','placeholder':'mensaje'}}) }}
-        <span class="errores"> 
-            {{ form_errors(form.body) }}
-        </span>
-    </div> 
+<form onsubmit="return false;" action="{{path('frontend_contacto')}}" method="post" class="form-contacto form-horizontal" novalidate="novalidate" role="form">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Nombre:</label>
+                <div class="col-sm-9">
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control','placeholder':'nombre'}}) }}
+                    <span class="errores"> 
+                        {{ form_errors(form.name) }}
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Email:</label>
+                <div class="col-sm-9">
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control','placeholder':'email'}}) }}
+                    <span class="errores"> 
+                        {{ form_errors(form.email) }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">      
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Telefono:</label>
+                <div class="col-sm-9">
+                    {{ form_widget(form.telefono, {'attr': {'class': 'form-control','placeholder':'telefono'}}) }}
+                    <span class="errores"> 
+                        {{ form_errors(form.telefono) }}
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Asunto:</label>
+                <div class="col-sm-9">
+                    {{ form_widget(form.subject, {'attr': {'class': 'form-control','placeholder':'asunto'}}) }}
+                    <span class="errores"> 
+                        {{ form_errors(form.subject) }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">        
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Mensaje:</label>
+                <div class="col-sm-10">
+                    {{ form_widget(form.body, {'attr': {'class': 'form-control','placeholder':'mensaje'}}) }}
+                    <span class="errores"> 
+                        {{ form_errors(form.body) }}
+                    </span>
+                </div>
+            </div>
+        </div>
     <div class="form-group">
         <input type="submit" value="Enviar" class="form-contacto-control form-submit btn btn-default">
         <img class="ajax-loader" src="/images/bx_loader.gif" alt="Enviando ..." style="visibility: hidden;">

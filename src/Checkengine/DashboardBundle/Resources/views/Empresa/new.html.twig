@@ -2,17 +2,57 @@
 
 {% block body %}
     {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'empresas' } %}
+    <h1>Revisa este cliente en simples pasos!</h1>
     <div class="container container-principal">
-        <form action="{{ path('empresas_create') }}" method="post" {{ form_enctype(form) }}>
+        <form action="{{ path('empresas_create') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
             <br>
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <!--div class="panel-heading">
                     <h3 class="panel-title text-center">
                         Nueva empresa (cliente)
                     </h3>
-                </div>
+                </div-->
                 <div class="panel-body">
-                    {{ form_errors(form) }}  
+                    {{ form_errors(form) }}
+                    <div class="row">
+                        <div class="form-group col-md-6 row">
+                            <label class="col-sm-2 control-label">Razon social</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.nombre,{'attr':{'class':'form-control','label':'Razon social','placeholder':'Razon Social'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6 row">
+                            <label class="col-sm-2 control-label">Direccion</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.direccion,{'attr':{'class':'form-control','label':'Razon social','placeholder':'Direccion'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6 row">
+                            <label class="col-sm-2 control-label">RUT</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.rut,{'attr':{'class':'form-control','label':'Razon social','placeholder':'RUT'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6 row">
+                            <label class="col-sm-2 control-label">Region</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.region,{'attr':{'class':'form-control','label':'Razon social','placeholder':'Region'}}) }}
+                            </div>
+                        </div> 
+                        <div class="form-group col-md-6 row">
+                            <label class="col-sm-2 control-label">Telefono</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.celular,{'attr':{'class':'form-control','label':'Razon social','placeholder':'Telefono'}}) }}
+                            </div>
+                        </div> 
+                        <div class="form-group col-md-6 row">
+                            <label class="col-sm-2 control-label">Comuna</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.comuna,{'attr':{'class':'form-control','label':'Razon social','placeholder':'Comuna'}}) }}
+                            </div>
+                        </div>   
+                    </div>
+                    
                     <div role="tabpanel">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist">

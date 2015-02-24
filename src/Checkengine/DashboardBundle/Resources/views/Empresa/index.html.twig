@@ -3,6 +3,12 @@
 {% block body -%}
 
     {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'empresas' } %}
+    <h1>Es hora de trabajar !</h1>
+    <div class="row">
+    <p class="col-md-10">El contacto es la herramienta importante... entre ellos y nosotros !</p>
+    <p class="col-md-2 text-center">
+        <a href="{{ path('empresas_export') }}" class="btn btn-default btn-sm">Exportar</a>
+    </p>
     <div class="container container-principal">
         <br>
         <div class="well">
@@ -20,18 +26,10 @@
             </form>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title text-center">
-                    Empresas
-                </h3>
-            </div>
             <div class="panel-body">
                 <table class="table">
                     <thead class="text-center">
                         <tr>
-                            <th class="text-center">
-                                Logo
-                            </th>
                             <th class="text-center">
                                 Razon social
                             </th>
@@ -39,13 +37,19 @@
                                 Sucursal
                             </th>
                             <th class="text-center">
-                                Manager
+                                Tipo Empresa
                             </th>
                             <th class="text-center">
-                                RUT
+                                Especialidad
                             </th>
                             <th class="text-center">
-                                Accion
+                                Region
+                            </th>
+                            <th class="text-center">
+                                Comuna
+                            </th>
+                            <th class="text-center">
+                                &nbsp;
                             </th>
                         </tr>
                     </thead>
@@ -53,19 +57,26 @@
                         {% for empresa in pagination %}  
                             <tr>
                                 <td class="text-center">
-                                    <img src="{{empresa.thumbnailWebPath}}" alt="{{empresa.nombreCompleto}}" style="max-width: 120px;"
-                                </td>
-                                <td class="text-center">
                                     {{empresa.nombre}}
                                 </td>
                                 <td class="text-center">
                                     {{empresa.sucursal}}
                                 </td>
                                 <td class="text-center">
-                                    {{empresa.usuario.nombreCompleto}}
+                                    {% for tipo in empresa.tipos %}
+                                        {{tipo.nombre}}<br/>
+                                    {% endfor %}   
                                 </td>
                                 <td class="text-center">
-                                    {{empresa.rut}}
+                                    {% for especialidad in empresa.especialidades %}
+                                        {{especialidad.nombre}}<br/>
+                                    {% endfor %} 
+                                </td>
+                                <td class="text-center">
+                                    {{empresa.region}}
+                                </td>
+                                <td class="text-center">
+                                    {{empresa.comuna}}
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -78,7 +89,7 @@
                                             <li><a href="{{ url('empresas_show', { 'id' : empresa.id }) }}">Mostrar</a></li>
                                             <li><a href="{{ url('empresas_edit', { 'id' : empresa.id }) }}">Editar</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="javascript: if (confirm('Desea elminar el sueño seleccionado?')) { location.href='{{ url('empresas_delete', { 'id' : empresa.id }) }}';}">Eliminar</a></li>
+                                            <li><a href="javascript: if (confirm('Desea eliminar el registro seleccionado?')) { location.href='{{ url('empresas_delete', { 'id' : empresa.id }) }}';}">Eliminar</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -87,10 +98,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="panel-footer">
+            <!--div class="panel-footer">
                 <a href="{{ path('empresas_export') }}" class="btn btn-default btn-sm">Exportar</a>
                 <a href="{{ path('empresas_new') }}" class="btn btn-warning btn-sm pull-right">Nueva empresa</a>
-            </div>
+            </div-->
         </div>
         <div class="container">
 

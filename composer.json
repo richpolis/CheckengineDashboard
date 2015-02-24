@@ -28,7 +28,8 @@
         "beberlei/DoctrineExtensions": "*",
         "psliwa/php-pdf": "*",
         "psliwa/pdf-bundle": "~1.0",
-        "nelmio/api-doc-bundle": "@dev"
+        "nelmio/api-doc-bundle": "@dev",
+        "nelmio/cors-bundle": "~1.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
