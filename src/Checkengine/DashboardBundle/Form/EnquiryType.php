@@ -11,9 +11,9 @@ class EnquiryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name','text',array('label'=>'Nombre'))
-            ->add('email','email')
-            ->add('subject','text',array('label'=>'Asunto'))
+            ->add('name','text',array('label'=>'Nombre','required'=>true))
+            ->add('email','email',array('required'=>true))
+            ->add('subject','text',array('label'=>'Asunto','required'=>true))
             ->add('telefono','text',array('label'=>'Telefono'))    
             ->add('body','textarea',array('label'=>'Mensaje'))
         ;

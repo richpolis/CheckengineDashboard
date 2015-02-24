@@ -13,11 +13,14 @@ class Enquiry
      * @Assert\NotBlank(message="El nombre no puede estar vacio.")
      */
     protected $name;
-    /**
+    
+	/**
      * @Assert\Email(message="Email no es valido.")
+     * @Assert\NotBlank(message="El email no puede estar vacio.")
      */
     protected $email;
-    protected $subject;
+    
+	protected $subject;
     
     protected $telefono;
     

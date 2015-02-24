@@ -2,7 +2,7 @@
 /* CSS Document */
 
 body { padding:90px 0 50px 0; }
-body#landing { background:url(../../images/background.gif) center center repeat; }
+body#landing { background:url(../images/background.gif) center center repeat; }
 
 .loginbox { padding:15px 0; width:300px; box-shadow:none; border-radius:15px; }
 .loginbox input { background:#666; border:#666; color:#FFF; border-left:none !important; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius:10px; }

@@ -1,12 +1,12 @@
 {% extends 'DashboardBundle::layout.html.twig' %}
 
+{% block clase_body %} id="landing" {% endblock %}
+
 {% block body %}
-    
-    
     <div class="row">
         <div class="col-md-6">
             <figure class="imagen-responsive text-center" style="margin-top: 10%; margin-bottom: 10%;">
-                <img src="{{asset('images/logo.png')}}"/>
+                <img src="{{asset('images/checkengine-big.png')}}"/>
             </figure>
         </div>
         <div class="col-md-6">
@@ -20,13 +20,44 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/vendor/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/vendor/bootstrap.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/plugins.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-           $("#botonLogin").on("click",function(){
+			$('.dropdown-toggle').dropdown();
+            $('.dropdown-menu').find('form').click(function (e) {
+                e.stopPropagation();
+            });
+            
+           $("#botonLogin").on("click",function(e){
+               e.stopPropagation();
+               var form = $("#formLogin");
+               $.ajax({
+                   url: '{{path('login_check')}}',
+                   data: {'_username': $("#username_login").val(), '_password': $("#password_login").val()},
+                   dataType: 'json',
+                   type: 'POST',
+                   success: function(data){
+                        if(data.success == true){
+                            location.href = '{{path('usuarios')}}';
+                        }else{
+                            $("#mensajeError").text(data.message);
+                            $("#mensajeError").fadeIn('fast',function(){
+                               setTimeout(function(){
+                                   $("#mensajeError").fadeOut('fast');
+                               },2000); 
+                            });
+                        }
+                   },
+                   error: function(data){
+                       console.log(data);
+                       alert("Error");
+                   }
+               });
+           }); 
+		
+           $("#botonEnviar").on("click",function(){
                var form = $("#formContacto");
                $.ajax({
                    url: form.attr('action'),
@@ -36,17 +67,17 @@
                    success: function(data){
                         if(data.status == 'enviado'){
                             $(".contenido-form").html(data.form);
-                            $("#mensajeExito").text(data.message);
-                            $("#mensajeExito").fadeIn('fast',function(){
+                            $("#mensajeExitoContacto").text(data.message);
+                            $("#mensajeExitoContacto").fadeIn('fast',function(){
                                setTimeout(function(){
-                                   $("#mensajeExito").fadeOut('fast');
+                                   $("#mensajeExitoContacto").fadeOut('fast');
                                },2000); 
                             });
                         }else{
-                            $("#mensajeError").text(data.message);
-                            $("#mensajeError").fadeIn('fast',function(){
+                            $("#mensajeErrorContacto").text(data.message);
+                            $("#mensajeErrorContacto").fadeIn('fast',function(){
                                setTimeout(function(){
-                                   $("#mensajeError").fadeOut('fast');
+                                   $("#mensajeErrorContacto").fadeOut('fast');
                                },2000); 
                             });
                         }
