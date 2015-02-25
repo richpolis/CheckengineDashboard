@@ -30,7 +30,8 @@
 {% endif %}    
 
 {% block content %}
-        {% block nav %}
+{% block nav %}
+    {% if app.user == null %}
         <!-- Fixed navbar -->
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
@@ -80,7 +81,27 @@
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
-    {% endblock nav %}
+    {% else %}
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                  <span class="sr-only">navegación</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="{{asset('images/checkengine-logo.png')}}" alt="Check Engine logo"></a>
+              </div>
+              <div id="navbar" class="navbar-collapse collapse navbar-right">
+                <ul class="nav navbar-nav">
+                  <li class="bienvenida">Hola! {{app.user.nombreCompleto}}<div><a href="{{path('logout')}}">Cerrar sesión</a></div></li>
+                </ul>
+              </div><!--/.nav-collapse -->
+            </div>
+          </nav>    
+    {% endif %}
+{% endblock nav %}
 
     {% block header %}
     {% endblock header %}
