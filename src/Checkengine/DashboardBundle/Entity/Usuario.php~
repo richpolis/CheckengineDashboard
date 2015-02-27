@@ -1191,4 +1191,50 @@ class Usuario implements UserInterface, \Serializable
     {
         return $this->noOfertas;
     }
+
+    /**
+     * Set region
+     *
+     * @param string $region
+     * @return Usuario
+     */
+    public function setRegion($region)
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    /**
+     * Get region
+     *
+     * @return string 
+     */
+    public function getRegion()
+    {
+        return $this->region;
+    }
+
+    /**
+     * Set comuna
+     *
+     * @param string $comuna
+     * @return Usuario
+     */
+    public function setComuna($comuna)
+    {
+        $this->comuna = $comuna;
+
+        return $this;
+    }
+
+    /**
+     * Get comuna
+     *
+     * @return string 
+     */
+    public function getComuna()
+    {
+        return $this->comuna;
+    }
 }

@@ -2,71 +2,7 @@
 
 {% block body %}
     {% include 'DashboardBundle:Default:navegador.html.twig' with {'tabActive': 'usuarios' } %}
-    <div class="container container-principal">
-        <form action="{{ path('usuarios_create') }}" method="post" {{ form_enctype(form) }}>
-            <br>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {{ form_errors(form) }}  
-                    <div role="tabpanel">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">Datos generales</a></li>
-                            <li role="presentation"><a href="#seguridad" aria-controls="seguridad" role="tab" data-toggle="tab">Seguridad</a></li>
-                            <li role="presentation"><a href="#ubicacion" aria-controls="ubicacion" role="tab" data-toggle="tab">Ubicacion</a></li>
-                        </ul>
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="general">
-                                
-                                <div class="form-group">
-                                    {{ form_row(form.fechaNacimiento,{'attr':{'class':'form-control','placeholder':'Fecha de nacimiento'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_row(form.genero,{'attr':{'class':'form-control','placeholder':'Genero'}}) }}
-                                </div>  
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="seguridad">
-                                <div class="form-group">
-                                    {{ form_widget(form.email,{'attr':{'class':'form-control','placeholder':'Email'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_widget(form.password,{'attr':{'class':'form-control','placeholder':'Password'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_row(form.grupo,{'attr':{'class':'form-control','placeholder':'Permisos'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    <label class="checkbox">
-                                      {{ form_widget(form.isActive) }}
-                                      Activo
-                                    </label>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="ubicacion">
-                                <div class="form-group">
-                                    {{ form_row(form.ubicacionLongitud,{'attr':{'class':'form-control','placeholder':'Longitud'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form_row(form.ubicacionLatitud,{'attr':{'class':'form-control','placeholder':'Latitud'}}) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <a href="{{path('usuarios')}}" class="btn btn-primary">Regresar</a>
-                    <input type="submit" class="btn btn-warning btn-sm pull-right" name="botonGuardar" id="botonGuardar" value="Guardar"/>
-                    {{ form_rest(form) }}
-                </div>        
-            </div>
-            <div class="container">
 
-            </div>
-            <div class="container text-center">
-            </div>
-        </form>
-    </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div role="tabpanel" style="margin-top:15px;">
@@ -74,7 +10,6 @@
                                 <ul class="nav nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab001" role="tab" data-toggle="tab">Datos generales</a></li>
                                     <li role="presentation"><a href="#tab002" role="tab" data-toggle="tab">Seguridad</a></li>
-                                    <li role="presentation"><a href="#tab003" role="tab" data-toggle="tab">Sistema</a></li>
                                     <li class="pull-right"><a href="{{path('usuarios')}}" class="font-size-12">Cancelar</a></li>
                                 </ul>
 
@@ -91,7 +26,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="col-sm-3 control-label">Nombre:</label>
+                                                        <label class="col-sm-3 control-label">Apellidos:</label>
                                                         <div class="col-sm-9">
                                                             {{ form_widget(form.apellidos,{'attr':{'class':'form-control','placeholder':'Apellidos'}}) }}
                                                         </div>
@@ -127,97 +62,13 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label">Comuna:</label>
                                                         <div class="col-sm-9">
-                                                            <div class="col-sm-9">
                                                             {{ form_widget(form.comuna,{'attr':{'class':'form-control','placeholder':'comuna'}}) }}
                                                         </div>
-                                                        </div>
                                                     </div>
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">Comuna:</label>
-                                                        <div class="col-sm-9">
-                                                            <select class="form-control">
-                                                                <option>Comuna A</option>
-                                                                <option>Comuna B</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">Especialidad:</label>
-                                                        <div class="col-sm-9">
-                                                            <select class="form-control">
-                                                                <option>Especialidad A</option>
-                                                                <option>Especialidad B</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">Clave:</label>
-                                                        <div class="col-sm-9"><input type="password" class="form-control"></div>
-                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div class="row">
-                                                <div class="col-sm-12" style="margin-top:10px;">
-                                                    <div class="form-group">
-                                                        <label class="col-sm-2 control-label" style="max-width:146px;">Horario:</label>
-                                                        <div class="col-sm-10"><input type="text" class="form-control"></div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-sm-2 control-label" style="max-width:146px;">Texto:</label>
-                                                        <div class="col-sm-10">
-                                                            <textarea rows="4" class="form-control"></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-sm-2 control-label" style="max-width:146px;">Imagen:</label>
-                                                        <div class="col-sm-10">
-                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                                <div class="fileinput-new thumbnail" style="width:100px; height:100px;">
-                                                                    <img alt="perfil" src="images/bg-select-image.png">
-                                                                </div>
-                                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width:100px; min-width:100px; max-height:100px;"></div>
-
-                                                                <div>
-                                                                    <p class="help-block">La imagen debe ser de 100x100 en formato .jpg .gif o .png con un peso máximo de 15kb</p>
-                                                                    <span class="btn btn-default btn-file text-normal"><span class="fileinput-new">Selecciona imagen</span><span class="fileinput-exists">Cambiar</span><input type="file" name="..."></span>
-                                                                    <a href="#" class="btn btn-default text-normal fileinput-exists" data-dismiss="fileinput">Remover</a>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-sm-2 control-label" style="max-width:146px;">Servicios:</label>
-                                                        <div class="col-sm-10">
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <select class="form-control">
-                                                                        <option>Servicio A</option>
-                                                                        <option>Servicio B</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <a href="#" class="btn btn-default active text-normal" title="Agregar selección">agregar</a>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="well well-sm" style="background:#f6f6f6;">
-
-                                                                <span class="label label-default" style="font-size:14px;">Servicio A <a href="#" title="Eliminar">&times;</a></span>
-                                                                <span class="label label-default" style="font-size:14px;">Servicio B <a href="#" title="Eliminar">&times;</a></span>
-                                                                <span class="label label-default" style="font-size:14px;">Servicio C <a href="#" title="Eliminar">&times;</a></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div role="tabpanel" class="tab-pane" id="tab002">
@@ -226,60 +77,27 @@
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label">Email</label>
-                                                        <div class="col-sm-9"><input type="text" value="" class="form-control"></div>
+                                                        <div class="col-sm-9">{{ form_widget(form.email,{'attr':{'class':'form-control','placeholder':'email'}}) }}</div>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label">Password</label>
-                                                        <div class="col-sm-9"><input type="text" value="" class="form-control"></div>
+                                                        <div class="col-sm-9">{{ form_widget(form.password,{'attr':{'class':'form-control','placeholder':'password'}}) }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label">Grupo</label>
                                                         <div class="col-sm-9">
-                                                            <select class="form-control">
-                                                                <option>Administradores</option>
-                                                                <option>...</option>
-                                                                <option>...</option>
-                                                            </select></div>
+                                                            {{ form_widget(form.grupo,{'attr':{'class':'form-control','placeholder':'grupo'}}) }}
+                                                        </div>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label">Activo?</label>
                                                         <div class="col-sm-9">
-                                                            <select class="form-control">
-                                                                <option>Si</option>
-                                                                <option>No</option>
-                                                            </select></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="tab003">
-                                        <div class="form-horizontal">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">Creado</label>
-                                                        <div class="col-sm-9"><input type="text" class="form-control" value="" data-mask="99/99/9999 99:99:99" placeholder="dd/mm/aaaa 00:00:00"></div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">Actualizado</label>
-                                                        <div class="col-sm-9"><input type="text" class="form-control" value="" data-mask="99/99/9999 99:99:99" placeholder="dd/mm/aaaa 00:00:00"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">Token Celular</label>
-                                                        <div class="col-sm-9"><input type="text" value="" class="form-control"></div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">Marca Celular</label>
-                                                        <div class="col-sm-9"><input type="text" value="" class="form-control"></div>
+                                                            {{ form_widget(form.isActive,{'attr':{'class':'form-control','placeholder':'region'}}) }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

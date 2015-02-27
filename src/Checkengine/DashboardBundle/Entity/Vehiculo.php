@@ -103,7 +103,7 @@ class Vehiculo
     /**
      * @var integer
      *
-     * @ORM\Column(name="combustible", type="integer")
+     * @ORM\Column(name="combustible", type="string", length=255)
      * 
      * @Serializer\Expose
      * @Serializer\Type("integer")
@@ -113,7 +113,7 @@ class Vehiculo
     /**
      * @var integer
      *
-     * @ORM\Column(name="transmision", type="integer")
+     * @ORM\Column(name="transmision", type="string", length=255)
      * 
      * @Serializer\Expose
      * @Serializer\Type("string")
@@ -139,6 +139,26 @@ class Vehiculo
      * @Serializer\Type("Checkengine\DashboardBundle\Entity\Usuario")
      */
     private $usuario;
+	
+	/**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
+     */
+    private $createdAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * 
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
+     */
+    private $updatedAt;
     
     const TIPO_CARRO = 1;
     const TIPO_MOTO = 2;
@@ -173,6 +193,33 @@ class Vehiculo
     
     public function __construct() {
         $this->tipo = self::TIPO_CARRO;
+    }
+	
+	/*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
     }
 
     /**
@@ -436,5 +483,51 @@ class Vehiculo
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Vehiculo
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Vehiculo
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }
